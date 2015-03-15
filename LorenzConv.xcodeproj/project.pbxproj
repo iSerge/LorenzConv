@@ -12,6 +12,7 @@
 		95248D6F1AB4C453008A0A66 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95248D6E1AB4C453008A0A66 /* Images.xcassets */; };
 		95248D721AB4C453008A0A66 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95248D701AB4C453008A0A66 /* MainMenu.xib */; };
 		95248D7E1AB4C453008A0A66 /* LorenzConvTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95248D7D1AB4C453008A0A66 /* LorenzConvTests.swift */; };
+		95248D881AB4D13E008A0A66 /* ConvolutionParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95248D871AB4D13E008A0A66 /* ConvolutionParams.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,7 @@
 		95248D771AB4C453008A0A66 /* LorenzConvTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LorenzConvTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		95248D7C1AB4C453008A0A66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95248D7D1AB4C453008A0A66 /* LorenzConvTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LorenzConvTests.swift; sourceTree = "<group>"; };
+		95248D871AB4D13E008A0A66 /* ConvolutionParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvolutionParams.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				95248D701AB4C453008A0A66 /* MainMenu.xib */,
 				95248D6B1AB4C453008A0A66 /* LorenzConv.xcdatamodeld */,
 				95248D671AB4C453008A0A66 /* Supporting Files */,
+				95248D871AB4D13E008A0A66 /* ConvolutionParams.swift */,
 			);
 			path = LorenzConv;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				95248D6A1AB4C453008A0A66 /* AppDelegate.swift in Sources */,
+				95248D881AB4D13E008A0A66 /* ConvolutionParams.swift in Sources */,
 				95248D6D1AB4C453008A0A66 /* LorenzConv.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

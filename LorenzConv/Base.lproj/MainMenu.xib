@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6233" systemVersion="14A329f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6233"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6751"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -11,7 +12,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModuleProvider="target">
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="LorenzConv" customModuleProvider="target">
             <connections>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
@@ -666,15 +667,94 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="LorenzConv" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
+        <window title="LorenzConv" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="contentRect" x="335" y="390" width="484" height="321"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="484" height="321"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oSu-iB-a7q">
+                        <rect key="frame" x="438" y="250" width="28" height="30"/>
+                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="20" doubleValue="2" tickMarkPosition="left" sliderType="circular" id="F1a-6f-cU1"/>
+                        <connections>
+                            <binding destination="MLx-KX-tBs" name="value" keyPath="selection.ghole" id="rHs-qd-Ope"/>
+                        </connections>
+                    </slider>
+                    <openGLView useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rln-Lt-vOG">
+                        <rect key="frame" x="20" y="20" width="285" height="281"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="lna-js-H5x"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="zTz-Ii-NTy"/>
+                        </constraints>
+                    </openGLView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7YQ-Ln-bZq">
+                        <rect key="frame" x="311" y="284" width="43" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Γ-hole" id="zM7-s3-h6K">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GHA-8c-bCN">
+                        <rect key="frame" x="325" y="254" width="96" height="22"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="TX6-qC-KIl">
+                            <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.00" negativeFormat="-#,##0.00" thousandSeparator=" " id="IOT-B6-dRT">
+                                <decimal key="minimum" value="NaN"/>
+                                <decimal key="maximum" value="NaN"/>
+                            </numberFormatter>
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <binding destination="MLx-KX-tBs" name="value" keyPath="selection.ghole" id="ew9-zH-rVb"/>
+                        </connections>
+                    </textField>
+                    <openGLView useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MTm-qg-51j">
+                        <rect key="frame" x="325" y="107" width="139" height="139"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="MTm-qg-51j" secondAttribute="height" multiplier="1:1" id="nAE-NL-l31"/>
+                        </constraints>
+                    </openGLView>
+                    <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="O9S-aK-lku">
+                        <rect key="frame" x="421" y="251" width="19" height="27"/>
+                        <stepperCell key="cell" continuous="YES" alignment="left" increment="0.10000000000000001" maxValue="20" id="zJc-CH-CWg"/>
+                        <connections>
+                            <binding destination="MLx-KX-tBs" name="value" keyPath="selection.ghole" id="Px8-FL-dIQ"/>
+                        </connections>
+                    </stepper>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="7YQ-Ln-bZq" firstAttribute="leading" secondItem="rln-Lt-vOG" secondAttribute="trailing" constant="8" id="1d9-X4-xgA"/>
+                    <constraint firstItem="rln-Lt-vOG" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="BmH-9C-Zzp"/>
+                    <constraint firstItem="GHA-8c-bCN" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="45" id="C9H-F4-UXQ"/>
+                    <constraint firstAttribute="trailing" secondItem="MTm-qg-51j" secondAttribute="trailing" constant="20" id="Chz-z3-eiW"/>
+                    <constraint firstItem="MTm-qg-51j" firstAttribute="top" secondItem="GHA-8c-bCN" secondAttribute="bottom" constant="8" id="Fqw-jo-Uue"/>
+                    <constraint firstAttribute="bottom" secondItem="rln-Lt-vOG" secondAttribute="bottom" constant="20" id="H5E-oD-5DX"/>
+                    <constraint firstAttribute="trailing" secondItem="rln-Lt-vOG" secondAttribute="trailing" constant="179" id="Hdw-0c-Jok"/>
+                    <constraint firstItem="oSu-iB-a7q" firstAttribute="centerY" secondItem="GHA-8c-bCN" secondAttribute="centerY" id="KxI-ja-Oho"/>
+                    <constraint firstItem="GHA-8c-bCN" firstAttribute="leading" secondItem="rln-Lt-vOG" secondAttribute="trailing" constant="20" id="PWM-1A-eQW"/>
+                    <constraint firstItem="oSu-iB-a7q" firstAttribute="leading" secondItem="O9S-aK-lku" secondAttribute="trailing" constant="3" id="RAD-Y4-qI8"/>
+                    <constraint firstItem="O9S-aK-lku" firstAttribute="centerY" secondItem="GHA-8c-bCN" secondAttribute="centerY" id="VOP-aL-GTV"/>
+                    <constraint firstItem="O9S-aK-lku" firstAttribute="leading" secondItem="GHA-8c-bCN" secondAttribute="trailing" constant="3" id="fdU-aQ-9YJ"/>
+                    <constraint firstItem="rln-Lt-vOG" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="l0z-GS-TSa"/>
+                    <constraint firstAttribute="trailing" secondItem="oSu-iB-a7q" secondAttribute="trailing" constant="20" id="mYN-gZ-due"/>
+                    <constraint firstItem="7YQ-Ln-bZq" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="omI-94-t7Y"/>
+                    <constraint firstItem="MTm-qg-51j" firstAttribute="leading" secondItem="rln-Lt-vOG" secondAttribute="trailing" constant="20" id="omX-rd-bO0"/>
+                </constraints>
             </view>
+            <point key="canvasLocation" x="243" y="399.5"/>
         </window>
+        <objectController objectClassName="ConvolutionParams" automaticallyPreparesContent="YES" id="MLx-KX-tBs" userLabel="Convolution Controller">
+            <declaredKeys>
+                <string>ghole</string>
+            </declaredKeys>
+            <connections>
+                <binding destination="Voe-Tx-rLC" name="contentObject" keyPath="convParams" id="2cy-aw-7el"/>
+            </connections>
+        </objectController>
     </objects>
 </document>
