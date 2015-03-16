@@ -1,0 +1,8 @@
+CFLAGS= -O3
+LDFLAGS= -lglut -lGLU -lGL -lGLEW
+
+.PHONY: all
+
+all: main.cpp
+		$(CXX) $(CFLAGS) main.cpp $(LDFLAGS) -o test
+
