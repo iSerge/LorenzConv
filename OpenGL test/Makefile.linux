@@ -1,4 +1,4 @@
-CFLAGS= -O3
+CFLAGS= -g
 LDFLAGS= -lglut -lGLU -lGL -lGLEW
 
 .PHONY: all
