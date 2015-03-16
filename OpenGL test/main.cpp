@@ -127,13 +127,15 @@ void initShader()
     std::cout << "could not bind attrib coorx" << attrx_name << std::endl;
     return;
   }
-    const char* attry_name = "coordy";
-    Attrib_vy = glGetAttribLocation(Program, attry_name);
-    if(Attrib_vy == -1)
-    {
-        std::cout << "could not bind attrib coory" << attry_name << std::endl;
-        return;
-    }
+
+  const char* attry_name = "coordy";
+  Attrib_vy = glGetAttribLocation(Program, attry_name);
+  if(Attrib_vy == -1)
+  {
+    std::cout << "could not bind attrib coory" << attry_name << std::endl;
+    return;
+  }
+  
   //! Вытягиваем ID юниформ
   const char* unif_name = "color";
   Unif_color = glGetUniformLocation(Program, unif_name);
@@ -182,7 +184,7 @@ void freeVBO()
 {
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glDeleteBuffers(1, &VBOx);
-    glDeleteBuffers(1, &VBOy);
+  glDeleteBuffers(1, &VBOy);
 }
 
 void resizeWindow(int width, int height)
@@ -204,23 +206,23 @@ void render()
 
   //! Включаем массив атрибутов
   glEnableVertexAttribArray(Attrib_vx);
-    glEnableVertexAttribArray(Attrib_vy);
-    //! Подключаем VBO
-    glBindBuffer(GL_ARRAY_BUFFER, VBOx);
-      //! Указывая pointer 0 при подключенном буфере, мы указываем что данные в VBO
-      glVertexAttribPointer(Attrib_vx, 1, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, VBOy);
-    //! Указывая pointer 0 при подключенном буфере, мы указываем что данные в VBO
-    glVertexAttribPointer(Attrib_vy, 1, GL_FLOAT, GL_FALSE, 0, 0);
-    //! Отключаем VBO
-    //! Отключаем VBO
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    //! Передаем данные на видеокарту(рисуем)
-    glDrawArrays(GL_TRIANGLES, 0, sizeof (float));
+  glEnableVertexAttribArray(Attrib_vy);
+  //! Подключаем VBO
+  glBindBuffer(GL_ARRAY_BUFFER, VBOx);
+  //! Указывая pointer 0 при подключенном буфере, мы указываем что данные в VBO
+  glVertexAttribPointer(Attrib_vx, 1, GL_FLOAT, GL_FALSE, 0, 0);
+  glBindBuffer(GL_ARRAY_BUFFER, VBOy);
+  //! Указывая pointer 0 при подключенном буфере, мы указываем что данные в VBO
+  glVertexAttribPointer(Attrib_vy, 1, GL_FLOAT, GL_FALSE, 0, 0);
+  //! Отключаем VBO
+  //! Отключаем VBO
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  //! Передаем данные на видеокарту(рисуем)
+  glDrawArrays(GL_TRIANGLES, 0, sizeof (float));
 
   //! Отключаем массив атрибутов
   glDisableVertexAttribArray(Attrib_vx);
-    glDisableVertexAttribArray(Attrib_vy);
+  glDisableVertexAttribArray(Attrib_vy);
 
   //! Отключаем шейдерную программу
   glUseProgram(0); 
