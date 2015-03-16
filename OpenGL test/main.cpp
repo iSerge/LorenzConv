@@ -198,8 +198,9 @@ void render()
   glUseProgram(Program); 
   
   static float red[4] = {1.0f, 0.0f, 0.0f, 1.0f};
+  static float white[4] = {1.0f, 1.0f, 1.0f, 1.0f};
   //! Передаем юниформ в шейдер
-  glUniform4fv(Unif_color, 1, red);
+  glUniform4fv(Unif_color, 1, white);
 
   //! Включаем массив атрибутов
   glEnableVertexAttribArray(Attrib_vx);
