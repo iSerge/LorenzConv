@@ -670,28 +670,28 @@
         <window title="LorenzConv" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="484" height="321"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
+            <rect key="contentRect" x="335" y="390" width="630" height="393"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="484" height="321"/>
+                <rect key="frame" x="0.0" y="0.0" width="630" height="393"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oSu-iB-a7q">
-                        <rect key="frame" x="438" y="250" width="28" height="30"/>
-                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="20" doubleValue="2" tickMarkPosition="left" sliderType="circular" id="F1a-6f-cU1"/>
+                        <rect key="frame" x="584" y="322" width="28" height="30"/>
+                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="20" doubleValue="2" tickMarkPosition="above" sliderType="circular" id="F1a-6f-cU1"/>
                         <connections>
                             <binding destination="MLx-KX-tBs" name="value" keyPath="selection.ghole" id="rHs-qd-Ope"/>
                         </connections>
                     </slider>
                     <openGLView useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rln-Lt-vOG">
-                        <rect key="frame" x="20" y="20" width="285" height="281"/>
+                        <rect key="frame" x="20" y="20" width="431" height="353"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="lna-js-H5x"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="zTz-Ii-NTy"/>
                         </constraints>
                     </openGLView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7YQ-Ln-bZq">
-                        <rect key="frame" x="311" y="284" width="43" height="17"/>
+                        <rect key="frame" x="457" y="356" width="43" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Γ-hole" id="zM7-s3-h6K">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -699,7 +699,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GHA-8c-bCN">
-                        <rect key="frame" x="325" y="254" width="96" height="22"/>
+                        <rect key="frame" x="471" y="326" width="96" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="TX6-qC-KIl">
                             <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.00" negativeFormat="-#,##0.00" thousandSeparator=" " id="IOT-B6-dRT">
                                 <decimal key="minimum" value="NaN"/>
@@ -714,39 +714,79 @@
                         </connections>
                     </textField>
                     <openGLView useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MTm-qg-51j">
-                        <rect key="frame" x="325" y="107" width="139" height="139"/>
+                        <rect key="frame" x="471" y="179" width="139" height="139"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="MTm-qg-51j" secondAttribute="height" multiplier="1:1" id="nAE-NL-l31"/>
                         </constraints>
                     </openGLView>
                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="O9S-aK-lku">
-                        <rect key="frame" x="421" y="251" width="19" height="27"/>
+                        <rect key="frame" x="567" y="323" width="19" height="27"/>
                         <stepperCell key="cell" continuous="YES" alignment="left" increment="0.10000000000000001" maxValue="20" id="zJc-CH-CWg"/>
                         <connections>
                             <binding destination="MLx-KX-tBs" name="value" keyPath="selection.ghole" id="Px8-FL-dIQ"/>
                         </connections>
                     </stepper>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bm7-70-R9A">
+                        <rect key="frame" x="469" y="161" width="18" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="-5" id="q55-hd-lIi">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0ah-8r-F5R">
+                        <rect key="frame" x="600" y="161" width="12" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="5" id="sIy-t3-1l5">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Zu-KZ-fBa">
+                        <rect key="frame" x="460" y="179" width="12" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="7gb-Gl-t3o">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Mo4-rF-OTE">
+                        <rect key="frame" x="460" y="301" width="12" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="1" id="6wC-dw-joq">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="7YQ-Ln-bZq" firstAttribute="leading" secondItem="rln-Lt-vOG" secondAttribute="trailing" constant="8" id="1d9-X4-xgA"/>
+                    <constraint firstItem="MTm-qg-51j" firstAttribute="leading" secondItem="Mo4-rF-OTE" secondAttribute="trailing" constant="1" id="4xQ-mK-r4I"/>
+                    <constraint firstItem="MTm-qg-51j" firstAttribute="leading" secondItem="2Zu-KZ-fBa" secondAttribute="trailing" constant="1" id="5Wn-na-mb0"/>
                     <constraint firstItem="rln-Lt-vOG" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="BmH-9C-Zzp"/>
                     <constraint firstItem="GHA-8c-bCN" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="45" id="C9H-F4-UXQ"/>
+                    <constraint firstItem="MTm-qg-51j" firstAttribute="leading" secondItem="Bm7-70-R9A" secondAttribute="leading" id="CRp-dy-pIo"/>
                     <constraint firstAttribute="trailing" secondItem="MTm-qg-51j" secondAttribute="trailing" constant="20" id="Chz-z3-eiW"/>
+                    <constraint firstItem="MTm-qg-51j" firstAttribute="bottom" secondItem="2Zu-KZ-fBa" secondAttribute="bottom" id="EGy-4I-REe"/>
                     <constraint firstItem="MTm-qg-51j" firstAttribute="top" secondItem="GHA-8c-bCN" secondAttribute="bottom" constant="8" id="Fqw-jo-Uue"/>
                     <constraint firstAttribute="bottom" secondItem="rln-Lt-vOG" secondAttribute="bottom" constant="20" id="H5E-oD-5DX"/>
                     <constraint firstAttribute="trailing" secondItem="rln-Lt-vOG" secondAttribute="trailing" constant="179" id="Hdw-0c-Jok"/>
+                    <constraint firstItem="MTm-qg-51j" firstAttribute="trailing" secondItem="0ah-8r-F5R" secondAttribute="trailing" id="Kdk-lD-HAV"/>
                     <constraint firstItem="oSu-iB-a7q" firstAttribute="centerY" secondItem="GHA-8c-bCN" secondAttribute="centerY" id="KxI-ja-Oho"/>
                     <constraint firstItem="GHA-8c-bCN" firstAttribute="leading" secondItem="rln-Lt-vOG" secondAttribute="trailing" constant="20" id="PWM-1A-eQW"/>
+                    <constraint firstItem="Bm7-70-R9A" firstAttribute="top" secondItem="MTm-qg-51j" secondAttribute="bottom" constant="1" id="QZo-Q5-qy2"/>
                     <constraint firstItem="oSu-iB-a7q" firstAttribute="leading" secondItem="O9S-aK-lku" secondAttribute="trailing" constant="3" id="RAD-Y4-qI8"/>
+                    <constraint firstItem="Bm7-70-R9A" firstAttribute="baseline" secondItem="0ah-8r-F5R" secondAttribute="baseline" id="RIU-zE-EA0"/>
                     <constraint firstItem="O9S-aK-lku" firstAttribute="centerY" secondItem="GHA-8c-bCN" secondAttribute="centerY" id="VOP-aL-GTV"/>
                     <constraint firstItem="O9S-aK-lku" firstAttribute="leading" secondItem="GHA-8c-bCN" secondAttribute="trailing" constant="3" id="fdU-aQ-9YJ"/>
                     <constraint firstItem="rln-Lt-vOG" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="l0z-GS-TSa"/>
                     <constraint firstAttribute="trailing" secondItem="oSu-iB-a7q" secondAttribute="trailing" constant="20" id="mYN-gZ-due"/>
                     <constraint firstItem="7YQ-Ln-bZq" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="omI-94-t7Y"/>
                     <constraint firstItem="MTm-qg-51j" firstAttribute="leading" secondItem="rln-Lt-vOG" secondAttribute="trailing" constant="20" id="omX-rd-bO0"/>
+                    <constraint firstItem="Mo4-rF-OTE" firstAttribute="top" secondItem="MTm-qg-51j" secondAttribute="top" id="seG-Kr-Hry"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="243" y="399.5"/>
+            <point key="canvasLocation" x="316" y="435.5"/>
         </window>
         <objectController objectClassName="ConvolutionParams" automaticallyPreparesContent="YES" id="MLx-KX-tBs" userLabel="Convolution Controller">
             <declaredKeys>
