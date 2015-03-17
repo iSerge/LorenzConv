@@ -262,6 +262,10 @@ void initShader()
     checkOpenGLerror();
     exit(1);
   }
+  
+  glUniform4fv(Unif_color, 1, white);
+  glUniformMatrix4fv(projectionMatrixLocation, 1, GL_TRUE, projectionMatrix);
+  checkOpenGLerror();
 
   glUseProgram(0);
 }
@@ -302,6 +306,7 @@ void initVBO()
   glVertexAttribPointer(Attrib_vy, 1, GL_FLOAT, GL_FALSE, 0, 0);
     
   checkOpenGLerror();
+  
   glBindVertexArray(0);
 }
 
@@ -362,8 +367,8 @@ void render()
   glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
   //! Устанавливаем шейдерную программу текущей
   glUseProgram(Program);
-  glUniform4fv(Unif_color, 1, white);
-  glUniformMatrix4fv(projectionMatrixLocation, 1, GL_TRUE, projectionMatrix);
+//  glUniform4fv(Unif_color, 1, white);
+//  glUniformMatrix4fv(projectionMatrixLocation, 1, GL_TRUE, projectionMatrix);
   
   glBindVertexArray(VAO);
   glDrawArrays(GL_LINE_STRIP, 0, nPoints);
