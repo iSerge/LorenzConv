@@ -12,18 +12,24 @@
 
 //! Переменные с индентификаторами ID
 //! ID шейдерной программы
-GLuint Program;
+static GLuint Program;
 //! ID атрибута
-GLint  Attrib_vx;
-GLint  Attrib_vy;
+static GLint  Attrib_vx;
+static GLint  Attrib_vy;
 //! ID юниформ переменной цвета
-GLint  Unif_color;
+static GLint  Unif_color;
 // ID юниформ переменной матрицы проекции
-GLint projectionMatrixLocation;
+static GLint projectionMatrixLocation;
 //! ID Vertex Buffer Object
 static GLuint VBOx;
 static GLuint VBOy;
 static GLuint VAO;
+
+static const int nPoints = 151;
+static const float G = 0.3f;
+static const float x1 = -0.9f;
+static const float x2 =  0.9f;
+static const float dx = (x2-x1)/nPoints;
 
   // массив для хранения перспективной матрици проекции
 static float projectionMatrix[16] = { 1.0f, 0.0f, 0.0f, 0.0f,
@@ -47,7 +53,29 @@ void checkOpenGLerror()
 void initGL()
 {
   glClearColor(0, 0, 0, 0);
-  checkOpenGLerror();
+      checkOpenGLerror();
+      std::cout << "initGL::glClearColor" << std::endl;
+  glLineWidth(1.0f);
+      checkOpenGLerror();
+      std::cout << "initGL::glLineWidth" << std::endl;
+  glEnable(GL_LINE_SMOOTH);
+      checkOpenGLerror();
+      std::cout << "initGL::glEnable(GL_LINE_SMOOTH)" << std::endl;
+  glHint(GL_LINE_SMOOTH_HINT,  GL_NICEST);
+      checkOpenGLerror();
+      std::cout << "initGL::glHint" << std::endl;
+  glEnable(GL_BLEND);
+      checkOpenGLerror();
+      std::cout << "initGL::glEnable(GL_BLEND)" << std::endl;
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      checkOpenGLerror();
+      std::cout << "initGL::glBlendFunc" << std::endl;
+//  glEnable(GL_MULTISAMPLE);
+//      checkOpenGLerror();
+//      std::cout << "initGL::glEnable(GL_MULTISAMPLE)" << std::endl;
+//  glSampleCoverage(0.5f, GL_FALSE);
+//      checkOpenGLerror();
+//      std::cout << "initGL::glSampleCoverage" << std::endl;
 }
 
 // проверка статуса param шейдера shader
@@ -238,12 +266,21 @@ void initShader()
   glUseProgram(0);
 }
 
+float f(float x){
+  return G/(M_PI*(x*x+G*G));
+}
+
 //! Инициализация VBO
 void initVBO()
 {
   //! Вершины нашего треугольника
-  float x[3] = {-1.0f, 0.0f,  1.0f};
-  float y[3] = {-1.0f, 1.0f, -1.0f};
+  float x[nPoints];
+  float y[nPoints];
+  
+  for(int i = 0; i < nPoints; ++i){
+    x[i] = x1+dx*i;
+    y[i] = f(x[i]);
+  }
   
   glGenVertexArrays(1, &VAO);
   glBindVertexArray(VAO);
@@ -329,7 +366,7 @@ void render()
   glUniformMatrix4fv(projectionMatrixLocation, 1, GL_TRUE, projectionMatrix);
   
   glBindVertexArray(VAO);
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  glDrawArrays(GL_LINE_STRIP, 0, nPoints);
 
   //! Отключаем шейдерную программу
   glBindVertexArray(VAO);
