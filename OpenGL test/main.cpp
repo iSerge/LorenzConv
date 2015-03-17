@@ -10,86 +10,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-/*
-PFNGLCREATEPROGRAMPROC glCreateProgram = NULL;
-PFNGLGETSHADERIVPROC glGetShaderiv = NULL;
-PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog = NULL;
-PFNGLCREATESHADERPROC glCreateShader = NULL;
-PFNGLSHADERSOURCEPROC glShaderSource = NULL;
-PFNGLCOMPILESHADERPROC glCompileShader = NULL;
-PFNGLATTACHSHADERPROC glAttachShader = NULL;
-PFNGLLINKPROGRAMPROC glLinkProgram = NULL;
-PFNGLGETPROGRAMIVPROC glGetProgramiv = NULL;
-PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation = NULL;
-PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = NULL;
-PFNGLGENBUFFERSPROC glGenBuffers = NULL;
-PFNGLBINDBUFFERPROC glBindBuffer = NULL;
-PFNGLBUFFERDATAPROC glBufferData = NULL;
-PFNGLUSEPROGRAMPROC glUseProgram = NULL;
-PFNGLDELETEPROGRAMPROC glDeleteProgram = NULL;
-PFNGLDELETEBUFFERSPROC glDeleteBuffers = NULL;
-PFNGLUNIFORM4FVPROC glUniform4fv = NULL;
-PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = NULL;
-PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer = NULL;
-PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray = NULL;
-
-//#ifdef linux
-//PFNGLXCREATECONTEXTATTRIBSARBPROC glXCreateContextAttribsARB = NULL;
-//#endif
-
-// макрос для получения указателя на функцию и проверка его на валидность
-#define OPENGL_GET_PROC(p,n) \
-//  n = reinterpret_cast<p>(wglGetProcAddress(#n)); \
-  n = reinterpret_cast<p>(glXGetProcAddress(#n)); \
-  if (NULL == n) \
-  { \
-    std::cout<< "Loading extension '"<< #n << "' fail (" << GetLatError() << \
-      ")" << std::endl; \
-    return false; \
-  }
-
-bool initGlExtProcs(){
-  OPENGL_GET_PROC(PFNGLCREATEPROGRAMPROC, glCreateProgram);
-  OPENGL_GET_PROC(PFNGLGETSHADERIVPROC, glGetShaderiv);
-  OPENGL_GET_PROC(PFNGLGETSHADERINFOLOGPROC, glGetShaderInfoLog);
-  OPENGL_GET_PROC(PFNGLCREATESHADERPROC, glCreateShader);
-  OPENGL_GET_PROC(PFNGLSHADERSOURCEPROC, glShaderSource);
-  OPENGL_GET_PROC(PFNGLCOMPILESHADERPROC, glCompileShader);
-  OPENGL_GET_PROC(PFNGLATTACHSHADERPROC, glAttachShader);
-  OPENGL_GET_PROC(PFNGLLINKPROGRAMPROC, glLinkProgram);
-  OPENGL_GET_PROC(PFNGLGETPROGRAMIVPROC, glGetProgramiv);
-  OPENGL_GET_PROC(PFNGLGETATTRIBLOCATIONPROC, glGetAttribLocation);
-  OPENGL_GET_PROC(PFNGLGETUNIFORMLOCATIONPROC, glGetUniformLocation);
-  OPENGL_GET_PROC(PFNGLGENBUFFERSPROC, glGenBuffers);
-  OPENGL_GET_PROC(PFNGLBINDBUFFERPROC, glBindBuffer);
-  OPENGL_GET_PROC(PFNGLBUFFERDATAPROC, glBufferData);
-  OPENGL_GET_PROC(PFNGLUSEPROGRAMPROC, glUseProgram);
-  OPENGL_GET_PROC(PFNGLDELETEPROGRAMPROC, glDeleteProgram);
-  OPENGL_GET_PROC(PFNGLDELETEBUFFERSPROC, glDeleteBuffers);
-  OPENGL_GET_PROC(PFNGLUNIFORM4FVPROC, glUniform4fv);
-  OPENGL_GET_PROC(PFNGLENABLEVERTEXATTRIBARRAYPROC, glEnableVertexAttribArray);
-  OPENGL_GET_PROC(PFNGLVERTEXATTRIBPOINTERPROC, glVertexAttribPointer);
-  OPENGL_GET_PROC(PFNGLDISABLEVERTEXATTRIBARRAYPROC, glDisableVertexAttribArray);
-
-//#ifdef linux
-//  OPENGL_GET_PROC(PFNGLXCREATECONTEXTATTRIBSARBPROC, glXCreateContextAttribsARB);
-//#endif
-
-  return true;
-}
-*/
-/*
-void DebugLog ( GLenum source , GLenum type , GLuint id , GLenum severity ,
-  GLsizei length , const GLchar * message , GLvoid * userParam)
-{
-  std::cout << " Type : " << getStringForType( type ) 
-            << "; Source : " << getStringForSource( source ). c_str ()
-            << "; ID : "<< id 
-            << "; Severity : " << getStringForSeverity( severity ) << std::endl;
-  std::cout << " Message :" << message << std::endl;
-}
-*/
-
 //! Переменные с индентификаторами ID
 //! ID шейдерной программы
 GLuint Program;
@@ -101,28 +21,33 @@ GLint  Unif_color;
 // ID юниформ переменной матрицы проекции
 GLint projectionMatrixLocation;
 //! ID Vertex Buffer Object
-GLuint VBOx;
-GLuint VBOy;
-GLuint VAO;
+static GLuint VBOx;
+static GLuint VBOy;
+static GLuint VAO;
 
   // массив для хранения перспективной матрици проекции
-static float projectionMatrix[16];
+static float projectionMatrix[16] = { 1.0f, 0.0f, 0.0f, 0.0f,
+                                      0.0f, 1.0f, 0.0f, 0.0f,
+                                      0.0f, 0.0f, 1.0f, 0.0f,
+                                      0.0f, 0.0f, 0.0f, 1.0f
+                                    };
 static float red[4] = {1.0f, 0.0f, 0.0f, 1.0f};
 static float white[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-
-//! Инициализация OpenGL, здесь пока по минимальному=)
-void initGL()
-{
-  glClearColor(0, 0, 0, 0);
-}
 
 //! Проверка ошибок OpenGL, если есть то выводит в консоль тип ошибки
 void checkOpenGLerror()
 {
   GLenum errCode;
   if((errCode=glGetError()) != GL_NO_ERROR){
-    std::cout << "OpenGl error! - " << gluErrorString(errCode);
+    std::cout << "OpenGl error! - " << gluErrorString(errCode) << std::endl;
   }
+}
+
+//! Инициализация OpenGL, здесь пока по минимальному=)
+void initGL()
+{
+  glClearColor(0, 0, 0, 0);
+  checkOpenGLerror();
 }
 
 // проверка статуса param шейдера shader
@@ -132,12 +57,16 @@ GLint ShaderStatus(GLuint shader, GLenum param)
 
   // получим статус шейдера
   glGetShaderiv(shader, param, &status);
+  checkOpenGLerror();
+  std::cout << "ShaderStatus::glGetShaderiv" << std::endl;
 
   // в случае ошибки запишем ее в лог-файл
   if (status != GL_TRUE)
   {
     int   infologLen   = 0;
     glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLen);
+    checkOpenGLerror();
+    std::cout << "ShaderStatus::glGetShaderiv" << std::endl;
     if(infologLen > 1){ 
       char *infoLog = new char[infologLen];
       if(infoLog == NULL)
@@ -147,6 +76,8 @@ GLint ShaderStatus(GLuint shader, GLenum param)
       }
       int   charsWritten = 0;
       glGetShaderInfoLog(shader, infologLen, &charsWritten, infoLog);
+      checkOpenGLerror();
+      std::cout << "ShaderStatus::glGetShaderInfoLog" << std::endl;
       std::cout << "Shader program: " << infoLog << "\n\n\n";
       delete[] infoLog;
     }
@@ -205,18 +136,24 @@ void initShader()
     "}\n";
   const char* fsSource = 
     "#version 330 core\n"
-    "uniform vec4 color;\n"
-    "out vec4 fragColor;\n"
+    "uniform vec4 solidColor;\n"
+    "out vec4 color;\n"
     "void main() {\n"
-    "  fragColor = color;\n"
+    "  color = solidColor;\n"
     "}\n";
   //! Переменные для хранения идентификаторов шейдеров
   GLuint vShader, fShader;
   
   //! Создаем вершинный шейдер
   vShader = glCreateShader(GL_VERTEX_SHADER);
+  checkOpenGLerror();
+  std::cout << "glCreateShader" << std::endl;
+  
   //! Передаем исходный код
   glShaderSource(vShader, 1, &vsSource, NULL);
+  checkOpenGLerror();
+  std::cout << "glCreateSource" << std::endl;
+  
   //! Компилируем шейдер
   glCompileShader(vShader);
 
@@ -261,6 +198,44 @@ void initShader()
   } else {
     exit(1);
   }
+  
+  const char* attrx_name = "coordx";
+  Attrib_vx = glGetAttribLocation(Program, attrx_name);
+  if(Attrib_vx == -1)
+  {
+    std::cout << "could not bind attrib " << attrx_name << std::endl;
+    checkOpenGLerror();
+    exit(1);
+  }
+  
+  const char* attry_name = "coordy";
+  Attrib_vy = glGetAttribLocation(Program, attry_name);
+  if(Attrib_vy == -1)
+  {
+    std::cout << "could not bind attrib " << attry_name << std::endl;
+    checkOpenGLerror();
+    exit(1);
+  }
+
+  const char* unif_name = "solidColor";
+  Unif_color = glGetUniformLocation(Program, unif_name);
+  if(Unif_color == -1)
+  {
+    std::cout << "could not bind uniform " << unif_name << std::endl;
+    checkOpenGLerror();
+    exit(1);
+  }
+
+  const char* projectionMatrix_name = "projectionMatrix";
+  projectionMatrixLocation = glGetUniformLocation(Program, projectionMatrix_name);
+  if(projectionMatrixLocation == -1)
+  {
+    std::cout << "could not bind uniform " << projectionMatrix_name << std::endl;
+    checkOpenGLerror();
+    exit(1);
+  }
+
+  glUseProgram(0);
 }
 
 //! Инициализация VBO
@@ -277,18 +252,20 @@ void initVBO()
   
   glGenBuffers(1, &VBOx);
   glBindBuffer(GL_ARRAY_BUFFER, VBOx);
-  //! Передаем вершины в буфер
   glBufferData(GL_ARRAY_BUFFER, sizeof(x), x, GL_STATIC_DRAW);
+  glEnableVertexAttribArray(Attrib_vx);
+  glVertexAttribPointer(Attrib_vx, 1, GL_FLOAT, GL_FALSE, 0, 0);
     
   checkOpenGLerror();
 
   glGenBuffers(1, &VBOy);
   glBindBuffer(GL_ARRAY_BUFFER, VBOy);
-  //! Вершины нашего треугольника
-  //! Передаем вершины в буфер
   glBufferData(GL_ARRAY_BUFFER, sizeof(y), y, GL_STATIC_DRAW);
+  glEnableVertexAttribArray(Attrib_vy);
+  glVertexAttribPointer(Attrib_vy, 1, GL_FLOAT, GL_FALSE, 0, 0);
     
   checkOpenGLerror();
+  glBindVertexArray(0);
 }
 
 //static const float M_PI = 3.14159265359f; 
@@ -308,61 +285,11 @@ void Matrix4Perspective(float *M, float fovy, float aspect, float znear, float z
 }
 
 void initData(){
-  ///! Вытягиваем ID атрибута из собранной программы 
-  const char* attrx_name = "coordx";
-  Attrib_vx = glGetAttribLocation(Program, attrx_name);
-  if(Attrib_vx == -1)
-  {
-    std::cout << "could not bind attrib coordx" << attrx_name << std::endl;
-    return;
-  }
-
-  glVertexAttribPointer(Attrib_vx, 1, GL_FLOAT, GL_FALSE, 0, 0);
-  glEnableVertexAttribArray(Attrib_vx);
-  checkOpenGLerror();
-
-  const char* attry_name = "coordy";
-  Attrib_vy = glGetAttribLocation(Program, attry_name);
-  if(Attrib_vy == -1)
-  {
-    std::cout << "could not bind attrib coordy" << attry_name << std::endl;
-    return;
-  }
-
-  glVertexAttribPointer(Attrib_vy, 1, GL_FLOAT, GL_FALSE, 0, 0);
-  glEnableVertexAttribArray(Attrib_vy);
-  checkOpenGLerror();
-  
-  //! Вытягиваем ID юниформ
-  const char* unif_name = "color";
-  Unif_color = glGetUniformLocation(Program, unif_name);
-  if(Unif_color == -1)
-  {
-    std::cout << "could not bind uniform " << unif_name << std::endl;
-    return;
-  }
-
-  checkOpenGLerror();
-
-  //! Передаем юниформ в шейдер
-  glUniform4fv(Unif_color, 1, white);
-
   // коэффициент отношения сторон окна OpenGL
- // GLint dim[4];
- // glGet(GL_VIEWPORT, &dim);
-//  const float aspectRatio = (float)dim[2] / (float)dim[3];
   const float aspectRatio = 800 / 600;
 
   // создадим перспективную матрицу проекции
-  Matrix4Perspective(projectionMatrix, 45.0f, aspectRatio, 0.5f, 5.0f);
-
-  // получим индекс юниформа projectionMatrix из шейдерной программы
-  projectionMatrixLocation = glGetUniformLocation(Program, "projectionMatrix");
-
-  // передадим матрицу в шейдер
-  if (projectionMatrixLocation != -1){
-    glUniformMatrix4fv(projectionMatrixLocation, 1, GL_TRUE, projectionMatrix);
-  }
+  //Matrix4Perspective(projectionMatrix, 45.0f, aspectRatio, 0.5f, 5.0f);
 }
 
 //! Освобождение шейдеров
@@ -388,12 +315,8 @@ void resizeWindow(int width, int height)
 {
   glViewport(0, 0, width, height);
 
-  float projectionMatrix[16];
   const float aspectRatio = (float)width / (float)height;
-  Matrix4Perspective(projectionMatrix, 45.0f, aspectRatio, 0.5f, 5.0f);
-  if (projectionMatrixLocation != -1){
-    glUniformMatrix4fv(projectionMatrixLocation, 1, GL_TRUE, projectionMatrix);
-  }
+  //Matrix4Perspective(projectionMatrix, 45.0f, aspectRatio, 0.5f, 5.0f);
 }
 
 //! Отрисовка
@@ -401,12 +324,15 @@ void render()
 {
   glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
   //! Устанавливаем шейдерную программу текущей
-  glUseProgram(Program); 
+  glUseProgram(Program);
+  glUniform4fv(Unif_color, 1, white);
+  glUniformMatrix4fv(projectionMatrixLocation, 1, GL_TRUE, projectionMatrix);
   
   glBindVertexArray(VAO);
   glDrawArrays(GL_TRIANGLES, 0, 3);
 
   //! Отключаем шейдерную программу
+  glBindVertexArray(VAO);
   glUseProgram(0); 
 
   checkOpenGLerror();
@@ -417,22 +343,38 @@ void render()
 int main( int argc, char **argv )
 {
   glutInit(&argc, argv);
+  checkOpenGLerror();
+  std::cout << "glutInit()" << std::endl;
+  
   glutInitContextVersion(3, 3);
+  checkOpenGLerror();
+  std::cout << "glutInitContextVersion()" << std::endl;
+  
   glutInitContextProfile( GLUT_CORE_PROFILE );
+  checkOpenGLerror();
+  std::cout << "glutInitContextProfile()" << std::endl;
+  
   glutInitContextFlags(GLUT_FORWARD_COMPATIBLE | GLUT_DEBUG);
+  checkOpenGLerror();
+  std::cout << "glutInitContextFlags()" << std::endl;
+  
   glutInitDisplayMode(GLUT_RGBA | GLUT_ALPHA | GLUT_DOUBLE);
+  checkOpenGLerror();
+  std::cout << "glutInitDisplayMode()" << std::endl;
+  
   glutInitWindowSize(800, 600);
+  checkOpenGLerror();
+  std::cout << "glutInitWindowSize()" << std::endl;
+  
   glutCreateWindow("Simple shaders");
+  checkOpenGLerror();
+  std::cout << "Window created" << std::endl;
 
   //! Обязательно перед инициализации шейдеров
-  /*bool proc_init_status = initGlExtProcs();
-  if(!proc_init_status) 
-  {
-    std::cout << "Failed to get GL func adress"<<std::endl;
-    return 1;
-  }
-  */
+  glewExperimental = GL_TRUE;
   GLenum glew_status = glewInit();
+  checkOpenGLerror();
+  std::cout << "glewInit()" << std::endl;
   if(GLEW_OK != glew_status) 
   {
      //! GLEW не проинициализировалась
@@ -448,13 +390,22 @@ int main( int argc, char **argv )
     return 1;
   }
 
+  std::cout << "GLEW initialized" << std::endl;
+
 
   //! Инициализация
   initGL();
-  initVBO();
+  std::cout << "initGL OK" << std::endl;
+
   initShader();
+  std::cout << "initShader OK" << std::endl;
+
+  initVBO();
+  std::cout << "initVBO OK" << std::endl;
+
   initData();
-  
+  std::cout << "initData OK" << std::endl;
+
   glutReshapeFunc(resizeWindow);
   glutDisplayFunc(render);
   glutMainLoop();
