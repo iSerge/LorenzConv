@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E57DD621AB8B2C000B78747 /* lorenz.cl in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD611AB8B2C000B78747 /* lorenz.cl */; };
+		5E57DD631AB8B2C000B78747 /* lorenz.cl in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD611AB8B2C000B78747 /* lorenz.cl */; };
+		5E57DD651AB8D3C900B78747 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E57DD641AB8D3C900B78747 /* OpenCL.framework */; };
+		5E57DD671AB8D3D400B78747 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E57DD661AB8D3D400B78747 /* OpenGL.framework */; };
 		95248D6A1AB4C453008A0A66 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95248D691AB4C453008A0A66 /* AppDelegate.swift */; };
 		95248D6D1AB4C453008A0A66 /* LorenzConv.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95248D6B1AB4C453008A0A66 /* LorenzConv.xcdatamodeld */; };
 		95248D6F1AB4C453008A0A66 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95248D6E1AB4C453008A0A66 /* Images.xcassets */; };
@@ -26,6 +30,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5E32681B1AB8AABD00EDDB98 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = "OpenGL test/main.cpp"; sourceTree = "<group>"; };
+		5E57DD611AB8B2C000B78747 /* lorenz.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; name = lorenz.cl; path = LorenzConv/lorenz.cl; sourceTree = "<group>"; };
+		5E57DD641AB8D3C900B78747 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
+		5E57DD661AB8D3D400B78747 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		95248D641AB4C453008A0A66 /* LorenzConv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LorenzConv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95248D681AB4C453008A0A66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95248D691AB4C453008A0A66 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +51,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E57DD671AB8D3D400B78747 /* OpenGL.framework in Frameworks */,
+				5E57DD651AB8D3C900B78747 /* OpenCL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,9 +66,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5E3268191AB8A97600EDDB98 /* Computation */ = {
+			isa = PBXGroup;
+			children = (
+				5E57DD611AB8B2C000B78747 /* lorenz.cl */,
+			);
+			name = Computation;
+			sourceTree = "<group>";
+		};
+		5E32681A1AB8AA2900EDDB98 /* Visualisation */ = {
+			isa = PBXGroup;
+			children = (
+				5E32681B1AB8AABD00EDDB98 /* main.cpp */,
+			);
+			name = Visualisation;
+			sourceTree = "<group>";
+		};
 		95248D5B1AB4C453008A0A66 = {
 			isa = PBXGroup;
 			children = (
+				5E57DD661AB8D3D400B78747 /* OpenGL.framework */,
+				5E57DD641AB8D3C900B78747 /* OpenCL.framework */,
+				5E32681A1AB8AA2900EDDB98 /* Visualisation */,
+				5E3268191AB8A97600EDDB98 /* Computation */,
 				95248D661AB4C453008A0A66 /* LorenzConv */,
 				95248D7A1AB4C453008A0A66 /* LorenzConvTests */,
 				95248D651AB4C453008A0A66 /* Products */,
@@ -211,6 +241,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E57DD621AB8B2C000B78747 /* lorenz.cl in Sources */,
 				95248D6A1AB4C453008A0A66 /* AppDelegate.swift in Sources */,
 				95248D881AB4D13E008A0A66 /* ConvolutionParams.swift in Sources */,
 				95248D6D1AB4C453008A0A66 /* LorenzConv.xcdatamodeld in Sources */,
@@ -221,6 +252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E57DD631AB8B2C000B78747 /* lorenz.cl in Sources */,
 				95248D7E1AB4C453008A0A66 /* LorenzConvTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,10 +360,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = LorenzConv/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				OPENCL_COMPILER_VERSION = CL1.2;
+				OPENCL_MAD_ENABLE = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -339,9 +375,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = LorenzConv/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				OPENCL_COMPILER_VERSION = CL1.2;
+				OPENCL_MAD_ENABLE = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -350,6 +389,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -362,6 +402,7 @@
 				INFOPLIST_FILE = LorenzConvTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LorenzConv.app/Contents/MacOS/LorenzConv";
 			};
 			name = Debug;
@@ -370,6 +411,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -401,6 +443,7 @@
 				95248D831AB4C453008A0A66 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		95248D841AB4C453008A0A66 /* Build configuration list for PBXNativeTarget "LorenzConvTests" */ = {
 			isa = XCConfigurationList;
@@ -409,6 +452,7 @@
 				95248D861AB4C453008A0A66 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
