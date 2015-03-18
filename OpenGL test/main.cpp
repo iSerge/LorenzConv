@@ -85,26 +85,39 @@ struct graph {
   GLuint  vao;
   GLuint  xVbo;
   GLuint  yVbo;
-
-//  GLuint  color_uniform;
-//  GLuint  factor_uniform;
-//  GLuint  pattern_uniform;
-//  GLuint  style;
   GLsizei n;
-  
+
   GLfloat color[4];
   GLuint pattern;
   GLfloat factor;
-  
+
   graph(float* x, float* y, GLsizei count, GLfloat aColor[4],
   	GLuint aPattern = 0xFFFF, GLfloat aFactor = 1.0f)
-    :n(count), pattern(aPattern), factor(aFactor)
+    : n(count), pattern(aPattern), factor(aFactor)
   {
-    memcpy(color, aColor, 4*sizeof(GLfloat));
-    
     xVbo = genBuffer(x, count);
     yVbo = genBuffer(y, count);
+    init(aColor);
+  }
 
+  graph(GLuint xVBO, float* y, GLsizei count, GLfloat aColor[4],
+  	GLuint aPattern = 0xFFFF, GLfloat aFactor = 1.0f)
+    : xVbo(xVBO), n(count), pattern(aPattern), factor(aFactor)
+  {
+    yVbo = genBuffer(y, count);
+    init(aColor);
+  }
+  
+  graph(GLuint xVBO, GLuint yVBO, GLsizei count, GLfloat aColor[4],
+  	GLuint aPattern = 0xFFFF, GLfloat aFactor = 1.0f)
+    : xVbo(xVBO), yVbo(yVBO), n(count), pattern(aPattern), factor(aFactor)
+  {
+    init(aColor);
+  }
+  
+  void init(GLfloat aColor[4]){
+    memcpy(color, aColor, 4*sizeof(GLfloat));
+    
     vao = genVao();
     
     glBindVertexArray(vao);
@@ -383,11 +396,13 @@ void initVBO()
     y1[i] = f(x[i], 0.5);
   }
   
-  graph_list.push_back(graph(x,y,nPoints, white));
+  GLuint xVBO = genBuffer(x, nPoints);
+  
+  graph_list.push_back(graph(xVBO,y,nPoints, white));
   checkOpenGLerror();
   std::cout << "Grpaph 1 init\n";
   
-  graph_list.push_back(graph(x,y1,nPoints, red, 0xF0F0));
+  graph_list.push_back(graph(xVBO,y1,nPoints, red, 0xF0F0));
   checkOpenGLerror();
   std::cout << "Grpaph 2 init\n";
 }
