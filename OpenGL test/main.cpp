@@ -8,37 +8,9 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
-
-//! Переменные с индентификаторами ID
-//! ID шейдерной программы
-static GLuint Program;
-//! ID атрибута
-static GLint  Attrib_vx;
-static GLint  Attrib_vy;
-//! ID юниформ переменной цвета
-static GLint  Unif_color;
-// ID юниформ переменной матрицы проекции
-static GLint projectionMatrixLocation;
-//! ID Vertex Buffer Object
-static GLuint VBOx;
-static GLuint VBOy;
-static GLuint VAO;
-
-static const int nPoints = 151;
-static const float G = 0.3f;
-static const float x1 = -0.9f;
-static const float x2 =  0.9f;
-static const float dx = (x2-x1)/nPoints;
-
-  // массив для хранения перспективной матрици проекции
-static float projectionMatrix[16] = { 1.0f, 0.0f, 0.0f, 0.0f,
-                                      0.0f, 1.0f, 0.0f, 0.0f,
-                                      0.0f, 0.0f, 1.0f, 0.0f,
-                                      0.0f, 0.0f, 0.0f, 1.0f
-                                    };
-static float red[4] = {1.0f, 0.0f, 0.0f, 1.0f};
-static float white[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+#include <list>
 
 //! Проверка ошибок OpenGL, если есть то выводит в консоль тип ошибки
 void checkOpenGLerror()
@@ -48,6 +20,128 @@ void checkOpenGLerror()
     std::cout << "OpenGl error! - " << gluErrorString(errCode) << std::endl;
   }
 }
+
+//! Переменные с индентификаторами ID
+//! ID шейдерной программы
+static GLuint Program;
+
+static GLint  Attrib_vx;
+static GLint  Attrib_vy;
+
+//! ID юниформ переменной цвета
+static GLint  Unif_color;
+static GLint  Unif_pattern;
+static GLint  Unif_factor;
+// ID юниформ переменной матрицы проекции
+static GLint projectionMatrixLocation;
+
+static const int nPoints = 401;
+static const float G = 0.3f;
+static const float x1 = -3.9f;
+static const float x2 =  3.9f;
+static const float dx = (x2-x1)/nPoints;
+
+  // массив для хранения перспективной матрици проекции
+static float projectionMatrix[16] = { 0.25f, 0.0f, 0.0f,  0.0f,
+                                      0.0f,  2.0f, 0.0f, -1.0f,
+                                      0.0f,  0.0f, 1.0f,  0.0f,
+                                      0.0f,  0.0f, 0.0f,  1.0f
+                                    };
+static float red[4] = {1.0f, 0.0f, 0.0f, 1.0f};
+static float white[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+
+std::list<GLuint> vbo_list;
+std::list<GLuint> ubo_list;
+std::list<GLuint> vao_list;
+std::list<GLuint> program_list;
+
+GLuint genBuffer(float* v, GLsizei count){
+  GLuint VBO;	
+
+  glGenBuffers(1, &VBO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, count*sizeof(float), v, GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  
+  vbo_list.push_back(VBO);
+  
+  return VBO;
+}
+
+GLuint genVao(){
+  GLuint VAO;	
+
+  glGenVertexArrays(1, &VAO);
+      checkOpenGLerror();
+      std::cout << "genVao::glGenVertexArrays" << std::endl;
+  
+  vao_list.push_back(VAO);
+  
+  return VAO;
+}
+
+
+struct graph {
+  GLuint  vao;
+  GLuint  xVbo;
+  GLuint  yVbo;
+
+//  GLuint  color_uniform;
+//  GLuint  factor_uniform;
+//  GLuint  pattern_uniform;
+//  GLuint  style;
+  GLsizei n;
+  
+  GLfloat color[4];
+  GLuint pattern;
+  GLfloat factor;
+  
+  graph(float* x, float* y, GLsizei count, GLfloat aColor[4],
+  	GLuint aPattern = 0xFFFF, GLfloat aFactor = 1.0f)
+    :n(count), pattern(aPattern), factor(aFactor)
+  {
+    memcpy(color, aColor, 4*sizeof(GLfloat));
+    
+    xVbo = genBuffer(x, count);
+    yVbo = genBuffer(y, count);
+
+    vao = genVao();
+    
+    glBindVertexArray(vao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, xVbo);
+    glEnableVertexAttribArray(Attrib_vx);
+    glVertexAttribPointer(Attrib_vx, 1, GL_FLOAT, GL_FALSE, 0, 0);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, yVbo);
+    glEnableVertexAttribArray(Attrib_vy);
+    glVertexAttribPointer(Attrib_vy, 1, GL_FLOAT, GL_FALSE, 0, 0);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+  }
+  
+  graph(const graph& other)
+    : vao(other.vao), xVbo(other.xVbo), yVbo(other.yVbo),
+      n(other.n), pattern(other.pattern), factor(other.factor)
+  {
+    memcpy(color, other.color, 4*sizeof(GLfloat));
+  }
+  
+  void draw(GLuint color_uniform, GLuint factor_uniform, GLuint pattern_uniform) const
+  {
+    glBindVertexArray(vao);
+
+    glUniform4fv(color_uniform, 1, color);
+//    glUniform1ui(pattern_uniform, pattern);
+//    glUniform1f(factor_uniform, factor);
+
+    glDrawArrays(GL_LINE_STRIP, 0, n);
+    glBindVertexArray(0);
+  }
+};
+
+std::list<graph> graph_list;
 
 //! Инициализация OpenGL, здесь пока по минимальному=)
 void initGL()
@@ -150,6 +244,28 @@ GLint ShaderProgramStatus(GLuint program, GLenum param)
   return status;
 }
 
+GLuint getAttribLocation(GLuint program, const char* attr_name){
+  GLuint attr_location = glGetAttribLocation(program, attr_name);
+  if(attr_location == -1)
+  {
+    std::cout << "could not bind attrib " << attr_name << std::endl;
+    checkOpenGLerror();
+    exit(1);
+  }
+  return attr_location;
+}
+
+GLuint getUniformLocation(GLuint program, const char* unif_name){
+  GLuint unif_location = glGetUniformLocation(program, unif_name);
+  if(unif_location == -1)
+  {
+    std::cout << "could not bind uniform " << unif_name << std::endl;
+    checkOpenGLerror();
+    exit(1);
+  }
+  return unif_location;
+}
+
 //! Инициализация шейдеров
 void initShader()
 {
@@ -164,9 +280,14 @@ void initShader()
     "}\n";
   const char* fsSource = 
     "#version 330 core\n"
+//    "uniform uint pattern;\n"
+//    "uniform float factor;\n"
     "uniform vec4 solidColor;\n"
     "out vec4 color;\n"
     "void main() {\n"
+//    "  uint bit = uint(round(linePos/factor)) & 31U;\n"
+//    "  if((pattern & (1U<<bit)) == 0U)\n"
+//    "    discard;\n"
     "  color = solidColor;\n"
     "}\n";
   //! Переменные для хранения идентификаторов шейдеров
@@ -214,7 +335,7 @@ void initShader()
 
   //! Проверяем статус сборки
   if(GL_TRUE == ShaderProgramStatus(Program, GL_LINK_STATUS)){
-    std::cout << "Shader program OK\n";
+    std::cout << "Shader program link OK\n";
   } else {
     exit(1);
   }
@@ -227,51 +348,25 @@ void initShader()
     exit(1);
   }
   
-  const char* attrx_name = "coordx";
-  Attrib_vx = glGetAttribLocation(Program, attrx_name);
-  if(Attrib_vx == -1)
-  {
-    std::cout << "could not bind attrib " << attrx_name << std::endl;
-    checkOpenGLerror();
-    exit(1);
-  }
-  
-  const char* attry_name = "coordy";
-  Attrib_vy = glGetAttribLocation(Program, attry_name);
-  if(Attrib_vy == -1)
-  {
-    std::cout << "could not bind attrib " << attry_name << std::endl;
-    checkOpenGLerror();
-    exit(1);
-  }
+  Attrib_vx = getAttribLocation(Program, "coordx");
+  Attrib_vy = getAttribLocation(Program, "coordy");
 
-  const char* unif_name = "solidColor";
-  Unif_color = glGetUniformLocation(Program, unif_name);
-  if(Unif_color == -1)
-  {
-    std::cout << "could not bind uniform " << unif_name << std::endl;
-    checkOpenGLerror();
-    exit(1);
-  }
+  Unif_color = getUniformLocation(Program, "solidColor");
+//  Unif_pattern = getUniformLocation(Program, "pattern");
+//  Unif_factor = getUniformLocation(Program, "factor");
 
-  const char* projectionMatrix_name = "projectionMatrix";
-  projectionMatrixLocation = glGetUniformLocation(Program, projectionMatrix_name);
-  if(projectionMatrixLocation == -1)
-  {
-    std::cout << "could not bind uniform " << projectionMatrix_name << std::endl;
-    checkOpenGLerror();
-    exit(1);
-  }
+  projectionMatrixLocation = getUniformLocation(Program, "projectionMatrix");
   
-  glUniform4fv(Unif_color, 1, white);
+//  glUniform4fv(Unif_color, 1, white);
   glUniformMatrix4fv(projectionMatrixLocation, 1, GL_TRUE, projectionMatrix);
   checkOpenGLerror();
 
   glUseProgram(0);
+  program_list.push_back(Program);
 }
 
-float f(float x){
-  return G/(M_PI*(x*x+G*G));
+float f(float x, float g){
+  return g/(M_PI*(x*x+g*g));
 }
 
 //! Инициализация VBO
@@ -280,85 +375,49 @@ void initVBO()
   //! Вершины нашего треугольника
   float x[nPoints];
   float y[nPoints];
+  float y1[nPoints];
   
   for(int i = 0; i < nPoints; ++i){
     x[i] = x1+dx*i;
-    y[i] = f(x[i]);
+    y[i] = f(x[i], G);
+    y1[i] = f(x[i], 0.5);
   }
   
-  glGenVertexArrays(1, &VAO);
-  glBindVertexArray(VAO);
-
+  graph_list.push_back(graph(x,y,nPoints, white));
   checkOpenGLerror();
+  std::cout << "Grpaph 1 init\n";
   
-  glGenBuffers(1, &VBOx);
-  glBindBuffer(GL_ARRAY_BUFFER, VBOx);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(x), x, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(Attrib_vx);
-  glVertexAttribPointer(Attrib_vx, 1, GL_FLOAT, GL_FALSE, 0, 0);
-    
+  graph_list.push_back(graph(x,y1,nPoints, red, 0xF0F0));
   checkOpenGLerror();
-
-  glGenBuffers(1, &VBOy);
-  glBindBuffer(GL_ARRAY_BUFFER, VBOy);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(y), y, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(Attrib_vy);
-  glVertexAttribPointer(Attrib_vy, 1, GL_FLOAT, GL_FALSE, 0, 0);
-    
-  checkOpenGLerror();
-  
-  glBindVertexArray(0);
-}
-
-//static const float M_PI = 3.14159265359f; 
-
-// построение перспективной матрицы проекции
-void Matrix4Perspective(float *M, float fovy, float aspect, float znear, float zfar)
-{
-        // fovy передается в градусах - сконвертируем его в радианы
-        float f = 1 / tanf(fovy * M_PI / 360),
-              A = (zfar + znear) / (znear - zfar),
-              B = (2 * zfar * znear) / (znear - zfar);
-
-        M[ 0] = f / aspect; M[ 1] =  0; M[ 2] =  0; M[ 3] =  0;
-        M[ 4] = 0;          M[ 5] =  f; M[ 6] =  0; M[ 7] =  0;
-        M[ 8] = 0;          M[ 9] =  0; M[10] =  A; M[11] =  B;
-        M[12] = 0;          M[13] =  0; M[14] = -1; M[15] =  0;
-}
-
-void initData(){
-  // коэффициент отношения сторон окна OpenGL
-  const float aspectRatio = 800 / 600;
-
-  // создадим перспективную матрицу проекции
-  //Matrix4Perspective(projectionMatrix, 45.0f, aspectRatio, 0.5f, 5.0f);
+  std::cout << "Grpaph 2 init\n";
 }
 
 //! Освобождение шейдеров
 void freeShader()
 {
-  //! Передавая ноль, мы отключаем шейдрную программу
   glUseProgram(0); 
-  //! Удаляем шейдерную программу
-  glDeleteProgram(Program);
+  for(std::list<GLuint>::const_iterator p = program_list.begin(); p != program_list.end(); ++p){
+    glDeleteProgram(*p);
+  }
 }
 
 //! Освобождение шейдеров
 void freeVBO()
 {
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
-  glDeleteBuffers(1, &VBOx);
-  glDeleteBuffers(1, &VBOy);
-  glDeleteVertexArrays(1, &VAO);
+  for(std::list<GLuint>::const_iterator p = vao_list.begin(); p != vao_list.end(); ++p){
+    glDeleteVertexArrays(1, &(*p));
+  }
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  for(std::list<GLuint>::const_iterator p = vao_list.begin(); p != vao_list.end(); ++p){
+    glDeleteBuffers(1, &(*p));
+  }
 }
 
 void resizeWindow(int width, int height)
 {
   glViewport(0, 0, width, height);
-
-  const float aspectRatio = (float)width / (float)height;
-  //Matrix4Perspective(projectionMatrix, 45.0f, aspectRatio, 0.5f, 5.0f);
 }
 
 //! Отрисовка
@@ -369,12 +428,13 @@ void render()
   glUseProgram(Program);
 //  glUniform4fv(Unif_color, 1, white);
 //  glUniformMatrix4fv(projectionMatrixLocation, 1, GL_TRUE, projectionMatrix);
-  
-  glBindVertexArray(VAO);
-  glDrawArrays(GL_LINE_STRIP, 0, nPoints);
+
+  for(std::list<graph>::const_iterator p = graph_list.begin(); p != graph_list.end(); ++p){
+    p->draw(Unif_color, Unif_pattern, Unif_factor);
+  }
 
   //! Отключаем шейдерную программу
-  glBindVertexArray(VAO);
+  glBindVertexArray(0);
   glUseProgram(0); 
 
   checkOpenGLerror();
@@ -444,9 +504,6 @@ int main( int argc, char **argv )
 
   initVBO();
   std::cout << "initVBO OK" << std::endl;
-
-  initData();
-  std::cout << "initData OK" << std::endl;
 
   glutReshapeFunc(resizeWindow);
   glutDisplayFunc(render);
