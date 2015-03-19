@@ -14,6 +14,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="LorenzConv" customModuleProvider="target">
             <connections>
+                <outlet property="convParams" destination="pHU-W0-RDd" id="kVy-6I-3vy"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -712,7 +713,7 @@
                             <binding destination="MLx-KX-tBs" name="value" keyPath="selection.ghole" id="ew9-zH-rVb"/>
                         </connections>
                     </textField>
-                    <openGLView canDrawConcurrently="YES" colorSize="5bit_RGB_8bit_Alpha" useAuxiliaryDepthBufferStencil="NO" useDoubleBufferingEnabled="YES" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MTm-qg-51j">
+                    <openGLView canDrawConcurrently="YES" colorSize="5bit_RGB_8bit_Alpha" useAuxiliaryDepthBufferStencil="NO" useDoubleBufferingEnabled="YES" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MTm-qg-51j" customClass="GLGraph" customModule="LorenzConv" customModuleProvider="target">
                         <rect key="frame" x="418" y="174" width="139" height="139"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="MTm-qg-51j" secondAttribute="height" multiplier="1:1" id="nAE-NL-l31"/>
@@ -793,8 +794,13 @@
                 <string>ghole</string>
             </declaredKeys>
             <connections>
-                <binding destination="Voe-Tx-rLC" name="contentObject" keyPath="convParams" id="2cy-aw-7el"/>
+                <binding destination="pHU-W0-RDd" name="contentObject" keyPath="self" id="nQP-4W-aqk"/>
             </connections>
         </objectController>
+        <customObject id="pHU-W0-RDd" customClass="ConvolutionParams">
+            <connections>
+                <outlet property="distributionView" destination="MTm-qg-51j" id="gum-9z-hNA"/>
+            </connections>
+        </customObject>
     </objects>
 </document>

@@ -1,0 +1,10 @@
+#version 320 core
+
+uniform mat4 projectionMatrix;
+
+in float coordx;
+in float coordy;
+
+void main() {
+  gl_Position = projectionMatrix * vec4(coordx, coordy, 0.0, 1.0);
+}

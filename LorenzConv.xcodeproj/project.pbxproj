@@ -11,6 +11,18 @@
 		5E57DD631AB8B2C000B78747 /* lorenz.cl in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD611AB8B2C000B78747 /* lorenz.cl */; };
 		5E57DD651AB8D3C900B78747 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E57DD641AB8D3C900B78747 /* OpenCL.framework */; };
 		5E57DD671AB8D3D400B78747 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E57DD661AB8D3D400B78747 /* OpenGL.framework */; };
+		5E57DD691AB9F26600B78747 /* PendingOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD681AB9F26600B78747 /* PendingOperations.swift */; };
+		5E57DD6A1AB9F26600B78747 /* PendingOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD681AB9F26600B78747 /* PendingOperations.swift */; };
+		5E57DD6C1AB9F8A600B78747 /* GraphDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD6B1AB9F8A600B78747 /* GraphDescriptor.swift */; };
+		5E57DD6D1AB9F8A600B78747 /* GraphDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD6B1AB9F8A600B78747 /* GraphDescriptor.swift */; };
+		5E57DD6F1AB9FFF000B78747 /* GraphixManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD6E1AB9FFF000B78747 /* GraphixManager.swift */; };
+		5E57DD701AB9FFF000B78747 /* GraphixManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD6E1AB9FFF000B78747 /* GraphixManager.swift */; };
+		5E57DD721ABAACBA00B78747 /* GLGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD711ABAACBA00B78747 /* GLGraph.swift */; };
+		5E57DD731ABAACBA00B78747 /* GLGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD711ABAACBA00B78747 /* GLGraph.swift */; };
+		5E57DD7C1ABABF3A00B78747 /* projection.vertex in Resources */ = {isa = PBXBuildFile; fileRef = 5E57DD7A1ABABF3A00B78747 /* projection.vertex */; };
+		5E57DD7D1ABABF3A00B78747 /* projection.vertex in Resources */ = {isa = PBXBuildFile; fileRef = 5E57DD7A1ABABF3A00B78747 /* projection.vertex */; };
+		5E57DD7E1ABABF3A00B78747 /* uniform.color.fragment in Resources */ = {isa = PBXBuildFile; fileRef = 5E57DD7B1ABABF3A00B78747 /* uniform.color.fragment */; };
+		5E57DD7F1ABABF3A00B78747 /* uniform.color.fragment in Resources */ = {isa = PBXBuildFile; fileRef = 5E57DD7B1ABABF3A00B78747 /* uniform.color.fragment */; };
 		95248D6A1AB4C453008A0A66 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95248D691AB4C453008A0A66 /* AppDelegate.swift */; };
 		95248D6D1AB4C453008A0A66 /* LorenzConv.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95248D6B1AB4C453008A0A66 /* LorenzConv.xcdatamodeld */; };
 		95248D6F1AB4C453008A0A66 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95248D6E1AB4C453008A0A66 /* Images.xcassets */; };
@@ -34,6 +46,12 @@
 		5E57DD611AB8B2C000B78747 /* lorenz.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; name = lorenz.cl; path = LorenzConv/lorenz.cl; sourceTree = "<group>"; };
 		5E57DD641AB8D3C900B78747 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
 		5E57DD661AB8D3D400B78747 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		5E57DD681AB9F26600B78747 /* PendingOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingOperations.swift; sourceTree = "<group>"; };
+		5E57DD6B1AB9F8A600B78747 /* GraphDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphDescriptor.swift; sourceTree = "<group>"; };
+		5E57DD6E1AB9FFF000B78747 /* GraphixManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphixManager.swift; sourceTree = "<group>"; };
+		5E57DD711ABAACBA00B78747 /* GLGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLGraph.swift; sourceTree = "<group>"; };
+		5E57DD7A1ABABF3A00B78747 /* projection.vertex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = projection.vertex; path = LorenzConv/Shaders/projection.vertex; sourceTree = "<group>"; };
+		5E57DD7B1ABABF3A00B78747 /* uniform.color.fragment */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = uniform.color.fragment; path = LorenzConv/Shaders/uniform.color.fragment; sourceTree = "<group>"; };
 		95248D641AB4C453008A0A66 /* LorenzConv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LorenzConv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95248D681AB4C453008A0A66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95248D691AB4C453008A0A66 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -77,7 +95,11 @@
 		5E32681A1AB8AA2900EDDB98 /* Visualisation */ = {
 			isa = PBXGroup;
 			children = (
+				5E57DD7A1ABABF3A00B78747 /* projection.vertex */,
+				5E57DD7B1ABABF3A00B78747 /* uniform.color.fragment */,
 				5E32681B1AB8AABD00EDDB98 /* main.cpp */,
+				5E57DD6B1AB9F8A600B78747 /* GraphDescriptor.swift */,
+				5E57DD6E1AB9FFF000B78747 /* GraphixManager.swift */,
 			);
 			name = Visualisation;
 			sourceTree = "<group>";
@@ -113,6 +135,8 @@
 				95248D6B1AB4C453008A0A66 /* LorenzConv.xcdatamodeld */,
 				95248D671AB4C453008A0A66 /* Supporting Files */,
 				95248D871AB4D13E008A0A66 /* ConvolutionParams.swift */,
+				5E57DD681AB9F26600B78747 /* PendingOperations.swift */,
+				5E57DD711ABAACBA00B78747 /* GLGraph.swift */,
 			);
 			path = LorenzConv;
 			sourceTree = "<group>";
@@ -223,6 +247,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				95248D6F1AB4C453008A0A66 /* Images.xcassets in Resources */,
+				5E57DD7E1ABABF3A00B78747 /* uniform.color.fragment in Resources */,
+				5E57DD7C1ABABF3A00B78747 /* projection.vertex in Resources */,
 				95248D721AB4C453008A0A66 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -231,6 +257,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E57DD7D1ABABF3A00B78747 /* projection.vertex in Resources */,
+				5E57DD7F1ABABF3A00B78747 /* uniform.color.fragment in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,8 +270,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E57DD621AB8B2C000B78747 /* lorenz.cl in Sources */,
+				5E57DD6F1AB9FFF000B78747 /* GraphixManager.swift in Sources */,
+				5E57DD6C1AB9F8A600B78747 /* GraphDescriptor.swift in Sources */,
 				95248D6A1AB4C453008A0A66 /* AppDelegate.swift in Sources */,
 				95248D881AB4D13E008A0A66 /* ConvolutionParams.swift in Sources */,
+				5E57DD721ABAACBA00B78747 /* GLGraph.swift in Sources */,
+				5E57DD691AB9F26600B78747 /* PendingOperations.swift in Sources */,
 				95248D6D1AB4C453008A0A66 /* LorenzConv.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,8 +284,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E57DD6A1AB9F26600B78747 /* PendingOperations.swift in Sources */,
+				5E57DD731ABAACBA00B78747 /* GLGraph.swift in Sources */,
+				5E57DD6D1AB9F8A600B78747 /* GraphDescriptor.swift in Sources */,
 				5E57DD631AB8B2C000B78747 /* lorenz.cl in Sources */,
 				95248D7E1AB4C453008A0A66 /* LorenzConvTests.swift in Sources */,
+				5E57DD701AB9FFF000B78747 /* GraphixManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,14 @@
+#version 320 core
+
+//uniform uint pattern;
+//uniform float factor;
+uniform vec4 solidColor;
+
+out vec4 color;
+
+void main() {\n"
+//    uint bit = uint(round(linePos/factor)) & 31U;
+//    f((pattern & (1U<<bit)) == 0U)
+//        discard;
+    color = solidColor;
+}
