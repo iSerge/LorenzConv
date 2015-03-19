@@ -61,6 +61,7 @@ namespace LorenzConv.NET
 		private void distribView_Load(object sender, EventArgs e)
 		{
 			distribViewLoaded = true;
+            distribView.SetupContext();
 		}
 
 		private void distribView_Paint(object seder, PaintEventArgs e){
@@ -71,6 +72,11 @@ namespace LorenzConv.NET
 			distribView.Context.MakeCurrent(distribView.WindowInfo);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit|ClearBufferMask.DepthBufferBit);
+
+            GL.UseProgram(GraphManager.Program);
+            GraphManager.DistrGrapth.draw(GraphManager.Unif_color, 0, 0);
+            GL.BindVertexArray(0);
+            GL.UseProgram(0); 
 
 			distribView.SwapBuffers();
 		}
@@ -92,8 +98,8 @@ namespace LorenzConv.NET
             this.gammaEdit = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.gammaSlider = new System.Windows.Forms.TrackBar();
-            this.distribView = new GraphGLView();
-            this.convolutionView = new GraphGLView();
+            this.distribView = new LorenzConv.NET.GraphGLView();
+            this.convolutionView = new LorenzConv.NET.GraphGLView();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gammaSlider)).BeginInit();
             this.SuspendLayout();
@@ -179,6 +185,8 @@ namespace LorenzConv.NET
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(12);
             this.Text = "Lorenz convolution";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gammaSlider)).EndInit();
@@ -190,6 +198,7 @@ namespace LorenzConv.NET
         private void convolutionView_Load(object sender, EventArgs e)
         {
             distribConvolutionLoaded = true;
+            convolutionView.SetupContext();
         }
 
         private void convolutionView_Paint(object sender, PaintEventArgs e)
@@ -202,7 +211,22 @@ namespace LorenzConv.NET
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            GL.UseProgram(GraphManager.Program);
+            GraphManager.DistrGrapth.draw(GraphManager.Unif_color, 0, 0);
+            GL.BindVertexArray(0);
+            GL.UseProgram(0);
+
             convolutionView.SwapBuffers();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            GraphManager.InitData();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            GraphManager.FreeData();
         }
 	}
 }
