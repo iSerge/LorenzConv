@@ -35,6 +35,12 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Compile Include="CustomGLControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomGLControl.Designer.cs">
+      <DependentUpon>CustomGLControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

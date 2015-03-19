@@ -13,8 +13,8 @@ namespace LorenzConv.NET
         private TextBox gammaEdit;
         private Label label1;
         private TrackBar gammaSlider;
-        private OpenTK.GLControl distribView;
-        private OpenTK.GLControl convolutionView;
+        private GraphGLView distribView;
+        private GraphGLView convolutionView;
 
 		private bool distribViewLoaded = false;
         private bool distribConvolutionLoaded = false;
@@ -80,14 +80,20 @@ namespace LorenzConv.NET
 			Application.Run(new MainForm());
 		}
 
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.gammaEdit = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.gammaSlider = new System.Windows.Forms.TrackBar();
-            this.distribView = new OpenTK.GLControl();
-            this.convolutionView = new OpenTK.GLControl();
+            this.distribView = new GraphGLView();
+            this.convolutionView = new GraphGLView();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gammaSlider)).BeginInit();
             this.SuspendLayout();
@@ -179,6 +185,7 @@ namespace LorenzConv.NET
             this.ResumeLayout(false);
 
         }
+        #endregion
 
         private void convolutionView_Load(object sender, EventArgs e)
         {
@@ -191,7 +198,7 @@ namespace LorenzConv.NET
             {
                 return;
             }
-            convolutionView.Context.MakeCurrent(distribView.WindowInfo);
+            convolutionView.Context.MakeCurrent(convolutionView.WindowInfo);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
