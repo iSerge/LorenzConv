@@ -1,2 +1,4 @@
 LorenzConv.NET.userprefs
 LorenzConv.NET/bin/
+LorenzConv.NET/obj/
+*.suo

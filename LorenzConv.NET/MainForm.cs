@@ -9,84 +9,49 @@ namespace LorenzConv.NET
 	{
 		private DataStorage settings = new DataStorage();
 
-		private TextBox gammaEdit;
-		private TrackBar gammaSlider;
-		
-		private GraphGLView distribView;
+        private TableLayoutPanel tableLayoutPanel1;
+        private TextBox gammaEdit;
+        private Label label1;
+        private TrackBar gammaSlider;
+        private OpenTK.GLControl distribView;
+        private OpenTK.GLControl convolutionView;
 
-		private bool distribViewLoaded = true;
+		private bool distribViewLoaded = false;
+        private bool distribConvolutionLoaded = false;
 
 		public MainForm ()
 		{
-			Text = "Lorenz convolution";
-			this.Size = new Size(800,600);
-			this.Padding = new Padding(12);
+            InitializeComponent();
 
-			distribView = new GraphGLView();
-			distribView.Dock = DockStyle.Fill;
-			distribView.Paint += distribView_Paint;
-			distribView.Load += distribView_Load;
-
-			var gammaLabel = new Label();
-			gammaLabel.Text = "Gamma";
-			gammaLabel.Dock = DockStyle.Fill;
-
-			gammaEdit = new TextBox();
-			gammaEdit.Dock = DockStyle.Fill;
-
-			var gammaEditBinding = new Binding("Text", settings, "Gamma");
+            var gammaEditBinding = new Binding("Text", settings, "Gamma");
 			gammaEditBinding.Format += bind_FormatFloatToString; 
 			gammaEditBinding.Parse += bind_FormatStrToFloat;
-			gammaEditBinding.DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged;
-			gammaEditBinding.ControlUpdateMode = ControlUpdateMode.OnPropertyChanged;
+			gammaEditBinding.DataSourceUpdateMode = DataSourceUpdateMode.OnValidation;
 
 			gammaEdit.DataBindings.Add(gammaEditBinding);
-			//gammaEdit.DataBindings.Add("Text", settings, "Gamma", true,
-			//                              DataSourceUpdateMode.OnPropertyChanged);
-
-			gammaSlider = new TrackBar();
-			gammaSlider.Dock = DockStyle.Fill;
-			gammaSlider.Minimum = 0;
-			gammaSlider.Maximum = 1000;
-			gammaSlider.TickFrequency = 100;
-			gammaSlider.Value = 200;
 
 			var gammaSliderBinding = new Binding("Value", settings, "Gamma");
 			gammaSliderBinding.Format += bind_FormatFloatToSlider;
 			gammaSliderBinding.Parse += bind_FormatSliderToFloat;
 			gammaSliderBinding.DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged;
-			gammaSliderBinding.ControlUpdateMode = ControlUpdateMode.OnPropertyChanged;
 
 			gammaSlider.DataBindings.Add(gammaSliderBinding);
 
-			var controlsPanel = new TableLayoutPanel();
-			controlsPanel.Text = "Convolution parameters";
-			controlsPanel.Dock = DockStyle.Left;
-			controlsPanel.Padding = new Padding(12);
-
-			controlsPanel.Controls.Add(gammaLabel, 0, 0);
-			controlsPanel.Controls.Add(gammaEdit, 0, 1);
-			controlsPanel.Controls.Add(gammaSlider, 0, 2);
-
-			Controls.Add(controlsPanel);
-			Controls.Add(distribView);
-
 			settings.Gamma = 2.0f;
-
 		}
 
 		private static void bind_FormatFloatToString(object sender, ConvertEventArgs e){
 			float f = (float)e.Value;
-			e.Value = String.Format("{0:##.00}", f);
+			e.Value = String.Format("{0:#0.00}", f);
 		}
 		private static void bind_FormatStrToFloat(object sender, ConvertEventArgs e){
 			string str = (string)e.Value;
 			e.Value = float.Parse(str,System.Globalization.CultureInfo.InvariantCulture);
 		}
 
-		private static void bind_FormatFloatToSlider(object sender, ConvertEventArgs e){
+		private void bind_FormatFloatToSlider(object sender, ConvertEventArgs e){
 			float f = (float)e.Value;
-			e.Value = Math.Round(f*100);
+			e.Value = Math.Max(gammaSlider.Minimum, Math.Min(Math.Round(f*100), gammaSlider.Maximum));
 		}
 		private static void bind_FormatSliderToFloat(object sender, ConvertEventArgs e){
 			int v = (int)e.Value;
@@ -114,5 +79,123 @@ namespace LorenzConv.NET
 		{
 			Application.Run(new MainForm());
 		}
+
+        private void InitializeComponent()
+        {
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.gammaEdit = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.gammaSlider = new System.Windows.Forms.TrackBar();
+            this.distribView = new OpenTK.GLControl();
+            this.convolutionView = new OpenTK.GLControl();
+            this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gammaSlider)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.gammaEdit, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.gammaSlider, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.distribView, 0, 3);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 0, 6, 0);
+            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 537);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // gammaEdit
+            // 
+            this.gammaEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gammaEdit.Location = new System.Drawing.Point(3, 16);
+            this.gammaEdit.Name = "gammaEdit";
+            this.gammaEdit.Size = new System.Drawing.Size(188, 20);
+            this.gammaEdit.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(188, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Gamma";
+            // 
+            // gammaSlider
+            // 
+            this.gammaSlider.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gammaSlider.Location = new System.Drawing.Point(3, 42);
+            this.gammaSlider.Maximum = 1000;
+            this.gammaSlider.Name = "gammaSlider";
+            this.gammaSlider.Size = new System.Drawing.Size(188, 45);
+            this.gammaSlider.TabIndex = 2;
+            this.gammaSlider.TickFrequency = 100;
+            // 
+            // distribView
+            // 
+            this.distribView.BackColor = System.Drawing.Color.Black;
+            this.distribView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.distribView.Location = new System.Drawing.Point(3, 93);
+            this.distribView.Name = "distribView";
+            this.distribView.Size = new System.Drawing.Size(188, 150);
+            this.distribView.TabIndex = 3;
+            this.distribView.VSync = true;
+            this.distribView.Load += new System.EventHandler(this.distribView_Load);
+            this.distribView.Paint += new System.Windows.Forms.PaintEventHandler(this.distribView_Paint);
+            // 
+            // convolutionView
+            // 
+            this.convolutionView.BackColor = System.Drawing.Color.Black;
+            this.convolutionView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.convolutionView.Location = new System.Drawing.Point(212, 12);
+            this.convolutionView.Name = "convolutionView";
+            this.convolutionView.Size = new System.Drawing.Size(560, 537);
+            this.convolutionView.TabIndex = 1;
+            this.convolutionView.VSync = true;
+            this.convolutionView.Load += new System.EventHandler(this.convolutionView_Load);
+            this.convolutionView.Paint += new System.Windows.Forms.PaintEventHandler(this.convolutionView_Paint);
+            // 
+            // MainForm
+            // 
+            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.convolutionView);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.Name = "MainForm";
+            this.Padding = new System.Windows.Forms.Padding(12);
+            this.Text = "Lorenz convolution";
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gammaSlider)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+
+        private void convolutionView_Load(object sender, EventArgs e)
+        {
+            distribConvolutionLoaded = true;
+        }
+
+        private void convolutionView_Paint(object sender, PaintEventArgs e)
+        {
+            if (!distribConvolutionLoaded)
+            {
+                return;
+            }
+            convolutionView.Context.MakeCurrent(distribView.WindowInfo);
+
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            convolutionView.SwapBuffers();
+        }
 	}
 }

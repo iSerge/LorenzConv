@@ -14,7 +14,6 @@ namespace LorenzConv.NET
 			set {
 				if (_gamma == value) return;
 				_gamma = value;
-				Console.WriteLine("Gamma updated to: {0}", value);
 				NotifyPropertyChanged("Gamma");
 			}
 		}
