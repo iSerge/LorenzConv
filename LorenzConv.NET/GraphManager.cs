@@ -10,6 +10,8 @@ namespace LorenzConv.NET
 {
     static class GraphManager
     {
+		private static bool initialized = false;
+
         public static int Program;
 
         public static int  Attrib_vx;
@@ -17,8 +19,8 @@ namespace LorenzConv.NET
 
         //! ID юниформ переменной цвета
         public static int  Unif_color;
-        public static int  Unif_pattern;
-        public static int  Unif_factor;
+        //public static int  Unif_pattern;
+        //public static int  Unif_factor;
         // ID юниформ переменной матрицы проекции
         public static int projectionMatrixLocation;
 
@@ -73,17 +75,17 @@ namespace LorenzConv.NET
             int n;
 
             Color4 color;
-            uint pattern;
-            float factor;
+            //uint pattern;
+            //float factor;
 
-            public graph(int xVBO, int yVBO, int count, Color4 color,
-  	                     uint aPattern = 0xFFFF, float aFactor = 1.0f)
+            public graph(int xVBO, int yVBO, int count, Color4 color)//,
+  	                     //uint aPattern = 0xFFFF, float aFactor = 1.0f)
             {
                 this.xVbo = xVBO;
                 this.yVbo = yVBO;
                 this.n = count;
-                this.pattern = aPattern;
-                this.factor = aFactor;
+                //this.pattern = aPattern;
+                //this.factor = aFactor;
                 this.color = color;
     
                 this.vao = genVao();
@@ -104,11 +106,12 @@ namespace LorenzConv.NET
   
             public void draw(int color_uniform, int factor_uniform, int pattern_uniform)
             {
+				GL.EnableVertexAttribArray(this.vao);
                 GL.BindVertexArray(this.vao);
 
                 GL.Uniform4(color_uniform, color);
 
-                GL.DrawArrays(BeginMode.LineStrip, 0, n);
+                GL.DrawArrays(PrimitiveType.LineStrip, 0, n);
                 GL.BindVertexArray(0);
             }
         }
@@ -125,6 +128,10 @@ namespace LorenzConv.NET
 
         public static void InitData()
         {
+			if (initialized){
+				return;
+			}
+
               //! Исходный код шейдеров
             var vsSource = @"
 #version 330 core
@@ -197,11 +204,17 @@ void main() {
 
             DistrGrapth = new graph(xVBO, yVBO, nPoints, white);
             graph_list.Add(DistrGrapth);
-            graph_list.Add(new graph(xVBO,y1VBO,nPoints, red, 0xF0F0));
+			graph_list.Add(new graph(xVBO,y1VBO,nPoints, red));//, 0xF0F0));
+
+			initialized = true;
         }
 
         public static void FreeData()
         {
+			if (!initialized){
+				return;
+			}
+
             GL.UseProgram(0); 
             foreach(var p in program_list){
                 GL.DeleteProgram(p);
@@ -209,13 +222,15 @@ void main() {
             
             GL.BindVertexArray(0);
             foreach(var a in vao_list){
-                GL.DeleteVertexArray(a);
+				GL.DeleteVertexArrays(1, new int[]{a});
             }
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             foreach(var b in vbo_list){
-                GL.DeleteBuffer(b);
+				GL.DeleteBuffers(1, new int[]{b});
             }
+
+			initialized = false;
         }
     }
 }

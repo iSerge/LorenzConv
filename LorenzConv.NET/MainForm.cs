@@ -185,7 +185,6 @@ namespace LorenzConv.NET
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(12);
             this.Text = "Lorenz convolution";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -224,9 +223,11 @@ namespace LorenzConv.NET
             GraphManager.InitData();
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            GraphManager.FreeData();
-        }
+		protected override void Dispose(bool disposing)
+		{
+			GraphManager.FreeData();
+
+			base.Dispose(disposing);
+		}
 	}
 }
