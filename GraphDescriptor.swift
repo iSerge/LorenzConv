@@ -14,9 +14,9 @@ struct GraphDescriptor {
     let xVbo:  GLuint
     let yVbo:  GLuint
     let n:     GLsizei
-    let color: GLuint
+    let color: [GLfloat]//GLuint
     
-    init(xVbo: GLuint, xAttr: GLuint, yVbo: GLuint, yAttr: GLuint, n: GLsizei, color: GLuint){
+    init(xVbo: GLuint, yVbo: GLuint, n: GLsizei, color: [GLfloat]){ //GLuint){
         self.xVbo = xVbo
         self.yVbo = yVbo
         self.n = n
@@ -28,10 +28,14 @@ struct GraphDescriptor {
         vao = VAO
         glBindVertexArray(vao);
         
+        let xAttr = (GLuint) (GraphixManager.sharedInstance.xAttr.value)
+        
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), xVbo);
         glEnableVertexAttribArray(xAttr);
         glVertexAttribPointer(xAttr, 1, GLenum(GL_FLOAT), GLboolean(GL_FALSE), 0, nil);
-        
+
+        let yAttr = (GLuint) (GraphixManager.sharedInstance.yAttr.value)
+
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), yVbo);
         glEnableVertexAttribArray(yAttr);
         glVertexAttribPointer(yAttr, 1, GLenum(GL_FLOAT), GLboolean(GL_FALSE), 0, nil);
@@ -42,6 +46,7 @@ struct GraphDescriptor {
     
     func draw(){
         glBindVertexArray(vao)
+        glUniform4fv(GraphixManager.sharedInstance.cUnif, 1, color)
         glDrawArrays(GLenum(GL_LINE_STRIP), 0, n)
         glBindVertexArray(0)
     }
