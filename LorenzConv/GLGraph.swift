@@ -21,4 +21,21 @@ class GLGraph: NSOpenGLView {
             CGLEnable(context.CGLContextObj, kCGLCECrashOnRemovedFunctions)
         }
     }
+    
+    override func prepareOpenGL() {
+        openGLContext.makeCurrentContext()
+            
+        glClearColor(0, 0, 0, 0);
+        glLineWidth(1.0);
+        glEnable(GLenum(GL_LINE_SMOOTH));
+        glHint(GLenum(GL_LINE_SMOOTH_HINT),  GLenum(GL_NICEST));
+        glEnable(GLenum(GL_BLEND));
+        glBlendFunc(GLenum(GL_SRC_ALPHA), GLenum(GL_ONE_MINUS_SRC_ALPHA));
+    }
+    
+    override func drawRect(dirtyRect: NSRect) {
+        openGLContext.makeCurrentContext()
+        GraphixManager.sharedInstance.distrGraph?.draw()
+        CGLFlushDrawable(openGLContext.CGLContextObj)
+    }
 }

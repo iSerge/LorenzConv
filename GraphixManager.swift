@@ -112,10 +112,17 @@ class GraphixManager {
         vShader = glCreateShader(GLenum(GL_VERTEX_SHADER));
         fShader = glCreateShader(GLenum(GL_FRAGMENT_SHADER));
         
-        let cstringv = vsSource.cStringUsingEncoding(NSUTF8StringEncoding)
-        glShaderSource(vShader, 1, UnsafePointer(cstringv!), nil);
-        let cstringf = fsSource.cStringUsingEncoding(NSUTF8StringEncoding)
-        glShaderSource(fShader, 1, UnsafePointer(cstringf!), nil);
+//        var cstringv: UnsafePointer<GLchar> = (vsSource as NSString).UTF8String
+//        glShaderSource(vShader, 1, &cstringv, nil);
+        var cstringv = (vsSource as NSString).UTF8String
+        var cstringvLen: GLint = GLint( (vsSource as NSString).length)
+        glShaderSource(vShader, 1, &cstringv, &cstringvLen)
+
+        
+//        let cstringf: UnsafePointer<GLchar> = (fsSource as NSString).UTF8String
+        var cstringf = (fsSource as NSString).UTF8String
+        var cstringfLen: GLint = GLint( (fsSource as NSString).length)
+        glShaderSource(fShader, 1, &cstringf, &cstringfLen);
         
         glCompileShader(vShader);
         glCompileShader(fShader);
