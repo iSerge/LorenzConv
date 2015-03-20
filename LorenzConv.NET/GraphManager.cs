@@ -24,32 +24,35 @@ namespace LorenzConv.NET
         // ID юниформ переменной матрицы проекции
         public static int projectionMatrixLocation;
 
-        public const int nPoints = 201;
+        public const int nPoints = 202;
         public const float G = 0.3f;
-        public const float x1 = -3.9f;
-        public const float x2 =  3.9f;
+        public const float x1 = -5.0f;
+        public const float x2 =  5.0f;
         public const float dx = (x2-x1)/nPoints;
+		private static float[] x = new float[nPoints];
+
 
         // массив для хранения перспективной матрици проекции
-        public static Matrix4 projectionMatrix = new Matrix4( 0.25f, 0.0f, 0.0f,  0.0f,
-                                                              0.0f,  2.0f, 0.0f, -1.0f,
-                                                              0.0f,  0.0f, 1.0f,  0.0f,
-                                                              0.0f,  0.0f, 0.0f,  1.0f
+        public static Matrix4 projectionMatrix = new Matrix4( 0.2f, 0.0f, 0.0f,  0.0f,
+                                                              0.0f, 2.0f, 0.0f, -1.0f,
+                                                              0.0f, 0.0f, 1.0f,  0.0f,
+                                                              0.0f, 0.0f, 0.0f,  1.0f
                                                             );
         public static Color4 red = new Color4(1.0f, 0.0f, 0.0f, 1.0f);
         public static Color4 white = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
+		public static Color4 black = new Color4(0.0f, 0.0f, 0.0f, 1.0f);
 
         public static List<int> vbo_list = new List<int>();
         public static List<int> ubo_list = new List<int>();
         public static List<int> vao_list = new List<int>();
         public static List<int> program_list = new List<int>();
 
-        public static int genBuffer(float[] v, int count){
+        public static int genBuffer(float[] v, int count, BufferUsageHint usage){
             int VBO;	
 
             GL.GenBuffers(1, out VBO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.BufferData<float>(BufferTarget.ArrayBuffer, new IntPtr(count*sizeof(float)), v, BufferUsageHint.StaticDraw);
+            GL.BufferData<float>(BufferTarget.ArrayBuffer, new IntPtr(count*sizeof(float)), v, usage);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
   
             vbo_list.Add(VBO);
@@ -69,10 +72,10 @@ namespace LorenzConv.NET
 
 
         public class graph {
-            int  vao;
-            int  xVbo;
-            int  yVbo;
-            int n;
+            public int  vao;
+            public int  xVbo;
+            public int  yVbo;
+            public int n;
 
             Color4 color;
             //uint pattern;
@@ -187,8 +190,6 @@ void main() {
             GL.UseProgram(0);
             program_list.Add(Program);
 
-
-            var x = new float[nPoints];
             var y = new float[nPoints];
             var y1 = new float[nPoints];
   
@@ -198,11 +199,11 @@ void main() {
                 y1[i] = f(x[i], 0.5f);
             }
   
-            int xVBO = genBuffer(x, nPoints);
-            int yVBO = genBuffer(y, nPoints);
-            int y1VBO = genBuffer(y1, nPoints);
+			int xVBO = genBuffer(x, nPoints, BufferUsageHint.StaticDraw);
+			int yVBO = genBuffer(y, nPoints, BufferUsageHint.DynamicDraw);
+			int y1VBO = genBuffer(y1, nPoints, BufferUsageHint.DynamicDraw);
 
-            DistrGrapth = new graph(xVBO, yVBO, nPoints, white);
+            DistrGrapth = new graph(xVBO, yVBO, nPoints, black);
             graph_list.Add(DistrGrapth);
 			graph_list.Add(new graph(xVBO,y1VBO,nPoints, red));//, 0xF0F0));
 
@@ -232,5 +233,22 @@ void main() {
 
 			initialized = false;
         }
+
+		public static void UpdateDistrGraph(float gamma){
+			var y = new float[DistrGrapth.n];
+
+			if(gamma < 0.000001f){
+				gamma = 0.000001f;
+			}
+
+			for(int i = 0; i < DistrGrapth.n; ++i){
+				y[i] = f(x[i], gamma);
+			}
+
+			GL.BindBuffer(BufferTarget.ArrayBuffer, DistrGrapth.yVbo);
+			GL.BufferData<float>(BufferTarget.ArrayBuffer, new IntPtr(DistrGrapth.n*sizeof(float)), y, BufferUsageHint.DynamicDraw);
+			GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+
+		}
     }
 }

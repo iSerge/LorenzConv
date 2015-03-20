@@ -13,7 +13,7 @@ namespace LorenzConv.NET
         public void SetupContext()
         {
             Context.MakeCurrent(this.WindowInfo);
-            GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
             GL.Enable(EnableCap.LineSmooth);
             GL.Hint(HintTarget.LineSmoothHint, HintMode.Nicest);
             GL.Enable(EnableCap.Blend);

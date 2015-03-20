@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using OpenTK.Graphics.OpenGL;
@@ -38,6 +39,7 @@ namespace LorenzConv.NET
 			gammaSlider.DataBindings.Add(gammaSliderBinding);
 
 			settings.Gamma = 2.0f;
+			settings.PropertyChanged += settings_PropertyChanged;
 		}
 
 		private static void bind_FormatFloatToString(object sender, ConvertEventArgs e){
@@ -228,6 +230,14 @@ namespace LorenzConv.NET
 			GraphManager.FreeData();
 
 			base.Dispose(disposing);
+		}
+
+		private void settings_PropertyChanged(object sender, PropertyChangedEventArgs e){
+			if(e.PropertyName.Equals("Gamma")){
+				GraphManager.UpdateDistrGraph(settings.Gamma);
+				distribView.Invalidate();
+				convolutionView.Invalidate();
+			}
 		}
 	}
 }
