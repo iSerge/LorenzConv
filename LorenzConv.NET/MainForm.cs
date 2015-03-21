@@ -53,11 +53,11 @@ namespace LorenzConv.NET
 
 		private void bind_FormatFloatToSlider(object sender, ConvertEventArgs e){
 			float f = (float)e.Value;
-			e.Value = Math.Max(gammaSlider.Minimum, Math.Min(Math.Round(f*100), gammaSlider.Maximum));
+            e.Value = Math.Max(gammaSlider.Minimum, Math.Min(Math.Round(f * 100000), gammaSlider.Maximum));
 		}
 		private static void bind_FormatSliderToFloat(object sender, ConvertEventArgs e){
 			int v = (int)e.Value;
-			e.Value = v / 100.0f;
+            e.Value = v / 100000.0f;
 		}
 
 		private void distribView_Load(object sender, EventArgs e)
@@ -71,16 +71,16 @@ namespace LorenzConv.NET
 				return;
 			}
 
-			distribView.Context.MakeCurrent(distribView.WindowInfo);
-
+			distribView.MakeCurrent();
+            GL.Viewport(0, 0, distribView.Size.Width, distribView.Size.Height);
 			GL.Clear(ClearBufferMask.ColorBufferBit|ClearBufferMask.DepthBufferBit);
 
             GL.UseProgram(GraphManager.Program);
             GraphManager.DistrGrapth.draw(GraphManager.Unif_color, 0, 0);
-            GL.BindVertexArray(0);
             GL.UseProgram(0); 
 
 			distribView.SwapBuffers();
+            distribView.Context.MakeCurrent(null);
 		}
 
 		static void Main()
@@ -149,11 +149,12 @@ namespace LorenzConv.NET
             // 
             this.gammaSlider.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gammaSlider.Location = new System.Drawing.Point(3, 42);
-            this.gammaSlider.Maximum = 1000;
+            this.gammaSlider.Minimum = 1;
+            this.gammaSlider.Maximum = 1000000;
             this.gammaSlider.Name = "gammaSlider";
             this.gammaSlider.Size = new System.Drawing.Size(188, 45);
             this.gammaSlider.TabIndex = 2;
-            this.gammaSlider.TickFrequency = 100;
+            this.gammaSlider.TickFrequency = 100000;
             // 
             // distribView
             // 
@@ -208,25 +209,29 @@ namespace LorenzConv.NET
             {
                 return;
             }
-            convolutionView.Context.MakeCurrent(convolutionView.WindowInfo);
+            convolutionView.MakeCurrent();
+            distribView.Context.MakeCurrent(convolutionView.WindowInfo);
+            GL.Viewport(0,0,convolutionView.Size.Width, convolutionView.Size.Height);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             GL.UseProgram(GraphManager.Program);
             GraphManager.DistrGrapth.draw(GraphManager.Unif_color, 0, 0);
-            GL.BindVertexArray(0);
             GL.UseProgram(0);
 
-            convolutionView.SwapBuffers();
+            //convolutionView.SwapBuffers();
+            distribView.SwapBuffers();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            distribView.MakeCurrent();
             GraphManager.InitData();
         }
 
 		protected override void Dispose(bool disposing)
-		{
+        {
+            distribView.MakeCurrent();
 			GraphManager.FreeData();
 
 			base.Dispose(disposing);
@@ -234,6 +239,7 @@ namespace LorenzConv.NET
 
 		private void settings_PropertyChanged(object sender, PropertyChangedEventArgs e){
 			if(e.PropertyName.Equals("Gamma")){
+                distribView.MakeCurrent();
 				GraphManager.UpdateDistrGraph(settings.Gamma);
 				distribView.Invalidate();
 				convolutionView.Invalidate();
