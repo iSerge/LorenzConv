@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import OpenCL
 import OpenGL
 import GLKit
 import GLUT
@@ -30,6 +31,9 @@ class GraphixManager {
     
     let pixelFormat: NSOpenGLPixelFormat?
     let glContext: NSOpenGLContext?
+
+    let queue: dispatch_queue_t!
+    let cl_gl_semaphore: dispatch_semaphore_t!
 
     var program: GLuint = GLuint()
     var xAttr: GLint = GLint()
@@ -81,7 +85,20 @@ class GraphixManager {
     
         return VBO;
     }
-    
+
+    class func genBufferForCL(count: Int) -> GLuint
+    {
+        var VBO: GLuint = 0;
+        glGenBuffers(1, &VBO);
+        glBindBuffer(GLenum(GL_ARRAY_BUFFER), VBO);
+        glBufferData(GLenum(GL_ARRAY_BUFFER), count*sizeof(Float), nil, GLenum(GL_DYNAMIC_COPY));
+        glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0);
+        
+        //        vbo_list.push_back(VBO);
+        
+        return VBO;
+    }
+
     class func GetGLErrorString(error: GLenum) -> String {
         switch(Int(error)){
             case Int(GL_NO_ERROR):
@@ -197,6 +214,39 @@ class GraphixManager {
         glHint(GLenum(GL_LINE_SMOOTH_HINT),  GLenum(GL_NICEST));
         glEnable(GLenum(GL_BLEND));
         glBlendFunc(GLenum(GL_SRC_ALPHA), GLenum(GL_ONE_MINUS_SRC_ALPHA));
+        
+        var kCGLShareGroup = CGLGetShareGroup(glContext!.CGLContextObj)
+
+//        OGLWrapper.my_gl_set_sharegroup(kCGLShareGroup)
+        gcl_gl_set_sharegroup(UnsafeMutablePointer(kCGLShareGroup))
+        
+        queue = gcl_create_dispatch_queue(cl_queue_flags(CL_DEVICE_TYPE_GPU), nil)
+        if(nil == queue){
+            NSLog("Error: Failed to create a dispatch queue!")
+        }
+        
+        cl_gl_semaphore = dispatch_semaphore_create(0)
+        
+        if (nil == cl_gl_semaphore){
+            NSLog("Error: Failed to create a dispatch semaphore!");
+        }
+        
+        var ComputeDeviceId = gcl_get_device_id_with_dispatch_queue(queue);
+        
+        var vendor_name: [CChar] = [CChar](count: 1024, repeatedValue: 0)
+        var device_name: [CChar] = [CChar](count: 1024, repeatedValue: 0)
+        var returned_size: size_t = 0
+        
+        let err = clGetDeviceInfo( ComputeDeviceId, cl_device_info(CL_DEVICE_VENDOR), 1024, &vendor_name, &returned_size);
+        
+        let err2 = clGetDeviceInfo(ComputeDeviceId, cl_device_info(CL_DEVICE_NAME), 1024, &device_name, &returned_size);
+        
+        if (err != CL_SUCCESS || err2 != CL_SUCCESS){
+            
+            NSLog("Error: Failed to retrieve device info!")
+        }
+        
+        NSLog("Connecting to %@ %@...", String.fromCString(vendor_name)!, String.fromCString(device_name)!);
     }
     
     func setupData(){
@@ -215,11 +265,11 @@ class GraphixManager {
         
         var cstringf = (fsSource as NSString).UTF8String
         var cstringfLen: GLint = GLint( (fsSource as NSString).length)
-        glShaderSource(fShader, 1, &cstringf, &cstringfLen);
+        glShaderSource(fShader, 1, &cstringf, &cstringfLen)
         
-        glCompileShader(vShader);
+        glCompileShader(vShader)
         GraphixManager.ShaderStatus(vShader, param: GLenum(GL_COMPILE_STATUS))
-        glCompileShader(fShader);
+        glCompileShader(fShader)
         GraphixManager.ShaderStatus(vShader, param: GLenum(GL_COMPILE_STATUS))
         
         var pr: GLuint = 0
@@ -239,25 +289,31 @@ class GraphixManager {
         xAttr = glGetAttribLocation(pr, "coordx")
         yAttr = glGetAttribLocation(pr, "coordy")
         
-        cUnif = glGetUniformLocation(pr, "solidColor");
+        cUnif = glGetUniformLocation(pr, "solidColor")
         
-        pmUnif = glGetUniformLocation(pr, "projectionMatrix");
+        pmUnif = glGetUniformLocation(pr, "projectionMatrix")
         
-        glUniformMatrix4fv(pmUnif, 1, GLboolean(GL_TRUE), distributionPM);
+        glUniformMatrix4fv(pmUnif, 1, GLboolean(GL_TRUE), distributionPM)
         
         glUseProgram(0)
         program = pr
         
         var x: [Float] = [Float](count: nPoints, repeatedValue: 0.0)
-        var y: [Float] = [Float](count: nPoints, repeatedValue: 0.0)
         
-        for i:Int in (0...nPoints-1){
-            x[i] = x1 + (dx * Float(i))
-            y[i] = GraphixManager.f(x[i], g: G)
+        let xVBO = GraphixManager.genBuffer(x, count: nPoints)
+        let yVBO = GraphixManager.genBufferForCL(nPoints)
+
+        let xBuf = gcl_gl_create_ptr_from_buffer(xVBO)
+        if(nil == xBuf){
+            NSLog("Failed to create opecl distr X buffer")
+        }
+
+        let yBuf = gcl_gl_create_ptr_from_buffer(yVBO)
+        if(nil == yBuf){
+            NSLog("Failed to create opecl distr Y buffer")
         }
         
-        let xVBO = GraphixManager.genBuffer(x, count: nPoints);
-        let yVBO = GraphixManager.genBuffer(y, count: nPoints);
+        var ndrange = cl_ndrange(work_dim: 1, global_work_offset: (0,0,0), global_work_size: (1,1,1), local_work_size: (UInt(nPoints),1,1))
         
         distrGraph = GraphDescriptor(xVbo: xVBO, yVbo: yVBO, n: GLsizei(nPoints), color: Black)
     }
