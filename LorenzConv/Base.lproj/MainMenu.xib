@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6751"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -683,7 +683,7 @@
                             <binding destination="MLx-KX-tBs" name="value" keyPath="selection.ghole" id="rHs-qd-Ope"/>
                         </connections>
                     </slider>
-                    <openGLView canDrawConcurrently="YES" colorSize="5bit_RGB_8bit_Alpha" useAuxiliaryDepthBufferStencil="NO" useDoubleBufferingEnabled="YES" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rln-Lt-vOG" customClass="GLGraph" customModule="LorenzConv" customModuleProvider="target">
+                    <openGLView canDrawConcurrently="YES" useAuxiliaryDepthBufferStencil="NO" useDoubleBufferingEnabled="YES" allowOffline="YES" wantsBestResolutionOpenGLSurface="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rln-Lt-vOG" userLabel="Convolution Graph" customClass="GLGraph" customModule="LorenzConv" customModuleProvider="target">
                         <rect key="frame" x="20" y="20" width="378" height="348"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="lna-js-H5x"/>
@@ -713,7 +713,7 @@
                             <binding destination="MLx-KX-tBs" name="value" keyPath="selection.ghole" id="ew9-zH-rVb"/>
                         </connections>
                     </textField>
-                    <openGLView canDrawConcurrently="YES" colorSize="5bit_RGB_8bit_Alpha" useAuxiliaryDepthBufferStencil="NO" useDoubleBufferingEnabled="YES" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MTm-qg-51j" customClass="GLGraph" customModule="LorenzConv" customModuleProvider="target">
+                    <openGLView canDrawConcurrently="YES" useAuxiliaryDepthBufferStencil="NO" useDoubleBufferingEnabled="YES" allowOffline="YES" wantsBestResolutionOpenGLSurface="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MTm-qg-51j" userLabel="Distribution Graph" customClass="GLGraph" customModule="LorenzConv" customModuleProvider="target">
                         <rect key="frame" x="418" y="174" width="139" height="139"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="MTm-qg-51j" secondAttribute="height" multiplier="1:1" id="nAE-NL-l31"/>

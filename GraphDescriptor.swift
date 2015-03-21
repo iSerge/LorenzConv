@@ -45,9 +45,15 @@ struct GraphDescriptor {
     }
     
     func draw(){
+//        glEnableVertexAttribArray(vao);
+//        GraphixManager.checkOpenGLerror("draw.glEnableVertexAttribArray")
         glBindVertexArray(vao)
+        GraphixManager.checkOpenGLerror("draw.glBindVertexArray")
         glUniform4fv(GraphixManager.sharedInstance.cUnif, 1, color)
+        GraphixManager.checkOpenGLerror("draw.glUniform4fv")
         glDrawArrays(GLenum(GL_LINE_STRIP), 0, n)
+        GraphixManager.checkOpenGLerror("draw.glDrawArrays")
         glBindVertexArray(0)
+        GraphixManager.checkOpenGLerror("draw.glBindVertexArray")
     }
 }

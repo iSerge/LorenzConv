@@ -9,6 +9,7 @@
 import Foundation
 import OpenGL
 import GLKit
+import GLUT
 
 private let _GraphixManagerSharedInstance = GraphixManager()
 
@@ -39,7 +40,7 @@ class GraphixManager {
     var distrGraph: GraphDescriptor!
 
     let vsSource =
-      "#version 320 core\n" +
+      "#version 150 core\n" +
       "uniform mat4 projectionMatrix;\n" +
       "in float coordx;\n" +
       "in float coordy;\n" +
@@ -48,15 +49,10 @@ class GraphixManager {
       "}\n"
 
     let fsSource =
-      "#version 320 core\n" +
-//      "uniform uint pattern;\n" +
-//      "uniform float factor;\n" +
+      "#version 150 core\n" +
       "uniform vec4 solidColor;\n" +
       "out vec4 color;\n" +
       "void main() {\n" +
-//      "  uint bit = uint(round(linePos/factor)) & 31U;\n" +
-//      "  if((pattern & (1U<<bit)) == 0U)\n" +
-//      "    discard;\n" +
       "  color = solidColor;\n" +
       "}\n"
 
@@ -86,11 +82,97 @@ class GraphixManager {
         return VBO;
     }
     
+    class func GetGLErrorString(error: GLenum) -> String {
+        switch(Int(error)){
+            case Int(GL_NO_ERROR):
+                return "GL_NO_ERROR"
+            case Int(GL_INVALID_ENUM):
+                return "GL_INVALID_ENUM"
+            case Int(GL_INVALID_VALUE):
+                return "GL_INVALID_VALUE"
+            case Int(GL_INVALID_OPERATION):
+                return "GL_INVALID_OPERATION"
+            case Int(GL_OUT_OF_MEMORY):
+                return "GL_OUT_OF_MEMORY"
+            case Int(GL_INVALID_FRAMEBUFFER_OPERATION):
+                return "GL_INVALID_FRAMEBUFFER_OPERATION"
+            case Int(GL_STACK_OVERFLOW):
+                return "GL_STACK_OVERFLOW"
+            case Int(GL_STACK_UNDERFLOW):
+                return "GL_STACK_UNDERFLOW"
+            case Int(GL_TABLE_TOO_LARGE):
+                return "GL_TABLE_TOO_LARGE"
+            default:
+                return String(format: "(ERROR: Unknown Error Enum - )", Int(error));
+        }
+    }
+    
+    class func ShaderStatus(shader: GLuint, param: GLenum) -> GLint
+    {
+        var status: GLint = GL_TRUE
+    
+        glGetShaderiv(shader, param, &status)
+        GraphixManager.checkOpenGLerror("ShaderStatus.glGetProgramiv")
+    
+        if (status != GL_TRUE){
+            var infologLen: GLint = 0;
+            glGetShaderiv(shader, GLenum(GL_INFO_LOG_LENGTH), &infologLen)
+            GraphixManager.checkOpenGLerror("ShaderStatus.glGetProgramiv")
+            if(infologLen > 1){
+                var infoLog: [GLchar] = [GLchar](count: Int(infologLen), repeatedValue: 0)
+                var charsWritten: GLint = 0;
+                glGetShaderInfoLog(shader, infologLen, &charsWritten, &infoLog);
+                GraphixManager.checkOpenGLerror("ShaderStatus.glGetShaderInfoLog");
+                NSLog("ShaderStatus::glGetShaderInfoLog")
+                NSLog("Shader program: %@", NSString(bytes: infoLog, length: Int(charsWritten), encoding: NSASCIIStringEncoding)!)
+            }
+        }
+    
+        return status;
+    }
+
+    class func ProgramStatus(program: GLuint, param: GLenum) -> GLint
+    {
+        var status: GLint = GL_TRUE
+        
+        glGetProgramiv(program, param, &status)
+        GraphixManager.checkOpenGLerror("ProgramStatus.glGetProgramiv")
+        
+        if (status != GL_TRUE){
+            var infologLen: GLint = 0;
+            glGetProgramiv(program, GLenum(GL_INFO_LOG_LENGTH), &infologLen)
+            GraphixManager.checkOpenGLerror("ProgramStatus.glGetProgramiv")
+            if(infologLen > 1){
+                var infoLog: [GLchar] = [GLchar](count: Int(infologLen), repeatedValue: 0)
+                var charsWritten: GLint = 0;
+                glGetProgramInfoLog(program, infologLen, &charsWritten, &infoLog);
+                GraphixManager.checkOpenGLerror("ProgramStatus.glGetProgramInfoLog");
+                NSLog("ProgramStatus::glGetShaderInfoLog")
+                NSLog("Program: %@", NSString(bytes: infoLog, length: Int(charsWritten), encoding: NSASCIIStringEncoding)!)
+            }
+        }
+        
+        return status;
+    }
+
+    
+    class func checkOpenGLerror(loc: String) {
+        let errCode = glGetError()
+        if(errCode != GLenum(GL_NO_ERROR)){
+            NSLog("%@: OpenGl error! - %@\n",loc, GraphixManager.GetGLErrorString(errCode))
+        }
+    }
+
     private init(){
         dx = (x2-x1)/Float(nPoints)
         
-        let attrs: [NSOpenGLPixelFormatAttribute] = [ UInt32(NSOpenGLPFADoubleBuffer), UInt32(NSOpenGLPFADepthSize), 16,
-            UInt32(NSOpenGLPFAOpenGLProfile), UInt32(NSOpenGLProfileVersion3_2Core), UInt32(NSOpenGLPFAColorSize), 32, 0 ]
+        let attrs: [NSOpenGLPixelFormatAttribute] = [
+            UInt32(NSOpenGLPFAOpenGLProfile), UInt32(NSOpenGLProfileVersion3_2Core),
+            UInt32(NSOpenGLPFAColorSize), 24,
+            UInt32(NSOpenGLPFAAlphaSize), 8,
+            UInt32(NSOpenGLPFADoubleBuffer),
+            UInt32(NSOpenGLPFAAccelerated),
+            0 ]
 
         pixelFormat = NSOpenGLPixelFormat(attributes: attrs)
 
@@ -109,26 +191,24 @@ class GraphixManager {
         var vShader: GLuint = 0
         var fShader: GLuint = 0
         
+        glContext?.makeCurrentContext()
+        
         vShader = glCreateShader(GLenum(GL_VERTEX_SHADER));
         fShader = glCreateShader(GLenum(GL_FRAGMENT_SHADER));
         
-//        var cstringv: UnsafePointer<GLchar> = (vsSource as NSString).UTF8String
-//        glShaderSource(vShader, 1, &cstringv, nil);
         var cstringv = (vsSource as NSString).UTF8String
         var cstringvLen: GLint = GLint( (vsSource as NSString).length)
         glShaderSource(vShader, 1, &cstringv, &cstringvLen)
 
         
-//        let cstringf: UnsafePointer<GLchar> = (fsSource as NSString).UTF8String
         var cstringf = (fsSource as NSString).UTF8String
         var cstringfLen: GLint = GLint( (fsSource as NSString).length)
         glShaderSource(fShader, 1, &cstringf, &cstringfLen);
         
         glCompileShader(vShader);
+        GraphixManager.ShaderStatus(vShader, param: GLenum(GL_COMPILE_STATUS))
         glCompileShader(fShader);
-        
-        //ShaderStatus(vShader, GL_COMPILE_STATUS)
-        //ShaderStatus(fShader, GL_COMPILE_STATUS)
+        GraphixManager.ShaderStatus(vShader, param: GLenum(GL_COMPILE_STATUS))
         
         var pr: GLuint = 0
         
@@ -138,11 +218,12 @@ class GraphixManager {
         
         glLinkProgram(pr);
         
-        //ShaderProgramStatus(pr, GL_LINK_STATUS)
+        GraphixManager.ProgramStatus(pr, param: GLenum(GL_LINK_STATUS))
         
         glUseProgram(pr);
+        glValidateProgram(pr)
         
-        //ShaderProgramStatus(pr, GL_VALIDATE_STATUS)
+        GraphixManager.ProgramStatus(pr, param: GLenum(GL_VALIDATE_STATUS))
  
         xAttr = glGetAttribLocation(pr, "coordx")
         yAttr = glGetAttribLocation(pr, "coordy")
@@ -156,26 +237,18 @@ class GraphixManager {
         glUseProgram(0)
         program = pr
         
-        var x: [Float] = [Float]()
-        x.reserveCapacity(nPoints)
-        
-        var y: [Float] = [Float]()
-        y.reserveCapacity(nPoints)
-        
-        //var y1: [Float] = [Float]()
-        //y1.reserveCapacity(nPoints)
+        var x: [Float] = [Float](count: nPoints, repeatedValue: 0.0)
+        var y: [Float] = [Float](count: nPoints, repeatedValue: 0.0)
         
         for i:Int in (0...nPoints){
             let xi = x1 + (dx * Float(i))
             x.append(xi)
             y.append(GraphixManager.f(x[i], g: G))
-          //  y1.append(f(x[i], 0.5));
         }
         
         let xVBO = GraphixManager.genBuffer(x, count: nPoints);
         let yVBO = GraphixManager.genBuffer(y, count: nPoints);
         
         distrGraph = GraphDescriptor(xVbo: xVBO, yVbo: yVBO, n: GLsizei(nPoints), color: Black)
-        //graph_list.push_back(graph(xVBO,y1,nPoints, red, 0xF0F0));
     }
 }
