@@ -7,7 +7,7 @@ namespace LorenzConv.NET
 	public class GraphGLView: OpenTK.GLControl
 	{
 		public GraphGLView ()
-			:base(new GraphicsMode(24, 24), 3, 3, GraphicsContextFlags.ForwardCompatible|GraphicsContextFlags.Debug)
+			:base(new GraphicsMode(32, 16), 3, 3, GraphicsContextFlags.ForwardCompatible|GraphicsContextFlags.Debug)
 		{}
 
         public void SetupContext()
