@@ -47,13 +47,24 @@ struct GraphDescriptor {
     func draw(){
 //        glEnableVertexAttribArray(vao);
 //        GraphixManager.checkOpenGLerror("draw.glEnableVertexAttribArray")
+        glUseProgram(GraphixManager.sharedInstance.program)
+        GraphixManager.checkOpenGLerror("draw.glUseProgram")
+
         glBindVertexArray(vao)
         GraphixManager.checkOpenGLerror("draw.glBindVertexArray")
+        
         glUniform4fv(GraphixManager.sharedInstance.cUnif, 1, color)
         GraphixManager.checkOpenGLerror("draw.glUniform4fv")
+        
+        glUniformMatrix4fv(GraphixManager.sharedInstance.pmUnif, 1, GLboolean(GL_TRUE), GraphixManager.sharedInstance.distributionPM);
+        GraphixManager.checkOpenGLerror("draw.glUniformMatrix4fv")
+
         glDrawArrays(GLenum(GL_LINE_STRIP), 0, n)
         GraphixManager.checkOpenGLerror("draw.glDrawArrays")
+        
         glBindVertexArray(0)
         GraphixManager.checkOpenGLerror("draw.glBindVertexArray")
+        
+        glUseProgram(0)
     }
 }

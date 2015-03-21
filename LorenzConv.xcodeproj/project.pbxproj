@@ -23,6 +23,7 @@
 		5E57DD7D1ABABF3A00B78747 /* projection.vertex in Resources */ = {isa = PBXBuildFile; fileRef = 5E57DD7A1ABABF3A00B78747 /* projection.vertex */; };
 		5E57DD7E1ABABF3A00B78747 /* uniform.color.fragment in Resources */ = {isa = PBXBuildFile; fileRef = 5E57DD7B1ABABF3A00B78747 /* uniform.color.fragment */; };
 		5E57DD7F1ABABF3A00B78747 /* uniform.color.fragment in Resources */ = {isa = PBXBuildFile; fileRef = 5E57DD7B1ABABF3A00B78747 /* uniform.color.fragment */; };
+		5E96F00C1ABDC91C00FE2EDB /* DistributionGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E96F00B1ABDC91C00FE2EDB /* DistributionGraph.swift */; };
 		95248D6A1AB4C453008A0A66 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95248D691AB4C453008A0A66 /* AppDelegate.swift */; };
 		95248D6D1AB4C453008A0A66 /* LorenzConv.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95248D6B1AB4C453008A0A66 /* LorenzConv.xcdatamodeld */; };
 		95248D6F1AB4C453008A0A66 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95248D6E1AB4C453008A0A66 /* Images.xcassets */; };
@@ -52,6 +53,7 @@
 		5E57DD711ABAACBA00B78747 /* GLGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLGraph.swift; sourceTree = "<group>"; };
 		5E57DD7A1ABABF3A00B78747 /* projection.vertex */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = projection.vertex; path = LorenzConv/Shaders/projection.vertex; sourceTree = "<group>"; };
 		5E57DD7B1ABABF3A00B78747 /* uniform.color.fragment */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = uniform.color.fragment; path = LorenzConv/Shaders/uniform.color.fragment; sourceTree = "<group>"; };
+		5E96F00B1ABDC91C00FE2EDB /* DistributionGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistributionGraph.swift; sourceTree = "<group>"; };
 		95248D641AB4C453008A0A66 /* LorenzConv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LorenzConv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95248D681AB4C453008A0A66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95248D691AB4C453008A0A66 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				95248D871AB4D13E008A0A66 /* ConvolutionParams.swift */,
 				5E57DD681AB9F26600B78747 /* PendingOperations.swift */,
 				5E57DD711ABAACBA00B78747 /* GLGraph.swift */,
+				5E96F00B1ABDC91C00FE2EDB /* DistributionGraph.swift */,
 			);
 			path = LorenzConv;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E96F00C1ABDC91C00FE2EDB /* DistributionGraph.swift in Sources */,
 				5E57DD621AB8B2C000B78747 /* lorenz.cl in Sources */,
 				5E57DD6F1AB9FFF000B78747 /* GraphixManager.swift in Sources */,
 				5E57DD6C1AB9F8A600B78747 /* GraphDescriptor.swift in Sources */,

@@ -713,7 +713,7 @@
                             <binding destination="MLx-KX-tBs" name="value" keyPath="selection.ghole" id="ew9-zH-rVb"/>
                         </connections>
                     </textField>
-                    <openGLView canDrawConcurrently="YES" useAuxiliaryDepthBufferStencil="NO" useDoubleBufferingEnabled="YES" allowOffline="YES" wantsBestResolutionOpenGLSurface="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MTm-qg-51j" userLabel="Distribution Graph" customClass="GLGraph" customModule="LorenzConv" customModuleProvider="target">
+                    <openGLView canDrawConcurrently="YES" useAuxiliaryDepthBufferStencil="NO" useDoubleBufferingEnabled="YES" allowOffline="YES" wantsBestResolutionOpenGLSurface="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MTm-qg-51j" userLabel="Distribution Graph" customClass="DistributionGraph" customModule="LorenzConv" customModuleProvider="target">
                         <rect key="frame" x="418" y="174" width="139" height="139"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="MTm-qg-51j" secondAttribute="height" multiplier="1:1" id="nAE-NL-l31"/>

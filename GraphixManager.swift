@@ -185,6 +185,18 @@ class GraphixManager {
         if let context = glContext {
             CGLEnable(context.CGLContextObj, kCGLCECrashOnRemovedFunctions)
         }
+        
+        var swapInt: GLint = 1;
+        glContext?.setValues(&swapInt, forParameter: NSOpenGLContextParameter.GLCPSwapInterval)
+
+        glContext?.makeCurrentContext()
+        
+        glClearColor(1.0, 1.0, 1.0, 1.0);
+        glLineWidth(1.0);
+        glEnable(GLenum(GL_LINE_SMOOTH));
+        glHint(GLenum(GL_LINE_SMOOTH_HINT),  GLenum(GL_NICEST));
+        glEnable(GLenum(GL_BLEND));
+        glBlendFunc(GLenum(GL_SRC_ALPHA), GLenum(GL_ONE_MINUS_SRC_ALPHA));
     }
     
     func setupData(){
@@ -220,10 +232,9 @@ class GraphixManager {
         
         GraphixManager.ProgramStatus(pr, param: GLenum(GL_LINK_STATUS))
         
-        glUseProgram(pr);
-        glValidateProgram(pr)
-        
-        GraphixManager.ProgramStatus(pr, param: GLenum(GL_VALIDATE_STATUS))
+        //glUseProgram(pr);
+        //glValidateProgram(pr)
+        //GraphixManager.ProgramStatus(pr, param: GLenum(GL_VALIDATE_STATUS))
  
         xAttr = glGetAttribLocation(pr, "coordx")
         yAttr = glGetAttribLocation(pr, "coordy")
@@ -240,10 +251,9 @@ class GraphixManager {
         var x: [Float] = [Float](count: nPoints, repeatedValue: 0.0)
         var y: [Float] = [Float](count: nPoints, repeatedValue: 0.0)
         
-        for i:Int in (0...nPoints){
-            let xi = x1 + (dx * Float(i))
-            x.append(xi)
-            y.append(GraphixManager.f(x[i], g: G))
+        for i:Int in (0...nPoints-1){
+            x[i] = x1 + (dx * Float(i))
+            y[i] = GraphixManager.f(x[i], g: G)
         }
         
         let xVBO = GraphixManager.genBuffer(x, count: nPoints);
