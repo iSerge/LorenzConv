@@ -38,7 +38,9 @@ float lorenzCDF_f(float x, float x0, float gamma){
 //    }
 //}
 
-kernel void calcLorenzian_f(global read_only float* x, global write_only float* y, const int n, float x0, float gamma){
+__kernel void calcLorenzian_f(__global __read_only float* x, __global __write_only float* y,
+                            const int n, const float x0, const float gamma)
+{
     const size_t i = get_global_id(0);
     if(i<n){
         y[i] = lorenz_f(x[i], x0, gamma);

@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>OpenCLPrecomp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -18,6 +23,11 @@
 			<true/>
 		</dict>
 		<key>95248D761AB4C453008A0A66</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9544255F1ABF07580016F461</key>
 		<dict>
 			<key>primary</key>
 			<true/>

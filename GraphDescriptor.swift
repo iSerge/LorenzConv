@@ -6,14 +6,18 @@
 //  Copyright (c) 2015 Serge Ivanov. All rights reserved.
 //
 
+import OpenCL
 import OpenGL
 import GLKit
 
 struct GraphDescriptor {
-    let vao:   GLuint
-    let xVbo:  GLuint
-    let yVbo:  GLuint
-    let n:     GLsizei
+    let vao:    GLuint
+    let xVbo:   GLuint
+    let xBuf:   UnsafeMutablePointer<Void>
+    let yVbo:   GLuint
+    let yBuf:   UnsafeMutablePointer<Void>
+    let n:      GLsizei
+    var ndrange: cl_ndrange
     let color: [GLfloat]//GLuint
     
     init(xVbo: GLuint, yVbo: GLuint, n: GLsizei, color: [GLfloat]){ //GLuint){
@@ -42,11 +46,23 @@ struct GraphDescriptor {
         
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0);
         glBindVertexArray(0);
+        
+        xBuf = gcl_gl_create_ptr_from_buffer(xVbo)
+        if(nil == xBuf){
+            NSLog("Failed to create opecl distr X buffer")
+        }
+        
+        yBuf = gcl_gl_create_ptr_from_buffer(yVbo)
+        if(nil == yBuf){
+            NSLog("Failed to create opecl distr Y buffer")
+        }
+        
+        ndrange = cl_ndrange(work_dim: 1, global_work_offset: (0,0,0),
+            global_work_size: (UInt(n),1,1), local_work_size: (UInt(n),1,1))
+
     }
     
     func draw(){
-//        glEnableVertexAttribArray(vao);
-//        GraphixManager.checkOpenGLerror("draw.glEnableVertexAttribArray")
         glUseProgram(GraphixManager.sharedInstance.program)
         GraphixManager.checkOpenGLerror("draw.glUseProgram")
 
@@ -66,5 +82,21 @@ struct GraphDescriptor {
         GraphixManager.checkOpenGLerror("draw.glBindVertexArray")
         
         glUseProgram(0)
+    }
+    
+    func calcDistribution(gamma: Float, x0: Float){
+        dispatch_sync(GraphixManager.sharedInstance.queue){
+            let r = [self.ndrange]
+            OpenCLInterop.calcLorenzian_f(r, withXVec: self.xBuf, andYVec: self.yBuf,
+                count: self.n, center: 0.0, gamma: gamma)
+        }
+    }
+    
+    func dispose(){
+        gcl_free(xBuf)
+        gcl_free(yBuf)
+        
+        glDeleteVertexArrays(1, [vao])
+        glDeleteBuffers(2, [xVbo,yVbo])
     }
 }

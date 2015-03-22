@@ -12,6 +12,8 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
+    @IBOutlet weak var distrView: NSOpenGLView!
+    @IBOutlet weak var convolutionView: NSOpenGLView!
     @IBOutlet weak var convParams: ConvolutionParams!
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
@@ -24,6 +26,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     override func awakeFromNib() {
         GraphixManager.sharedInstance.setupData()
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowWillClose:",
+            name: NSWindowWillCloseNotification, object: self.window)
+
+        GraphixManager.sharedInstance.distrGraph.calcDistribution(convParams.ghole, x0: 0.0)
+        distrView.needsDisplay = true
+    }
+    
+    func windowWillClose(notification: NSNotification){
+        GraphixManager.sharedInstance.freeData()
+        
+    }
+    
+    func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
+        return true
     }
     
     // MARK: - Core Data stack

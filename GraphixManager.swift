@@ -181,7 +181,7 @@ class GraphixManager {
     }
 
     private init(){
-        dx = (x2-x1)/Float(nPoints)
+        dx = (x2-x1)/Float(nPoints-1)
         
         let attrs: [NSOpenGLPixelFormatAttribute] = [
             UInt32(NSOpenGLPFAOpenGLProfile), UInt32(NSOpenGLProfileVersion3_2Core),
@@ -300,21 +300,19 @@ class GraphixManager {
         
         var x: [Float] = [Float](count: nPoints, repeatedValue: 0.0)
         
+        for i:Int in 0...nPoints-1{
+            x[i] = x1 + dx*Float(i)
+        }
+        
         let xVBO = GraphixManager.genBuffer(x, count: nPoints)
         let yVBO = GraphixManager.genBufferForCL(nPoints)
 
-        let xBuf = gcl_gl_create_ptr_from_buffer(xVBO)
-        if(nil == xBuf){
-            NSLog("Failed to create opecl distr X buffer")
-        }
-
-        let yBuf = gcl_gl_create_ptr_from_buffer(yVBO)
-        if(nil == yBuf){
-            NSLog("Failed to create opecl distr Y buffer")
-        }
-        
-        var ndrange = cl_ndrange(work_dim: 1, global_work_offset: (0,0,0), global_work_size: (1,1,1), local_work_size: (UInt(nPoints),1,1))
-        
         distrGraph = GraphDescriptor(xVbo: xVBO, yVbo: yVBO, n: GLsizei(nPoints), color: Black)
+    }
+    
+    func freeData(){
+        glContext?.makeCurrentContext()
+        distrGraph.dispose()
+        glDeleteProgram(program)
     }
 }

@@ -15,6 +15,8 @@
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="LorenzConv" customModuleProvider="target">
             <connections>
                 <outlet property="convParams" destination="pHU-W0-RDd" id="kVy-6I-3vy"/>
+                <outlet property="convolutionView" destination="rln-Lt-vOG" id="Pli-bW-62Z"/>
+                <outlet property="distrView" destination="MTm-qg-51j" id="13g-Ic-ctd"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -671,7 +673,7 @@
         <window title="LorenzConv" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="335" y="390" width="577" height="388"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="577" height="388"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -787,7 +789,7 @@
                     <constraint firstItem="Mo4-rF-OTE" firstAttribute="top" secondItem="MTm-qg-51j" secondAttribute="top" id="seG-Kr-Hry"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="280.5" y="329"/>
+            <point key="canvasLocation" x="361.5" y="271"/>
         </window>
         <objectController objectClassName="ConvolutionParams" automaticallyPreparesContent="YES" id="MLx-KX-tBs" userLabel="Convolution Controller">
             <declaredKeys>
@@ -799,6 +801,7 @@
         </objectController>
         <customObject id="pHU-W0-RDd" customClass="ConvolutionParams">
             <connections>
+                <outlet property="convolutionView" destination="rln-Lt-vOG" id="drD-0p-CiS"/>
                 <outlet property="distributionView" destination="MTm-qg-51j" id="gum-9z-hNA"/>
             </connections>
         </customObject>

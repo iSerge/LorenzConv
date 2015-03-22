@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5E57DD621AB8B2C000B78747 /* lorenz.cl in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD611AB8B2C000B78747 /* lorenz.cl */; };
-		5E57DD631AB8B2C000B78747 /* lorenz.cl in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD611AB8B2C000B78747 /* lorenz.cl */; };
 		5E57DD651AB8D3C900B78747 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E57DD641AB8D3C900B78747 /* OpenCL.framework */; };
 		5E57DD671AB8D3D400B78747 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E57DD661AB8D3D400B78747 /* OpenGL.framework */; };
 		5E57DD691AB9F26600B78747 /* PendingOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD681AB9F26600B78747 /* PendingOperations.swift */; };
@@ -30,6 +29,10 @@
 		95248D721AB4C453008A0A66 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95248D701AB4C453008A0A66 /* MainMenu.xib */; };
 		95248D7E1AB4C453008A0A66 /* LorenzConvTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95248D7D1AB4C453008A0A66 /* LorenzConvTests.swift */; };
 		95248D881AB4D13E008A0A66 /* ConvolutionParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95248D871AB4D13E008A0A66 /* ConvolutionParams.swift */; };
+		9544252D1ABF001C0016F461 /* lorenz.cl in Sources */ = {isa = PBXBuildFile; fileRef = 5E57DD611AB8B2C000B78747 /* lorenz.cl */; };
+		9544252E1ABF003F0016F461 /* LorenzConv.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95248D6B1AB4C453008A0A66 /* LorenzConv.xcdatamodeld */; };
+		9544256E1ABF0A370016F461 /* OpenCLInterop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9544256D1ABF0A370016F461 /* OpenCLInterop.m */; };
+		9544256F1ABF0A370016F461 /* OpenCLInterop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9544256D1ABF0A370016F461 /* OpenCLInterop.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +47,7 @@
 
 /* Begin PBXFileReference section */
 		5E32681B1AB8AABD00EDDB98 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = "OpenGL test/main.cpp"; sourceTree = "<group>"; };
-		5E57DD611AB8B2C000B78747 /* lorenz.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; name = lorenz.cl; path = LorenzConv/lorenz.cl; sourceTree = "<group>"; };
+		5E57DD611AB8B2C000B78747 /* lorenz.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = lorenz.cl; sourceTree = "<group>"; };
 		5E57DD641AB8D3C900B78747 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
 		5E57DD661AB8D3D400B78747 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		5E57DD681AB9F26600B78747 /* PendingOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingOperations.swift; sourceTree = "<group>"; };
@@ -64,6 +67,9 @@
 		95248D7C1AB4C453008A0A66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95248D7D1AB4C453008A0A66 /* LorenzConvTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LorenzConvTests.swift; sourceTree = "<group>"; };
 		95248D871AB4D13E008A0A66 /* ConvolutionParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvolutionParams.swift; sourceTree = "<group>"; };
+		9544252A1ABEF1300016F461 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		9544256C1ABF0A370016F461 /* OpenCLInterop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCLInterop.h; sourceTree = "<group>"; };
+		9544256D1ABF0A370016F461 /* OpenCLInterop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenCLInterop.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,10 +95,11 @@
 		5E3268191AB8A97600EDDB98 /* Computation */ = {
 			isa = PBXGroup;
 			children = (
-				5E57DD611AB8B2C000B78747 /* lorenz.cl */,
+				9544256C1ABF0A370016F461 /* OpenCLInterop.h */,
+				9544256D1ABF0A370016F461 /* OpenCLInterop.m */,
 			);
 			name = Computation;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		5E32681A1AB8AA2900EDDB98 /* Visualisation */ = {
 			isa = PBXGroup;
@@ -131,6 +138,7 @@
 		95248D661AB4C453008A0A66 /* LorenzConv */ = {
 			isa = PBXGroup;
 			children = (
+				5E57DD611AB8B2C000B78747 /* lorenz.cl */,
 				95248D691AB4C453008A0A66 /* AppDelegate.swift */,
 				95248D6E1AB4C453008A0A66 /* Images.xcassets */,
 				95248D701AB4C453008A0A66 /* MainMenu.xib */,
@@ -140,6 +148,7 @@
 				5E57DD681AB9F26600B78747 /* PendingOperations.swift */,
 				5E57DD711ABAACBA00B78747 /* GLGraph.swift */,
 				5E96F00B1ABDC91C00FE2EDB /* DistributionGraph.swift */,
+				9544252A1ABEF1300016F461 /* Bridging-Header.h */,
 			);
 			path = LorenzConv;
 			sourceTree = "<group>";
@@ -272,15 +281,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E96F00C1ABDC91C00FE2EDB /* DistributionGraph.swift in Sources */,
 				5E57DD621AB8B2C000B78747 /* lorenz.cl in Sources */,
+				5E96F00C1ABDC91C00FE2EDB /* DistributionGraph.swift in Sources */,
 				5E57DD6F1AB9FFF000B78747 /* GraphixManager.swift in Sources */,
-				5E57DD6C1AB9F8A600B78747 /* GraphDescriptor.swift in Sources */,
 				95248D6A1AB4C453008A0A66 /* AppDelegate.swift in Sources */,
 				95248D881AB4D13E008A0A66 /* ConvolutionParams.swift in Sources */,
 				5E57DD721ABAACBA00B78747 /* GLGraph.swift in Sources */,
 				5E57DD691AB9F26600B78747 /* PendingOperations.swift in Sources */,
 				95248D6D1AB4C453008A0A66 /* LorenzConv.xcdatamodeld in Sources */,
+				9544256E1ABF0A370016F461 /* OpenCLInterop.m in Sources */,
+				5E57DD6C1AB9F8A600B78747 /* GraphDescriptor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,10 +298,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9544252E1ABF003F0016F461 /* LorenzConv.xcdatamodeld in Sources */,
+				9544252D1ABF001C0016F461 /* lorenz.cl in Sources */,
 				5E57DD6A1AB9F26600B78747 /* PendingOperations.swift in Sources */,
 				5E57DD731ABAACBA00B78747 /* GLGraph.swift in Sources */,
+				9544256F1ABF0A370016F461 /* OpenCLInterop.m in Sources */,
 				5E57DD6D1AB9F8A600B78747 /* GraphDescriptor.swift in Sources */,
-				5E57DD631AB8B2C000B78747 /* lorenz.cl in Sources */,
 				95248D7E1AB4C453008A0A66 /* LorenzConvTests.swift in Sources */,
 				5E57DD701AB9FFF000B78747 /* GraphixManager.swift in Sources */,
 			);
@@ -322,7 +334,7 @@
 		95248D7F1AB4C453008A0A66 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -364,7 +376,7 @@
 		95248D801AB4C453008A0A66 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -405,10 +417,10 @@
 				INFOPLIST_FILE = LorenzConv/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OPENCL_COMPILER_VERSION = CL1.2;
-				OPENCL_MAD_ENABLE = NO;
+				OPENCL_MAD_ENABLE = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "LorenzConv/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -422,10 +434,10 @@
 				INFOPLIST_FILE = LorenzConv/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OPENCL_COMPILER_VERSION = CL1.2;
-				OPENCL_MAD_ENABLE = NO;
+				OPENCL_MAD_ENABLE = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "LorenzConv/Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -446,6 +458,7 @@
 				INFOPLIST_FILE = LorenzConvTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "LorenzConv/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LorenzConv.app/Contents/MacOS/LorenzConv";
 			};
@@ -464,6 +477,7 @@
 				INFOPLIST_FILE = LorenzConvTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "LorenzConv/Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LorenzConv.app/Contents/MacOS/LorenzConv";
 			};
 			name = Release;
