@@ -14,7 +14,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var distrView: NSOpenGLView!
     @IBOutlet weak var convolutionView: NSOpenGLView!
-    @IBOutlet weak var convParams: ConvolutionParams!
+    @IBOutlet weak var spectreTable: NSTableView!
+    @IBOutlet weak var convolutionController: NSObjectController!
+    @IBOutlet weak var spectresController: NSArrayController!
+    
+    dynamic var convParams: ConvolutionParams!
+    dynamic var spectres = [SpectreS]()
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application
@@ -25,12 +30,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     override func awakeFromNib() {
+        var err: NSError? = NSError()
+        let cp = self.managedObjectContext?.executeFetchRequest(NSFetchRequest(entityName: "Convolution"),
+            error: &err) as [ConvolutionParams]?
+        if(nil == cp || cp?.count == 0){
+            let newParams = NSEntityDescription.insertNewObjectForEntityForName("Convolution", inManagedObjectContext: self.managedObjectContext!) as ConvolutionParams
+            convParams = newParams
+        } else {
+            convParams = cp?[0]
+        }
+        
         GraphixManager.sharedInstance.setupData()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowWillClose:",
             name: NSWindowWillCloseNotification, object: self.window)
 
-        GraphixManager.sharedInstance.distrGraph.calcDistribution(convParams.ghole, x0: 0.0)
+        GraphixManager.sharedInstance.distrGraph.calcDistribution(convParams.ghole.floatValue, x0: 0.0)
         distrView.needsDisplay = true
     }
     

@@ -33,6 +33,8 @@
 		9544252E1ABF003F0016F461 /* LorenzConv.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95248D6B1AB4C453008A0A66 /* LorenzConv.xcdatamodeld */; };
 		9544256E1ABF0A370016F461 /* OpenCLInterop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9544256D1ABF0A370016F461 /* OpenCLInterop.m */; };
 		9544256F1ABF0A370016F461 /* OpenCLInterop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9544256D1ABF0A370016F461 /* OpenCLInterop.m */; };
+		954425711ABF66E40016F461 /* Spectre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954425701ABF66E40016F461 /* Spectre.swift */; };
+		954425751AC006350016F461 /* SpectreS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954425741AC006340016F461 /* SpectreS.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,8 @@
 		9544252A1ABEF1300016F461 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		9544256C1ABF0A370016F461 /* OpenCLInterop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCLInterop.h; sourceTree = "<group>"; };
 		9544256D1ABF0A370016F461 /* OpenCLInterop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenCLInterop.m; sourceTree = "<group>"; };
+		954425701ABF66E40016F461 /* Spectre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spectre.swift; sourceTree = "<group>"; };
+		954425741AC006340016F461 /* SpectreS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpectreS.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,12 +147,14 @@
 				95248D6E1AB4C453008A0A66 /* Images.xcassets */,
 				95248D701AB4C453008A0A66 /* MainMenu.xib */,
 				95248D6B1AB4C453008A0A66 /* LorenzConv.xcdatamodeld */,
+				954425701ABF66E40016F461 /* Spectre.swift */,
 				95248D671AB4C453008A0A66 /* Supporting Files */,
 				95248D871AB4D13E008A0A66 /* ConvolutionParams.swift */,
 				5E57DD681AB9F26600B78747 /* PendingOperations.swift */,
 				5E57DD711ABAACBA00B78747 /* GLGraph.swift */,
 				5E96F00B1ABDC91C00FE2EDB /* DistributionGraph.swift */,
 				9544252A1ABEF1300016F461 /* Bridging-Header.h */,
+				954425741AC006340016F461 /* SpectreS.swift */,
 			);
 			path = LorenzConv;
 			sourceTree = "<group>";
@@ -283,9 +289,11 @@
 			files = (
 				5E57DD621AB8B2C000B78747 /* lorenz.cl in Sources */,
 				5E96F00C1ABDC91C00FE2EDB /* DistributionGraph.swift in Sources */,
+				954425751AC006350016F461 /* SpectreS.swift in Sources */,
 				5E57DD6F1AB9FFF000B78747 /* GraphixManager.swift in Sources */,
 				95248D6A1AB4C453008A0A66 /* AppDelegate.swift in Sources */,
 				95248D881AB4D13E008A0A66 /* ConvolutionParams.swift in Sources */,
+				954425711ABF66E40016F461 /* Spectre.swift in Sources */,
 				5E57DD721ABAACBA00B78747 /* GLGraph.swift in Sources */,
 				5E57DD691AB9F26600B78747 /* PendingOperations.swift in Sources */,
 				95248D6D1AB4C453008A0A66 /* LorenzConv.xcdatamodeld in Sources */,

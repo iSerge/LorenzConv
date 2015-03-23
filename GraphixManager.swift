@@ -313,6 +313,7 @@ class GraphixManager {
     func freeData(){
         glContext?.makeCurrentContext()
         distrGraph.dispose()
+        
         glDeleteProgram(program)
     }
 }

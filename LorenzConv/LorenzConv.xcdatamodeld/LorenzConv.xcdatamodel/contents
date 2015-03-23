@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14C1510" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Convolution" syncable="YES">
-        <attribute name="ghole" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14C1514" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Convolution" representedClassName="ConvolutionParams" syncable="YES">
+        <attribute name="ghole" attributeType="Float" defaultValueString="2" syncable="YES"/>
+        <relationship name="spectres" toMany="YES" deletionRule="Cascade" destinationEntity="Spectre" inverseName="convolution" inverseEntity="Spectre" syncable="YES"/>
+    </entity>
+    <entity name="Spectre" representedClassName="Spectre" syncable="YES">
+        <attribute name="n" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" attributeType="String" defaultValueString="New spectre" syncable="YES"/>
+        <attribute name="reference" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="shift" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="weight" attributeType="Float" defaultValueString="1" syncable="YES"/>
+        <attribute name="x" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="y" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="convolution" maxCount="1" deletionRule="Nullify" destinationEntity="Convolution" inverseName="spectres" inverseEntity="Convolution" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Convolution" positionX="-63" positionY="-18" width="128" height="58"/>
+        <element name="Convolution" positionX="-1935" positionY="-2016" width="128" height="73"/>
+        <element name="Spectre" positionX="-1748" positionY="-2016" width="128" height="163"/>
     </elements>
 </model>

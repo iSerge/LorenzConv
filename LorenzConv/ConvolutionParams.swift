@@ -7,22 +7,24 @@
 //
 
 import AppKit
+import CoreData
 
 @objc(ConvolutionParams)
-class ConvolutionParams: NSObject {
-    @IBOutlet weak var distributionView: NSOpenGLView!
-    @IBOutlet weak var convolutionView: NSOpenGLView!
+class ConvolutionParams: NSManagedObject {
     
-    var ghole: Float = 2.0 {
+    @NSManaged dynamic var ghole: NSNumber
+    @NSManaged dynamic var spectres: NSMutableSet
+    
+    var gholeO: Float = 2.0 {
         didSet {
             //update distribution curve
-            GraphixManager.sharedInstance.distrGraph.calcDistribution(ghole, x0: 0.0)
+//            GraphixManager.sharedInstance.distrGraph.calcDistribution(ghole, x0: 0.0)
             
             //calculate convolution with new parameter
             
             //udate graphs
-            distributionView.needsDisplay = true
-            convolutionView.needsDisplay = true
+  //          distributionView.needsDisplay = true
+    //        convolutionView.needsDisplay = true
         }
     }
 }
