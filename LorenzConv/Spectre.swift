@@ -21,4 +21,22 @@ class Spectre: NSManagedObject {
     @NSManaged dynamic var y: NSData
     @NSManaged dynamic var convolution: ConvolutionParams
 
+    var xValues: [Float]{
+        get{
+            let n = x.length / sizeof(Float)
+            var arr = [Float](count: n, repeatedValue: 0.0)
+            x.getBytes(&arr, length: n)
+            return arr;
+        }
+    }
+
+    var yValues: [Float]{
+        get{
+            let n = y.length / sizeof(Float)
+            var arr = [Float](count: n, repeatedValue: 0.0)
+            y.getBytes(&arr, length: n)
+            return arr;
+        }
+    }
+
 }

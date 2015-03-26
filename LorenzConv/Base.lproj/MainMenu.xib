@@ -794,11 +794,11 @@
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                 <prototypeCellViews>
                                                                     <tableCellView id="VMv-DP-OoT">
-                                                                        <rect key="frame" x="1" y="1" width="259.5" height="101"/>
+                                                                        <rect key="frame" x="1" y="1" width="259" height="101"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="2oU-Eo-tch">
-                                                                                <rect key="frame" x="3" y="76" width="253.5" height="22"/>
+                                                                                <rect key="frame" x="3" y="76" width="253" height="22"/>
                                                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Table View Cell" id="mtE-Ig-5fr">
                                                                                     <font key="font" metaFont="system"/>
                                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -826,7 +826,7 @@
                                                                                 </connections>
                                                                             </button>
                                                                             <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Ybd-8U-d2L">
-                                                                                <rect key="frame" x="1" y="-2" width="258" height="5"/>
+                                                                                <rect key="frame" x="1" y="-2" width="257.5" height="5"/>
                                                                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                                 <font key="titleFont" metaFont="system"/>
@@ -840,7 +840,7 @@
                                                                                 </textFieldCell>
                                                                             </textField>
                                                                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Jg-9M-u7f" userLabel="Shift Field">
-                                                                                <rect key="frame" x="54" y="49" width="202" height="22"/>
+                                                                                <rect key="frame" x="54" y="49" width="201.5" height="22"/>
                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="hLB-ZT-wMx">
                                                                                     <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.##" negativeFormat="-#,##0.##" thousandSeparator=" " id="qen-vj-0Hw">
                                                                                         <decimal key="minimum" value="NaN"/>
@@ -863,7 +863,7 @@
                                                                                 </textFieldCell>
                                                                             </textField>
                                                                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="K2q-7c-Obf" userLabel="Weight Field">
-                                                                                <rect key="frame" x="54" y="24" width="176" height="22"/>
+                                                                                <rect key="frame" x="54" y="24" width="175.5" height="22"/>
                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="iKY-Qu-x6u">
                                                                                     <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.00#" negativeFormat="-#,##0.00#" thousandSeparator=" " id="aQr-Zo-0Gy">
                                                                                         <decimal key="minimum" value="NaN"/>
@@ -878,8 +878,8 @@
                                                                                 </connections>
                                                                             </textField>
                                                                             <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZxL-dl-0zh">
-                                                                                <rect key="frame" x="231" y="20" width="28" height="30"/>
-                                                                                <sliderCell key="cell" continuous="YES" alignment="left" minValue="-5" maxValue="5" tickMarkPosition="left" sliderType="circular" id="XJp-S1-wWQ"/>
+                                                                                <rect key="frame" x="230" y="20" width="28" height="30"/>
+                                                                                <sliderCell key="cell" continuous="YES" alignment="left" minValue="-5" maxValue="5" tickMarkPosition="above" sliderType="circular" id="XJp-S1-wWQ"/>
                                                                                 <connections>
                                                                                     <binding destination="VMv-DP-OoT" name="value" keyPath="objectValue.weight" id="hnd-Kq-3YW"/>
                                                                                 </connections>
@@ -955,7 +955,7 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="add:" target="0fb-jt-d9v" id="BvF-uo-HxM"/>
+                                                <action selector="addSpectre:" target="Voe-Tx-rLC" id="sS6-F6-PsD"/>
                                                 <binding destination="0fb-jt-d9v" name="enabled" keyPath="canAdd" id="fjU-XQ-yC7"/>
                                             </connections>
                                         </button>

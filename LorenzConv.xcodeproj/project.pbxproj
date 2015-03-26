@@ -34,7 +34,8 @@
 		9544256E1ABF0A370016F461 /* OpenCLInterop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9544256D1ABF0A370016F461 /* OpenCLInterop.m */; };
 		9544256F1ABF0A370016F461 /* OpenCLInterop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9544256D1ABF0A370016F461 /* OpenCLInterop.m */; };
 		954425711ABF66E40016F461 /* Spectre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954425701ABF66E40016F461 /* Spectre.swift */; };
-		95707E091AC15912006C4337 /* FileFormatSpec.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95707E081AC15912006C4337 /* FileFormatSpec.xib */; };
+		95707E101AC1F15A006C4337 /* FormattedFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95707E0E1AC1F15A006C4337 /* FormattedFileReader.swift */; };
+		95707E111AC1F15A006C4337 /* FormattedFileReader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95707E0F1AC1F15A006C4337 /* FormattedFileReader.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,7 +74,8 @@
 		9544256C1ABF0A370016F461 /* OpenCLInterop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCLInterop.h; sourceTree = "<group>"; };
 		9544256D1ABF0A370016F461 /* OpenCLInterop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenCLInterop.m; sourceTree = "<group>"; };
 		954425701ABF66E40016F461 /* Spectre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spectre.swift; sourceTree = "<group>"; };
-		95707E081AC15912006C4337 /* FileFormatSpec.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileFormatSpec.xib; sourceTree = "<group>"; };
+		95707E0E1AC1F15A006C4337 /* FormattedFileReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattedFileReader.swift; sourceTree = "<group>"; };
+		95707E0F1AC1F15A006C4337 /* FormattedFileReader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FormattedFileReader.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,7 +156,8 @@
 				5E57DD711ABAACBA00B78747 /* GLGraph.swift */,
 				5E96F00B1ABDC91C00FE2EDB /* DistributionGraph.swift */,
 				9544252A1ABEF1300016F461 /* Bridging-Header.h */,
-				95707E081AC15912006C4337 /* FileFormatSpec.xib */,
+				95707E0E1AC1F15A006C4337 /* FormattedFileReader.swift */,
+				95707E0F1AC1F15A006C4337 /* FormattedFileReader.xib */,
 			);
 			path = LorenzConv;
 			sourceTree = "<group>";
@@ -267,8 +270,8 @@
 				95248D6F1AB4C453008A0A66 /* Images.xcassets in Resources */,
 				5E57DD7E1ABABF3A00B78747 /* uniform.color.fragment in Resources */,
 				5E57DD7C1ABABF3A00B78747 /* projection.vertex in Resources */,
-				95707E091AC15912006C4337 /* FileFormatSpec.xib in Resources */,
 				95248D721AB4C453008A0A66 /* MainMenu.xib in Resources */,
+				95707E111AC1F15A006C4337 /* FormattedFileReader.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +300,7 @@
 				5E57DD721ABAACBA00B78747 /* GLGraph.swift in Sources */,
 				5E57DD691AB9F26600B78747 /* PendingOperations.swift in Sources */,
 				95248D6D1AB4C453008A0A66 /* LorenzConv.xcdatamodeld in Sources */,
+				95707E101AC1F15A006C4337 /* FormattedFileReader.swift in Sources */,
 				9544256E1ABF0A370016F461 /* OpenCLInterop.m in Sources */,
 				5E57DD6C1AB9F8A600B78747 /* GraphDescriptor.swift in Sources */,
 			);

@@ -19,14 +19,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var spectresController: NSArrayController!
     
     dynamic var convParams: ConvolutionParams!
-    dynamic var spectres = [SpectreS]()
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
+        GraphixManager.sharedInstance.freeData()
     }
 
     override func awakeFromNib() {
@@ -42,20 +41,46 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         GraphixManager.sharedInstance.setupData()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "windowWillClose:",
-            name: NSWindowWillCloseNotification, object: self.window)
-
         GraphixManager.sharedInstance.distrGraph.calcDistribution(convParams.ghole.floatValue, x0: 0.0)
         distrView.needsDisplay = true
     }
     
-    func windowWillClose(notification: NSNotification){
-        GraphixManager.sharedInstance.freeData()
-        
-    }
-    
     func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
         return true
+    }
+    
+    @IBAction func addSpectre(sender: AnyObject){
+        var openDlg = NSOpenPanel()
+        openDlg.canChooseDirectories = false
+        openDlg.canChooseFiles = true
+        openDlg.allowsMultipleSelection = false
+        
+        openDlg.beginSheetModalForWindow(self.window, completionHandler: {result in
+            if result != NSModalResponseOK {
+                return
+            }
+
+            let filename = openDlg.URL!
+            
+            var lines:[String]
+            var err: NSError?
+            let fileData: String? = String(contentsOfURL: filename, encoding: NSASCIIStringEncoding, error: &err)
+            if let error = err {
+                self.window.presentError(error)
+                return
+            } else if let data = fileData {
+                lines = data.componentsSeparatedByString("\n")
+            } else {
+                lines = [String]()
+            }
+            
+            var fileReader = FormattedFileReader()
+            
+            NSBundle.mainBundle().loadNibNamed("FormattedFileReader", owner: fileReader, topLevelObjects: nil)
+            fileReader.lines = lines
+            let result = NSApp.runModalForWindow(fileReader.window!)
+            NSLog("File reader result: %d", result)
+        })
     }
     
     // MARK: - Core Data stack
