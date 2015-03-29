@@ -36,6 +36,8 @@
 		954425711ABF66E40016F461 /* Spectre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954425701ABF66E40016F461 /* Spectre.swift */; };
 		95707E101AC1F15A006C4337 /* FormattedFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95707E0E1AC1F15A006C4337 /* FormattedFileReader.swift */; };
 		95707E111AC1F15A006C4337 /* FormattedFileReader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95707E0F1AC1F15A006C4337 /* FormattedFileReader.xib */; };
+		95707E121AC82928006C4337 /* Spectre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954425701ABF66E40016F461 /* Spectre.swift */; };
+		95707E131AC82931006C4337 /* ConvolutionParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95248D871AB4D13E008A0A66 /* ConvolutionParams.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -295,9 +297,9 @@
 				5E96F00C1ABDC91C00FE2EDB /* DistributionGraph.swift in Sources */,
 				5E57DD6F1AB9FFF000B78747 /* GraphixManager.swift in Sources */,
 				95248D6A1AB4C453008A0A66 /* AppDelegate.swift in Sources */,
+				5E57DD721ABAACBA00B78747 /* GLGraph.swift in Sources */,
 				95248D881AB4D13E008A0A66 /* ConvolutionParams.swift in Sources */,
 				954425711ABF66E40016F461 /* Spectre.swift in Sources */,
-				5E57DD721ABAACBA00B78747 /* GLGraph.swift in Sources */,
 				5E57DD691AB9F26600B78747 /* PendingOperations.swift in Sources */,
 				95248D6D1AB4C453008A0A66 /* LorenzConv.xcdatamodeld in Sources */,
 				95707E101AC1F15A006C4337 /* FormattedFileReader.swift in Sources */,
@@ -312,12 +314,14 @@
 			files = (
 				9544252E1ABF003F0016F461 /* LorenzConv.xcdatamodeld in Sources */,
 				9544252D1ABF001C0016F461 /* lorenz.cl in Sources */,
+				95707E131AC82931006C4337 /* ConvolutionParams.swift in Sources */,
 				5E57DD6A1AB9F26600B78747 /* PendingOperations.swift in Sources */,
 				5E57DD731ABAACBA00B78747 /* GLGraph.swift in Sources */,
 				9544256F1ABF0A370016F461 /* OpenCLInterop.m in Sources */,
 				5E57DD6D1AB9F8A600B78747 /* GraphDescriptor.swift in Sources */,
 				95248D7E1AB4C453008A0A66 /* LorenzConvTests.swift in Sources */,
 				5E57DD701AB9FFF000B78747 /* GraphixManager.swift in Sources */,
+				95707E121AC82928006C4337 /* Spectre.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

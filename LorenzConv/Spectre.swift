@@ -21,11 +21,15 @@ class Spectre: NSManagedObject {
     @NSManaged dynamic var y: NSData
     @NSManaged dynamic var convolution: ConvolutionParams
 
+    var graph: GraphDescriptor?
+    var xLimits: (Float, Float) = (-1, 1)
+    var yLimits: (Float, Float) = (-1, 1)
+    
     var xValues: [Float]{
         get{
             let n = x.length / sizeof(Float)
             var arr = [Float](count: n, repeatedValue: 0.0)
-            x.getBytes(&arr, length: n)
+            x.getBytes(&arr, length: self.x.length)
             return arr;
         }
     }
@@ -34,9 +38,36 @@ class Spectre: NSManagedObject {
         get{
             let n = y.length / sizeof(Float)
             var arr = [Float](count: n, repeatedValue: 0.0)
-            y.getBytes(&arr, length: n)
+            y.getBytes(&arr, length: self.x.length)
             return arr;
         }
     }
 
+    class func minMax(values: [Float]) -> (Float, Float) {
+        var ma = -Float.infinity
+        var mi = Float.infinity
+        
+        for v: Float in values {
+            mi = min(mi, v)
+            ma = max(ma, v)
+        }
+        
+        return (mi, ma)
+    }
+    
+    func setData(data:([Float],[Float])){
+        let n = data.0.count
+        self.n = n
+        self.x = NSData(bytes: data.0, length: n*sizeof(Float))
+        self.y = NSData(bytes: data.1, length: n*sizeof(Float))
+        
+        let xVBO = GraphixManager.genBuffer(data.0, count: n)
+        let yVBO = GraphixManager.genBuffer(data.1, count: n)
+
+        self.graph = GraphDescriptor(xVbo: xVBO, yVbo: yVBO, n: GLsizei(n),
+            color: GraphixManager.sharedInstance.Gray80)
+        
+        self.xLimits = Spectre.minMax(data.0)
+        self.yLimits = Spectre.minMax(data.1)
+    }
 }

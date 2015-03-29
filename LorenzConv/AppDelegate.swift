@@ -13,7 +13,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var distrView: NSOpenGLView!
-    @IBOutlet weak var convolutionView: NSOpenGLView!
+    @IBOutlet weak var convolutionView: GLGraph!
     @IBOutlet weak var spectreTable: NSTableView!
     @IBOutlet weak var convolutionController: NSObjectController!
     @IBOutlet weak var spectresController: NSArrayController!
@@ -25,6 +25,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
+        GraphixManager.sharedInstance.glContext?.makeCurrentContext()
+        
+        var err: NSError? = NSError()
+
+        let spectres = self.managedObjectContext?.executeFetchRequest(NSFetchRequest(entityName: "Spectre"),
+            error: &err) as [Spectre]?
+        if let ss = spectres {
+            for s: Spectre in ss {
+                s.graph?.dispose()
+            }
+        }
+
         GraphixManager.sharedInstance.freeData()
     }
 
@@ -43,6 +55,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         GraphixManager.sharedInstance.distrGraph.calcDistribution(convParams.ghole.floatValue, x0: 0.0)
         distrView.needsDisplay = true
+        
+        let spectres = self.managedObjectContext?.executeFetchRequest(NSFetchRequest(entityName: "Spectre"),
+            error: &err) as [Spectre]?
+        if let ss = spectres {
+            for s: Spectre in ss {
+                let x = s.xValues
+                let y = s.yValues
+                s.setData((x, y))
+            }
+        }
+        
+        convolutionView.graphs = spectres
+        convolutionView.needsDisplay = true
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
@@ -78,8 +103,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             NSBundle.mainBundle().loadNibNamed("FormattedFileReader", owner: fileReader, topLevelObjects: nil)
             fileReader.lines = lines
+            //fileReader.beginSeetModalForWindow(self.window)
             let result = NSApp.runModalForWindow(fileReader.window!)
-            NSLog("File reader result: %d", result)
+            if NSModalResponseOK == result {
+                let data = fileReader.graphData
+                var spectre = NSEntityDescription.insertNewObjectForEntityForName("Spectre", inManagedObjectContext: self.managedObjectContext!) as Spectre
+                spectre.setData(data)
+                self.spectresController.addObject(spectre)
+            }
         })
     }
     

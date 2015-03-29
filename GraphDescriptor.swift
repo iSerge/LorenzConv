@@ -49,12 +49,12 @@ struct GraphDescriptor {
         
         xBuf = gcl_gl_create_ptr_from_buffer(xVbo)
         if(nil == xBuf){
-            NSLog("Failed to create opecl distr X buffer")
+            NSLog("Failed to create opencl distr X buffer")
         }
         
         yBuf = gcl_gl_create_ptr_from_buffer(yVbo)
         if(nil == yBuf){
-            NSLog("Failed to create opecl distr Y buffer")
+            NSLog("Failed to create opencl distr Y buffer")
         }
         
         ndrange = cl_ndrange(work_dim: 1, global_work_offset: (0,0,0),
@@ -63,25 +63,17 @@ struct GraphDescriptor {
     }
     
     func draw(){
-        glUseProgram(GraphixManager.sharedInstance.program)
-        GraphixManager.checkOpenGLerror("draw.glUseProgram")
-
         glBindVertexArray(vao)
         GraphixManager.checkOpenGLerror("draw.glBindVertexArray")
         
         glUniform4fv(GraphixManager.sharedInstance.cUnif, 1, color)
         GraphixManager.checkOpenGLerror("draw.glUniform4fv")
         
-        glUniformMatrix4fv(GraphixManager.sharedInstance.pmUnif, 1, GLboolean(GL_TRUE), GraphixManager.sharedInstance.distributionPM);
-        GraphixManager.checkOpenGLerror("draw.glUniformMatrix4fv")
-
         glDrawArrays(GLenum(GL_LINE_STRIP), 0, n)
         GraphixManager.checkOpenGLerror("draw.glDrawArrays")
         
         glBindVertexArray(0)
         GraphixManager.checkOpenGLerror("draw.glBindVertexArray")
-        
-        glUseProgram(0)
     }
     
     func calcDistribution(gamma: Float, x0: Float){

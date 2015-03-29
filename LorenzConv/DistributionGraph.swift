@@ -37,7 +37,15 @@ class DistributionGraph: NSOpenGLView {
         
         glClear(GLenum(GL_COLOR_BUFFER_BIT) | GLenum(GL_DEPTH_BUFFER_BIT))
         
+        glUseProgram(GraphixManager.sharedInstance.program)
+        GraphixManager.checkOpenGLerror("DistributionGraph.drawRect.glUseProgram")
+        
+        glUniformMatrix4fv(GraphixManager.sharedInstance.pmUnif, 1, GLboolean(GL_TRUE), GraphixManager.sharedInstance.distributionPM);
+        GraphixManager.checkOpenGLerror("DistributionGraph.drawRect.glUniformMatrix4fv")
+        
         GraphixManager.sharedInstance.distrGraph.draw()
+        
+        glUseProgram(0)
         
         openGLContext.flushBuffer()
     }

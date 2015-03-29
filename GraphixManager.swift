@@ -21,6 +21,8 @@ class GraphixManager {
     let Red:   [GLfloat] = [1.0, 0.0, 0.0, 1.0]
     let Green: [GLfloat] = [0.0, 1.0, 0.0, 1.0]
     let Blue:  [GLfloat] = [0.0, 0.0, 1.0, 1.0]
+
+    let Gray80:  [GLfloat] = [0.8, 0.8, 0.8, 1.0]
     
     let distributionPM: [GLfloat] = [ 0.2, 0.0, 0.0,  0.0,
                                       0.0, 2.0, 0.0, -1.0,
@@ -28,12 +30,19 @@ class GraphixManager {
                                       0.0, 0.0, 0.0,  1.0
                                     ];
 
+    var convolutionPM: [GLfloat] = [ 1.0, 0.0, 0.0, 0.0,
+                                     0.0, 1.0, 0.0, 0.0,
+                                     0.0, 0.0, 1.0, 0.0,
+                                     0.0, 0.0, 0.0, 1.0
+                                   ];
+
     
     let pixelFormat: NSOpenGLPixelFormat?
     let glContext: NSOpenGLContext?
 
     let queue: dispatch_queue_t!
     let cl_gl_semaphore: dispatch_semaphore_t!
+    var kCGLShareGroup: CGLShareGroupObj
 
     var program: GLuint = GLuint()
     var xAttr: GLint = GLint()
@@ -60,7 +69,23 @@ class GraphixManager {
       "  color = solidColor;\n" +
       "}\n"
 
+    class func orthoMatrix(xLims: (Float, Float), yLims: (Float,Float)) -> [GLfloat]{
+        let xMul = 2.0/(xLims.1-xLims.0)
+        let xShift = -(xLims.1+xLims.0)/(xLims.1-xLims.0)
+
+        let yMul = 2.0/(yLims.1-yLims.0)
+        let yShift = -(yLims.1+yLims.0)/(yLims.1-yLims.0)
+
+        return [
+            xMul, 0.0,  0.0, xShift,
+            0.0,  yMul, 0.0, yShift,
+            0.0,  0.0,  1.0, 0.0,
+            0.0,  0.0,  0.0, 1.0
+        ]
+    }
+    
     class func M_PI() -> Float {return 3.14159265359}
+    
     let nPoints: Int = 151
     let G: Float = 0.3
     let x1: Float = -5
@@ -215,7 +240,7 @@ class GraphixManager {
         glEnable(GLenum(GL_BLEND));
         glBlendFunc(GLenum(GL_SRC_ALPHA), GLenum(GL_ONE_MINUS_SRC_ALPHA));
         
-        var kCGLShareGroup = CGLGetShareGroup(glContext!.CGLContextObj)
+        kCGLShareGroup = CGLGetShareGroup(glContext!.CGLContextObj)
 
 //        OGLWrapper.my_gl_set_sharegroup(kCGLShareGroup)
         gcl_gl_set_sharegroup(UnsafeMutablePointer(kCGLShareGroup))

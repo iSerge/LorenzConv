@@ -41,14 +41,29 @@ class FormattedFileReader: NSWindowController, NSTableViewDataSource {
     dynamic var firstLineIsHeader: Bool = true { didSet { self.updateTable() } }
     dynamic var skipLines: Int = 0 { didSet { self.updateTable() } }
     
-    dynamic var xColumn: Int = 0
-    dynamic var yColumn: Int = 1
+    dynamic var xColumn: Int = 0 { didSet { canProceed = -1 != xColumn && -1 != yColumn} }
+    dynamic var yColumn: Int = 1 { didSet { canProceed = -1 != xColumn && -1 != yColumn } }
+    
+    dynamic var canProceed: Bool = true
     
     dynamic var lines: [String] = [String]() { didSet { self.updateTable() } }
     var splitter: String = ""
     
     var tableData: [String:[String]] = [String:[String]]()
     var nRows: Int = 0
+    
+    override func setNilValueForKey(key: String) {
+        switch(key){
+            case "xColumn":
+                self.xColumn = -1
+                break;
+            case "yColumn":
+                self.yColumn = -1
+                break;
+            default:
+                super.setNilValueForKey(key)
+        }
+    }
     
     override func windowDidLoad() {
         super.windowDidLoad()
