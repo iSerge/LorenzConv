@@ -62,7 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             for s: Spectre in ss {
                 let x = s.xValues
                 let y = s.yValues
-                s.setData((x, y))
+                s.updateInternalState((x, y))
             }
         }
         
@@ -107,6 +107,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let result = NSApp.runModalForWindow(fileReader.window!)
             if NSModalResponseOK == result {
                 let data = fileReader.graphData
+                GraphixManager.sharedInstance.glContext?.makeCurrentContext()
                 var spectre = NSEntityDescription.insertNewObjectForEntityForName("Spectre", inManagedObjectContext: self.managedObjectContext!) as Spectre
                 spectre.setData(data)
                 self.spectresController.addObject(spectre)

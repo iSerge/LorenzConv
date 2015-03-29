@@ -55,19 +55,23 @@ class Spectre: NSManagedObject {
         return (mi, ma)
     }
     
+    func updateInternalState(data:([Float],[Float])){
+        let xVBO = GraphixManager.genBuffer(data.0, count: n.integerValue)
+        let yVBO = GraphixManager.genBuffer(data.1, count: n.integerValue)
+        
+        self.graph = GraphDescriptor(xVbo: xVBO, yVbo: yVBO, n: GLsizei(n.integerValue),
+            color: GraphixManager.sharedInstance.Gray80)
+        
+        self.xLimits = Spectre.minMax(data.0)
+        self.yLimits = Spectre.minMax(data.1)
+    }
+    
     func setData(data:([Float],[Float])){
         let n = data.0.count
         self.n = n
         self.x = NSData(bytes: data.0, length: n*sizeof(Float))
         self.y = NSData(bytes: data.1, length: n*sizeof(Float))
         
-        let xVBO = GraphixManager.genBuffer(data.0, count: n)
-        let yVBO = GraphixManager.genBuffer(data.1, count: n)
-
-        self.graph = GraphDescriptor(xVbo: xVBO, yVbo: yVBO, n: GLsizei(n),
-            color: GraphixManager.sharedInstance.Gray80)
-        
-        self.xLimits = Spectre.minMax(data.0)
-        self.yLimits = Spectre.minMax(data.1)
+        updateInternalState(data)
     }
 }
