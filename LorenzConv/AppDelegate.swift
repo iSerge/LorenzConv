@@ -12,7 +12,6 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
-    @IBOutlet weak var distrView: NSOpenGLView!
     @IBOutlet weak var convolutionView: GLGraph!
     @IBOutlet weak var spectreTable: NSTableView!
     @IBOutlet weak var convolutionController: NSObjectController!
@@ -41,20 +40,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     override func awakeFromNib() {
+        GraphixManager.sharedInstance.setupData()
+        
         var err: NSError? = NSError()
         let cp = self.managedObjectContext?.executeFetchRequest(NSFetchRequest(entityName: "Convolution"),
             error: &err) as [ConvolutionParams]?
-        if(nil == cp || cp?.count == 0){
+        if nil == cp || cp?.count == 0 {
             let newParams = NSEntityDescription.insertNewObjectForEntityForName("Convolution", inManagedObjectContext: self.managedObjectContext!) as ConvolutionParams
             convParams = newParams
         } else {
             convParams = cp?[0]
         }
-        
-        GraphixManager.sharedInstance.setupData()
-
-        GraphixManager.sharedInstance.distrGraph.calcDistribution(convParams.ghole.floatValue, x0: 0.0)
-        distrView.needsDisplay = true
         
         let spectres = self.managedObjectContext?.executeFetchRequest(NSFetchRequest(entityName: "Spectre"),
             error: &err) as [Spectre]?

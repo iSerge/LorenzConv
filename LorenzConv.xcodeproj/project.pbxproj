@@ -38,6 +38,8 @@
 		95707E111AC1F15A006C4337 /* FormattedFileReader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95707E0F1AC1F15A006C4337 /* FormattedFileReader.xib */; };
 		95707E121AC82928006C4337 /* Spectre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954425701ABF66E40016F461 /* Spectre.swift */; };
 		95707E131AC82931006C4337 /* ConvolutionParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95248D871AB4D13E008A0A66 /* ConvolutionParams.swift */; };
+		95E69C661AC9D832000B4D51 /* ConvolutionUpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E69C651AC9D832000B4D51 /* ConvolutionUpdateController.swift */; };
+		95E69C671AC9D832000B4D51 /* ConvolutionUpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E69C651AC9D832000B4D51 /* ConvolutionUpdateController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +80,7 @@
 		954425701ABF66E40016F461 /* Spectre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spectre.swift; sourceTree = "<group>"; };
 		95707E0E1AC1F15A006C4337 /* FormattedFileReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattedFileReader.swift; sourceTree = "<group>"; };
 		95707E0F1AC1F15A006C4337 /* FormattedFileReader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FormattedFileReader.xib; sourceTree = "<group>"; };
+		95E69C651AC9D832000B4D51 /* ConvolutionUpdateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvolutionUpdateController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +163,7 @@
 				9544252A1ABEF1300016F461 /* Bridging-Header.h */,
 				95707E0E1AC1F15A006C4337 /* FormattedFileReader.swift */,
 				95707E0F1AC1F15A006C4337 /* FormattedFileReader.xib */,
+				95E69C651AC9D832000B4D51 /* ConvolutionUpdateController.swift */,
 			);
 			path = LorenzConv;
 			sourceTree = "<group>";
@@ -299,6 +303,7 @@
 				95248D6A1AB4C453008A0A66 /* AppDelegate.swift in Sources */,
 				5E57DD721ABAACBA00B78747 /* GLGraph.swift in Sources */,
 				95248D881AB4D13E008A0A66 /* ConvolutionParams.swift in Sources */,
+				95E69C661AC9D832000B4D51 /* ConvolutionUpdateController.swift in Sources */,
 				954425711ABF66E40016F461 /* Spectre.swift in Sources */,
 				5E57DD691AB9F26600B78747 /* PendingOperations.swift in Sources */,
 				95248D6D1AB4C453008A0A66 /* LorenzConv.xcdatamodeld in Sources */,
@@ -322,6 +327,7 @@
 				95248D7E1AB4C453008A0A66 /* LorenzConvTests.swift in Sources */,
 				5E57DD701AB9FFF000B78747 /* GraphixManager.swift in Sources */,
 				95707E121AC82928006C4337 /* Spectre.swift in Sources */,
+				95E69C671AC9D832000B4D51 /* ConvolutionUpdateController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
