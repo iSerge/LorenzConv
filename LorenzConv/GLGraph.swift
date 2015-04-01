@@ -10,11 +10,7 @@ import OpenGL
 import GLKit
 
 class GLGraph: NSOpenGLView {
-    var graphs: [Spectre]? {
-        didSet {
-            self.needsDisplay = true
-        }
-    }
+    var graphs: [Spectre]? { didSet { self.needsDisplay = true } }
     
     override func awakeFromNib() {
         pixelFormat = GraphixManager.sharedInstance.pixelFormat
@@ -44,13 +40,10 @@ class GLGraph: NSOpenGLView {
 
         glClear(GLenum(GL_COLOR_BUFFER_BIT) | GLenum(GL_DEPTH_BUFFER_BIT))
         
-        let limits = graphs?.map({s in (s.xLimits, s.yLimits)}).reduce(
+        let limits = graphs?.reduce(
             ((Float.infinity, -Float.infinity), (Float.infinity, -Float.infinity)),
-            {a,b in (
-                (min(a.0.0,b.0.0), max(a.0.1,b.0.1)),
-                (min(a.1.0,b.1.0), max(a.1.1,b.1.1))
-                )
-            })
+            {((min($0.0.0, $1.xLimits.0+$1.shift.floatValue),  max($0.0.1, $1.xLimits.1+$1.shift.floatValue)),
+              (min($0.1.0, $1.yLimits.0*$1.weight.floatValue), max($0.1.1, $1.yLimits.1*$1.weight.floatValue)))})
         
         glUseProgram(GraphixManager.sharedInstance.program)
         GraphixManager.checkOpenGLerror("DistributionGraph.drawRect.glUseProgram")
@@ -62,6 +55,11 @@ class GLGraph: NSOpenGLView {
         
         
         for spectre: Spectre in graphs! {
+            if spectre.reference.boolValue {
+                spectre.graph?.color = GraphixManager.sharedInstance.Black
+            } else {
+                spectre.graph?.color = GraphixManager.sharedInstance.Gray80
+            }
             spectre.graph?.draw()
         }
         

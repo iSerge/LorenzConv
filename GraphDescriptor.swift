@@ -18,7 +18,7 @@ struct GraphDescriptor {
     let yBuf:   UnsafeMutablePointer<Void>
     let n:      GLsizei
     var ndrange: cl_ndrange
-    let color: [GLfloat]//GLuint
+    var color: [GLfloat]//GLuint
     
     init(xVbo: GLuint, yVbo: GLuint, n: GLsizei, color: [GLfloat]){ //GLuint){
         self.xVbo = xVbo

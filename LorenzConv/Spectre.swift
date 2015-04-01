@@ -21,6 +21,8 @@ class Spectre: NSManagedObject {
     @NSManaged dynamic var y: NSData
     @NSManaged dynamic var convolution: ConvolutionParams
 
+    var changeObserver: AnyObject?
+    
     var graph: GraphDescriptor?
     var xLimits: (Float, Float) = (-1, 1)
     var yLimits: (Float, Float) = (-1, 1)

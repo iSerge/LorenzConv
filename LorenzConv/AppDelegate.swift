@@ -12,7 +12,6 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
-    @IBOutlet weak var convolutionView: GLGraph!
     @IBOutlet weak var spectreTable: NSTableView!
     @IBOutlet weak var convolutionController: NSObjectController!
     @IBOutlet weak var spectresController: NSArrayController!
@@ -61,9 +60,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 s.updateInternalState((x, y))
             }
         }
-        
-        convolutionView.graphs = spectres
-        convolutionView.needsDisplay = true
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication) -> Bool {
