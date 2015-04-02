@@ -76,14 +76,6 @@ struct GraphDescriptor {
         GraphixManager.checkOpenGLerror("draw.glBindVertexArray")
     }
     
-    func calcDistribution(gamma: Float, x0: Float){
-        dispatch_sync(GraphixManager.sharedInstance.queue){
-            let r = [self.ndrange]
-            OpenCLInterop.calcLorenzian_f(r, withXVec: self.xBuf, andYVec: self.yBuf,
-                count: self.n, center: 0.0, gamma: gamma)
-        }
-    }
-    
     func dispose(){
         gcl_free(xBuf)
         gcl_free(yBuf)

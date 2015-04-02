@@ -25,18 +25,29 @@ class ConvolutionUpdateController: NSObject{
     
     private class ChangeObserver: NSObject {
         weak var controller: ConvolutionUpdateController?
+        weak var spectre: Spectre?
         
-        dynamic var reference: Bool = false { didSet { self.controller?.spectresUpdated() } }
-        dynamic var shift: Float = 0.0 { didSet { self.controller?.spectresUpdated() } }
-        dynamic var weight: Float = 1.0 { didSet { self.controller?.spectresUpdated() } }
+        dynamic var reference: Bool = false { didSet { self.controller?.spectreUpdated(spectre) } }
+        dynamic var shift: Float = 0.0 { didSet { self.controller?.spectreUpdated(spectre) } }
+        dynamic var weight: Float = 1.0 { didSet { self.controller?.spectreUpdated(spectre) } }
         
         init(controller: ConvolutionUpdateController) {
             self.controller = controller
         }
         func startObserving(spectre: Spectre){
+            self.spectre = spectre
             self.bind("reference", toObject: spectre, withKeyPath: "reference", options: nil)
             self.bind("shift", toObject: spectre, withKeyPath: "shift", options: nil)
             self.bind("weight", toObject: spectre, withKeyPath: "weight", options: nil)
+        }
+    }
+    
+    func spectreUpdated(spectre: Spectre?){
+        if let s = spectre {
+            if nil != s.graph && nil != s.sgraph {
+                ConvolutionUpdateController.shiftAndWeight(s.graph!, sgraph: s.sgraph!, shift: s.shift.floatValue, weight: s.weight.floatValue)
+            }
+            spectresUpdated()
         }
     }
     
@@ -59,7 +70,26 @@ class ConvolutionUpdateController: NSObject{
             return
         }
         
-        GraphixManager.sharedInstance.distrGraph.calcDistribution(gHole, x0: 0.0)
+        ConvolutionUpdateController.calcDistribution(GraphixManager.sharedInstance.distrGraph, gamma: gHole, x0: 0.0)
         distributionView.needsDisplay = true
     }
+    
+    class func calcDistribution(graph: GraphDescriptor, gamma: Float, x0: Float){
+        dispatch_sync(GraphixManager.sharedInstance.queue){
+            let r = [graph.ndrange]
+            OpenCLInterop.calcLorenzian_f(r, withXVec: graph.xBuf, andYVec: graph.yBuf,
+                count: graph.n, center: 0.0, gamma: gamma)
+        }
+    }
+    
+    class func shiftAndWeight(graph: GraphDescriptor, sgraph: GraphDescriptor, shift: Float, weight: Float){
+        dispatch_sync(GraphixManager.sharedInstance.queue){
+            let r = [graph.ndrange]
+            OpenCLInterop.shift_f(r, withInput: graph.xBuf, andOutput: sgraph.xBuf,
+                count: graph.n, shift: shift)
+            OpenCLInterop.weight_f(r, withInput: graph.yBuf, andOutput: sgraph.yBuf,
+                count: graph.n, weight: weight)
+        }
+    }
+
 }

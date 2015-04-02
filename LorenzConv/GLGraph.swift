@@ -56,11 +56,12 @@ class GLGraph: NSOpenGLView {
         
         for spectre: Spectre in graphs! {
             if spectre.reference.boolValue {
-                spectre.graph?.color = GraphixManager.sharedInstance.Black
+                spectre.graph?.color = GraphixManager.sharedInstance.Black.components
+                spectre.graph?.draw()
             } else {
-                spectre.graph?.color = GraphixManager.sharedInstance.Gray80
+                spectre.sgraph?.color = GraphixManager.sharedInstance.Red.components
+                spectre.sgraph?.draw()
             }
-            spectre.graph?.draw()
         }
         
         glUseProgram(0)

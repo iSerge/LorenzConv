@@ -38,11 +38,29 @@ float lorenzCDF_f(float x, float x0, float gamma){
 //    }
 //}
 
-__kernel void calcLorenzian_f(__global __read_only float* x, __global __write_only float* y,
+kernel void calcLorenzian_f(global read_only float* x, global write_only float* y,
                             const int n, const float x0, const float gamma)
 {
     const size_t i = get_global_id(0);
     if(i<n){
         y[i] = lorenz_f(x[i], x0, gamma);
+    }
+}
+
+kernel void shift_f(global read_only float* input, global write_only float* output,
+                    const int n, const float shift)
+{
+    const size_t i = get_global_id(0);
+    if(i<n){
+        output[i] = input[i]+shift;
+    }
+}
+
+kernel void weight_f(global read_only float* input, global write_only float* output,
+                    const int n, const float weight)
+{
+    const size_t i = get_global_id(0);
+    if(i<n){
+        output[i] = input[i]*weight;
     }
 }

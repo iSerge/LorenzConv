@@ -15,4 +15,17 @@
 {
     calcLorenzian_f_kernel(ndRangePointer, xBuf, yBuf, n, x0, gamma);
 }
+
++(void)shift_f:(const cl_ndrange*) ndRangePointer withInput: (void*) inBuf andOutput: (void*) outBuf
+         count: (const int) n shift: (const float) shift
+{
+    shift_f_kernel(ndRangePointer, inBuf, outBuf, n, shift);
+}
+
++(void)weight_f:(const cl_ndrange*) ndRangePointer withInput: (void*) inBuf andOutput: (void*) outBuf
+          count: (const int) n weight: (const float) weight
+{
+    weight_f_kernel(ndRangePointer, inBuf, outBuf, n, weight);
+}
+
 @end

@@ -24,6 +24,8 @@ class Spectre: NSManagedObject {
     var changeObserver: AnyObject?
     
     var graph: GraphDescriptor?
+    var sgraph: GraphDescriptor?
+    
     var xLimits: (Float, Float) = (-1, 1)
     var yLimits: (Float, Float) = (-1, 1)
     
@@ -61,8 +63,25 @@ class Spectre: NSManagedObject {
         let xVBO = GraphixManager.genBuffer(data.0, count: n.integerValue)
         let yVBO = GraphixManager.genBuffer(data.1, count: n.integerValue)
         
+        if let g = self.graph {
+            g.dispose()
+        }
+        
         self.graph = GraphDescriptor(xVbo: xVBO, yVbo: yVBO, n: GLsizei(n.integerValue),
-            color: GraphixManager.sharedInstance.Gray80)
+            color: GraphixManager.sharedInstance.Red.components)
+
+        if let g = self.sgraph {
+            g.dispose()
+//            self.sgraph = nil
+        }
+
+        let sxVBO = GraphixManager.genBufferForCL(n.integerValue)
+        let syVBO = GraphixManager.genBufferForCL(n.integerValue)
+
+        self.sgraph = GraphDescriptor(xVbo: sxVBO, yVbo: syVBO, n: GLsizei(n.integerValue),
+            color: GraphixManager.sharedInstance.Red.components)
+        
+        shiftAndWeight()
         
         self.xLimits = Spectre.minMax(data.0)
         self.yLimits = Spectre.minMax(data.1)
@@ -75,5 +94,9 @@ class Spectre: NSManagedObject {
         self.y = NSData(bytes: data.1, length: n*sizeof(Float))
         
         updateInternalState(data)
+    }
+    
+    func shiftAndWeight(){
+        ConvolutionUpdateController.shiftAndWeight(self.graph!, sgraph: self.sgraph!, shift: self.shift.floatValue, weight: self.weight.floatValue)
     }
 }

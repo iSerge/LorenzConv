@@ -12,29 +12,69 @@ import OpenGL
 import GLKit
 import GLUT
 
+func colorFromRGB(#red: Int, #green: Int, #blue: Int) -> [GLfloat] {
+    assert(red >= 0 && red <= 255, "Invalid red component")
+    assert(green >= 0 && green <= 255, "Invalid green component")
+    assert(blue >= 0 && blue <= 255, "Invalid blue component")
+    
+    return [GLfloat(red) / 255.0, GLfloat(green) / 255.0, GLfloat(blue) / 255.0, 1.0]
+}
+
+func colorFromInt(value: Int)->[GLfloat] {
+    return colorFromRGB(red: (value >> 16) & 0xff, green: (value >> 8) & 0xff, blue: value & 0xff)
+}
+
+extension Int {
+    var GLfloatColor: [GLfloat] { return colorFromInt(self) }
+}
+
+public final class Color: IntegerLiteralConvertible {
+    let components: [GLfloat]
+    
+    init(_ components: [GLfloat]){
+        self.components = components
+    }
+    
+    public init(integerLiteral value: IntegerLiteralType) {
+        self.components = colorFromInt(value)
+    }
+    
+    public var uiColor: NSColor {
+        get {
+            return NSColor(red: CGFloat(components[0]), green: CGFloat(components[1]), blue: CGFloat(components[2]), alpha: CGFloat(components[3]))
+        }
+    }
+}
+
 private let _GraphixManagerSharedInstance = GraphixManager()
 
 class GraphixManager {
     class var sharedInstance: GraphixManager { return _GraphixManagerSharedInstance }
 
-    let Black: [GLfloat] = [0.0, 0.0, 0.0, 1.0]
-    let Red:   [GLfloat] = [1.0, 0.0, 0.0, 1.0]
-    let Green: [GLfloat] = [0.0, 1.0, 0.0, 1.0]
-    let Blue:  [GLfloat] = [0.0, 0.0, 1.0, 1.0]
+    let Black: Color = 0x000000
+    let Gray80: Color = 0xCCCCCC
+    
+    let Red: Color = 0xF44336
+    let Purple: Color = 0x9C27B0
+    let Indigo: Color = 0x3F51B5
+    let Teal: Color = 0x009688
+    let Green: Color = 0x4CAF50
+    let Lime: Color = 0xCDDC39
+    let Yellow: Color = 0xFFEB3B
+    let Orange: Color = 0xFF9800
+    let Brown: Color = 0x795548
 
-    let Gray80:  [GLfloat] = [0.8, 0.8, 0.8, 1.0]
-/*
-    Colors
-    Red:    500 #F44336, 200 #EF9A9A
-    Purple: 500 #9C27B0, 200 #CE93D8
-    Indigo: 500 #3F51B5, 200 #9FA8DA
-    Teal:   500 #009688, 200 #80CBC4
-    Green:  500 #4CAF50, 200 #A5D6A7
-    Lime:   500 #CDDC39, 200 #E6EE9C
-    Yellow: 500 #FFEB3B, 200 #FFF59D
-    Orange: 500 #FF9800, 200 #FFCC80
-    Brown:  500 #795548, 200 #BCAAA4
-*/
+    let LightRed: Color = 0xEF9A9A
+    let LightPurple: Color = 0xCE93D8
+    let LightIndigo: Color = 0x9FA8DA
+    let LightTeal: Color = 0x80CBC4
+    let LightGreen: Color = 0xA5D6A7
+    let LightLime: Color = 0xE6EE9C
+    let LightYellow: Color = 0xFFF59D
+    let LightOrange: Color = 0xFFCC80
+    let LightBrown: Color = 0xBCAAA4
+
+
     
     let distributionPM: [GLfloat] = [ 0.2, 0.0, 0.0,  0.0,
                                       0.0, 2.0, 0.0, -1.0,
@@ -118,8 +158,6 @@ class GraphixManager {
         glBufferData(GLenum(GL_ARRAY_BUFFER), count*sizeof(Float), v, GLenum(GL_STATIC_DRAW));
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0);
     
-//        vbo_list.push_back(VBO);
-    
         return VBO;
     }
 
@@ -130,8 +168,6 @@ class GraphixManager {
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), VBO);
         glBufferData(GLenum(GL_ARRAY_BUFFER), count*sizeof(Float), nil, GLenum(GL_DYNAMIC_COPY));
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0);
-        
-        //        vbo_list.push_back(VBO);
         
         return VBO;
     }
@@ -344,7 +380,7 @@ class GraphixManager {
         let xVBO = GraphixManager.genBuffer(x, count: nPoints)
         let yVBO = GraphixManager.genBufferForCL(nPoints)
 
-        distrGraph = GraphDescriptor(xVbo: xVBO, yVbo: yVBO, n: GLsizei(nPoints), color: Black)
+        distrGraph = GraphDescriptor(xVbo: xVBO, yVbo: yVBO, n: GLsizei(nPoints), color: Black.components)
     }
     
     func freeData(){
