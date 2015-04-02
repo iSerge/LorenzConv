@@ -23,6 +23,18 @@ class GraphixManager {
     let Blue:  [GLfloat] = [0.0, 0.0, 1.0, 1.0]
 
     let Gray80:  [GLfloat] = [0.8, 0.8, 0.8, 1.0]
+/*
+    Colors
+    Red:    500 #F44336, 200 #EF9A9A
+    Purple: 500 #9C27B0, 200 #CE93D8
+    Indigo: 500 #3F51B5, 200 #9FA8DA
+    Teal:   500 #009688, 200 #80CBC4
+    Green:  500 #4CAF50, 200 #A5D6A7
+    Lime:   500 #CDDC39, 200 #E6EE9C
+    Yellow: 500 #FFEB3B, 200 #FFF59D
+    Orange: 500 #FF9800, 200 #FFCC80
+    Brown:  500 #795548, 200 #BCAAA4
+*/
     
     let distributionPM: [GLfloat] = [ 0.2, 0.0, 0.0,  0.0,
                                       0.0, 2.0, 0.0, -1.0,
