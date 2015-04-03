@@ -7,6 +7,8 @@
 
 #pragma OPENCL EXTENSION cl_khr_fp64 : enable
 
+#define BLOCK_SIZE 512
+
 #define M_PI        3.14159265358979323846264338327950288   /* pi */
 #define M_PI_2      1.57079632679489661923132169163975144   /* pi/2 */
 #define M_PI_4      0.785398163397448309615660845819875721  /* pi/4 */
@@ -30,6 +32,11 @@ float lorenz_f(float x, float x0, float gamma){
 float lorenzCDF_f(float x, float x0, float gamma){
     return atan2pi(x-x0, gamma) + 0.5f;
 }
+
+float lorenz_1_CDF_f(float x, float x0, float gamma){
+    return 0.5f - atan2pi(x-x0, gamma);
+}
+
 
 //kernel void calcLorenzian(global read_only double* x, global write_only double* y, const int n, double x0, double gamma){
 //    const size_t i = get_global_id(0);
@@ -62,5 +69,49 @@ kernel void weight_f(global read_only float* input, global write_only float* out
     const size_t i = get_global_id(0);
     if(i<n){
         output[i] = input[i]*weight;
+    }
+}
+
+kernel void calcConvolution_f(global read_only float* inX, global read_only float* inY,
+                              global read_only float* outY, const int n, const float gamma)
+{
+    const size_t i = get_global_id(0);
+    const size_t bs = get_local_size(0);
+    
+    const float x0 = inX[i];
+    
+    local float xbuf[BLOCK_SIZE];
+    local float ybuf[BLOCK_SIZE];
+    
+    float val = 0.0f;
+
+    if(i<n){
+        val += inY[0]*lorenzCDF_f(inX[0], x0, gamma);
+    }
+
+    for(int bi = 0; bi*bs < get_global_size(0); ++bi){
+        const int li = get_local_id(0);
+        if(bi*bs+li < n){
+            xbuf[li] = inX[bi*bs+li];
+            ybuf[li] = inY[bi*bs+li];
+        } else {
+            xbuf[li] = inX[n-1];
+            ybuf[li] = inY[n-1];
+        }
+        
+        barrier(CLK_LOCAL_MEM_FENCE);
+        
+        for(int ii = 0; ii < bs-1; ++ii){
+            const float dx = (xbuf[ii+1] - xbuf[ii])/10.0f;
+            const float dy = (ybuf[ii+1] - ybuf[ii])/10.0f;
+            for(float x = xbuf[ii], y = ybuf[ii]; x < xbuf[ii+1]; x += dx, y += dy){
+                val += (y + (dy*0.5f)) * dx * lorenz_f(x + (0.5f*dx), x0, gamma);
+            }
+        }
+    }
+    
+    if (i < n){
+        val += inY[n-1]*lorenz_1_CDF_f(inX[n-1], x0, gamma);
+        outY[i] = val;
     }
 }

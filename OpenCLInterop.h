@@ -18,4 +18,8 @@
 
 +(void)weight_f:(const cl_ndrange*) ndRangePointer withInput: (void*) inBuf andOutput: (void*) outBuf
                  count: (const int) n weight: (const float) weight;
+
++(void)calcConvolution_f:(const cl_ndrange*) ndRangePointer withInputX: (void*) inBufX
+              inputY: (void*) inBufY andOutput: (void*) outBuf
+                   count: (const int) n gamma: (const float) gamma;
 @end

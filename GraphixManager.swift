@@ -172,6 +172,23 @@ class GraphixManager {
         return VBO;
     }
 
+    class func genBufferCopy(sourceVBO: GLuint) -> GLuint
+    {
+        var VBO: GLuint = 0;
+        glBindBuffer(GLenum(GL_COPY_READ_BUFFER), sourceVBO);
+        var size: GLint = 0
+        glGetBufferParameteriv(GLenum(GL_COPY_READ_BUFFER), GLenum(GL_BUFFER_SIZE), &size);
+
+        glGenBuffers(1, &VBO);
+        glBindBuffer(GLenum(GL_COPY_WRITE_BUFFER), VBO);
+        glBufferData(GLenum(GL_COPY_WRITE_BUFFER), GLsizeiptr(size), nil, GLenum(GL_DYNAMIC_COPY));
+        glCopyBufferSubData(GLenum(GL_COPY_READ_BUFFER), GLenum(GL_COPY_WRITE_BUFFER), 0, 0, GLsizeiptr(size))
+        glBindBuffer(GLenum(GL_COPY_WRITE_BUFFER), 0);
+        glBindBuffer(GLenum(GL_COPY_READ_BUFFER), 0);
+        
+        return VBO;
+    }
+    
     class func GetGLErrorString(error: GLenum) -> String {
         switch(Int(error)){
             case Int(GL_NO_ERROR):

@@ -32,6 +32,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let ss = spectres {
             for s: Spectre in ss {
                 s.graph?.dispose()
+                s.sgraph?.dispose()
+                s.cgraph?.dispose()
             }
         }
 

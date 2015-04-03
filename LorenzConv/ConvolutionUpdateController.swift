@@ -15,7 +15,7 @@ class ConvolutionUpdateController: NSObject{
     @IBOutlet weak var convParamsController: NSObjectController!
     @IBOutlet weak var spectresController: NSArrayController!
 
-    dynamic var gHole: Float = 0.0 { didSet { convolutionParamsUpdated() } }
+    dynamic var gHole: Float = 1.0 { didSet { convolutionParamsUpdated() } }
     dynamic var spectres: [Spectre] = [] { didSet { spectresUpdated() } }
 
     override func awakeFromNib() {
@@ -66,11 +66,16 @@ class ConvolutionUpdateController: NSObject{
     }
     
     func convolutionParamsUpdated() {
-        if nil == GraphixManager.sharedInstance.distrGraph {
-            return
+        if nil != GraphixManager.sharedInstance.distrGraph {
+            ConvolutionUpdateController.calcDistribution(GraphixManager.sharedInstance.distrGraph, gamma: gHole, x0: 0.0)
         }
         
-        ConvolutionUpdateController.calcDistribution(GraphixManager.sharedInstance.distrGraph, gamma: gHole, x0: 0.0)
+        for s: Spectre in spectres {
+            if nil != s.sgraph && nil != s.cgraph {
+                ConvolutionUpdateController.calcConvolution(s.sgraph!, cgraph: s.cgraph!, gamma: self.gHole)
+            }
+        }
+        
         distributionView.needsDisplay = true
     }
     
@@ -92,4 +97,12 @@ class ConvolutionUpdateController: NSObject{
         }
     }
 
+    class func calcConvolution(graph: GraphDescriptor, cgraph: GraphDescriptor, gamma: Float){
+        dispatch_sync(GraphixManager.sharedInstance.queue){
+            let r = [graph.ndrange]
+            OpenCLInterop.calcConvolution_f(r, withInputX: graph.xBuf, inputY: graph.yBuf,
+                andOutput: cgraph.yBuf, count: graph.n, gamma: gamma)
+        }
+    }
+    
 }

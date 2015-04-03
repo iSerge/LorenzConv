@@ -25,6 +25,7 @@ class Spectre: NSManagedObject {
     
     var graph: GraphDescriptor?
     var sgraph: GraphDescriptor?
+    var cgraph: GraphDescriptor?
     
     var xLimits: (Float, Float) = (-1, 1)
     var yLimits: (Float, Float) = (-1, 1)
@@ -63,6 +64,9 @@ class Spectre: NSManagedObject {
         let xVBO = GraphixManager.genBuffer(data.0, count: n.integerValue)
         let yVBO = GraphixManager.genBuffer(data.1, count: n.integerValue)
         
+        self.xLimits = Spectre.minMax(data.0)
+        self.yLimits = Spectre.minMax(data.1)
+        
         if let g = self.graph {
             g.dispose()
         }
@@ -72,19 +76,25 @@ class Spectre: NSManagedObject {
 
         if let g = self.sgraph {
             g.dispose()
-//            self.sgraph = nil
         }
 
         let sxVBO = GraphixManager.genBufferForCL(n.integerValue)
         let syVBO = GraphixManager.genBufferForCL(n.integerValue)
 
         self.sgraph = GraphDescriptor(xVbo: sxVBO, yVbo: syVBO, n: GLsizei(n.integerValue),
-            color: GraphixManager.sharedInstance.Red.components)
-        
+            color: GraphixManager.sharedInstance.LightRed.components)
+
+        if let g = self.cgraph {
+            g.dispose()
+        }
+
         shiftAndWeight()
+
+        let cxVBO = GraphixManager.genBufferCopy(sxVBO)
+        let cyVBO = GraphixManager.genBufferCopy(syVBO)
         
-        self.xLimits = Spectre.minMax(data.0)
-        self.yLimits = Spectre.minMax(data.1)
+        self.cgraph = GraphDescriptor(xVbo: cxVBO, yVbo: cyVBO, n: GLsizei(n.integerValue),
+            color: GraphixManager.sharedInstance.Red.components)
     }
     
     func setData(data:([Float],[Float])){

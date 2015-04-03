@@ -28,4 +28,11 @@
     weight_f_kernel(ndRangePointer, inBuf, outBuf, n, weight);
 }
 
++(void)calcConvolution_f:(const cl_ndrange*) ndRangePointer withInputX: (void*) inBufX
+              inputY: (void*) inBufY andOutput: (void*) outBuf
+              count: (const int) n gamma: (const float) gamma
+{
+    calcConvolution_f_kernel(ndRangePointer, inBufX, inBufY, outBuf, n, gamma);
+}
+
 @end
