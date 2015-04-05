@@ -28,7 +28,18 @@ extension Int {
     var GLfloatColor: [GLfloat] { return colorFromInt(self) }
 }
 
-public final class Color: IntegerLiteralConvertible {
+enum ColorName: Int {
+    case Red = 0, Purple, Indigo, Teal, Green, Lime, Yellow, Orange, Brown
+}
+
+let _colorEnum: [ColorName] = [.Red, .Purple, .Indigo, .Teal, .Green, .Lime, .Yellow, .Orange, .Brown]
+let _colorNames: [String] = ["Red", "Purple", "Indigo", "Teal", "Green", "Lime", "Yellow", "Orange", "Brown"]
+let _colorIndexes: [Int] = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+let _colors: [Color] = [0xF44336, 0x9C27B0, 0x3F51B5, 0x009688, 0x4CAF50, 0xCDDC39, 0xFFEB3B, 0xFF9800, 0x795548]
+let _lColors: [Color] = [0xEF9A9A, 0xCE93D8, 0x9FA8DA, 0x80CBC4, 0xA5D6A7, 0xE6EE9C, 0xFFF59D, 0xFFCC80, 0xBCAAA4]
+
+@objc(Color)
+public final class Color: NSObject, IntegerLiteralConvertible {
     let components: [GLfloat]
     
     init(_ components: [GLfloat]){
@@ -46,10 +57,58 @@ public final class Color: IntegerLiteralConvertible {
     }
 }
 
+@objc(ColorIndexToStringTransformer)
+public class ColorIndexToStringTransformer: NSValueTransformer {
+    public override class func allowsReverseTransformation() -> Bool {
+        return true
+    }
+    
+    public override func transformedValue(value: AnyObject?) -> AnyObject? {
+        if let v = value as? Int {
+            if(0 <= v && v < _colorIndexes.count){
+                return _colorNames[v]
+            }
+        }
+        return nil
+    }
+
+    public override func reverseTransformedValue(value: AnyObject?) -> AnyObject?{
+        if let s = value as? String {
+            for i: Int in 0..._colorNames.count-1 {
+                if s == _colorNames[i] {
+                    return i
+                }
+            }
+        }
+        return nil
+    }
+
+}
+
+@objc(ColorIndexToColorTransformer)
+public class ColorIndexToColorTransformer: NSValueTransformer {
+    public override class func allowsReverseTransformation() -> Bool {
+        return false
+    }
+    
+    public override func transformedValue(value: AnyObject?) -> AnyObject? {
+        if let v = value as? Int {
+            if(0 <= v && v < _colorIndexes.count){
+                return _colors[v].uiColor
+            }
+        }
+        return nil
+    }
+}
+
 private let _GraphixManagerSharedInstance = GraphixManager()
 
 class GraphixManager {
     class var sharedInstance: GraphixManager { return _GraphixManagerSharedInstance }
+    class var colorPalette: [Color] { return _colors }
+    class var lColorPalette: [Color] { return _lColors }
+    class var colorNames: [String] { return _colorNames }
+    class var colorIndexes: [Int] { return _colorIndexes }
 
     let Black: Color = 0x000000
     let Gray80: Color = 0xCCCCCC

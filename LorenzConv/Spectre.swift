@@ -12,14 +12,16 @@ import CoreData
 @objc(Spectre)
 class Spectre: NSManagedObject {
 
-    @NSManaged dynamic var n: NSNumber
+    @NSManaged dynamic var n: Int
     @NSManaged dynamic var name: String
-    @NSManaged dynamic var reference: NSNumber
-    @NSManaged dynamic var shift: NSNumber
-    @NSManaged dynamic var weight: NSNumber
+    @NSManaged dynamic var reference: Bool
+    @NSManaged dynamic var shift: Float
+    @NSManaged dynamic var weight: Float
     @NSManaged dynamic var x: NSData
     @NSManaged dynamic var y: NSData
     @NSManaged dynamic var convolution: ConvolutionParams
+    
+    @NSManaged dynamic var colorIndex: Int
 
     var changeObserver: AnyObject?
     
@@ -61,8 +63,8 @@ class Spectre: NSManagedObject {
     }
     
     func updateInternalState(data:([Float],[Float])){
-        let xVBO = GraphixManager.genBuffer(data.0, count: n.integerValue)
-        let yVBO = GraphixManager.genBuffer(data.1, count: n.integerValue)
+        let xVBO = GraphixManager.genBuffer(data.0, count: n)
+        let yVBO = GraphixManager.genBuffer(data.1, count: n)
         
         self.xLimits = Spectre.minMax(data.0)
         self.yLimits = Spectre.minMax(data.1)
@@ -71,17 +73,17 @@ class Spectre: NSManagedObject {
             g.dispose()
         }
         
-        self.graph = GraphDescriptor(xVbo: xVBO, yVbo: yVBO, n: GLsizei(n.integerValue),
+        self.graph = GraphDescriptor(xVbo: xVBO, yVbo: yVBO, n: GLsizei(n),
             color: GraphixManager.sharedInstance.Red.components)
 
         if let g = self.sgraph {
             g.dispose()
         }
 
-        let sxVBO = GraphixManager.genBufferForCL(n.integerValue)
-        let syVBO = GraphixManager.genBufferForCL(n.integerValue)
+        let sxVBO = GraphixManager.genBufferForCL(n)
+        let syVBO = GraphixManager.genBufferForCL(n)
 
-        self.sgraph = GraphDescriptor(xVbo: sxVBO, yVbo: syVBO, n: GLsizei(n.integerValue),
+        self.sgraph = GraphDescriptor(xVbo: sxVBO, yVbo: syVBO, n: GLsizei(n),
             color: GraphixManager.sharedInstance.LightRed.components)
 
         if let g = self.cgraph {
@@ -93,7 +95,7 @@ class Spectre: NSManagedObject {
         let cxVBO = GraphixManager.genBufferCopy(sxVBO)
         let cyVBO = GraphixManager.genBufferCopy(syVBO)
         
-        self.cgraph = GraphDescriptor(xVbo: cxVBO, yVbo: cyVBO, n: GLsizei(n.integerValue),
+        self.cgraph = GraphDescriptor(xVbo: cxVBO, yVbo: cyVBO, n: GLsizei(n),
             color: GraphixManager.sharedInstance.Red.components)
     }
     
@@ -107,6 +109,6 @@ class Spectre: NSManagedObject {
     }
     
     func shiftAndWeight(){
-        ConvolutionUpdateController.shiftAndWeight(self.graph!, sgraph: self.sgraph!, shift: self.shift.floatValue, weight: self.weight.floatValue)
+        ConvolutionUpdateController.shiftAndWeight(self)
     }
 }

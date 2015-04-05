@@ -5,7 +5,8 @@
         <relationship name="spectres" toMany="YES" deletionRule="Cascade" destinationEntity="Spectre" inverseName="convolution" inverseEntity="Spectre" syncable="YES"/>
     </entity>
     <entity name="Spectre" representedClassName="Spectre" syncable="YES">
-        <attribute name="n" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="colorIndex" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="n" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="name" attributeType="String" defaultValueString="New spectre" syncable="YES"/>
         <attribute name="reference" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="shift" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -16,6 +17,6 @@
     </entity>
     <elements>
         <element name="Convolution" positionX="-1935" positionY="-2016" width="128" height="73"/>
-        <element name="Spectre" positionX="-1748" positionY="-2016" width="128" height="163"/>
+        <element name="Spectre" positionX="-1748" positionY="-2016" width="128" height="180"/>
     </elements>
 </model>

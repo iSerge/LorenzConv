@@ -796,7 +796,7 @@
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="2oU-Eo-tch">
-                                                                                <rect key="frame" x="3" y="76" width="253" height="22"/>
+                                                                                <rect key="frame" x="3" y="76" width="252.5" height="22"/>
                                                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Table View Cell" id="mtE-Ig-5fr">
                                                                                     <font key="font" metaFont="system"/>
                                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -824,7 +824,7 @@
                                                                                 </connections>
                                                                             </button>
                                                                             <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Ybd-8U-d2L">
-                                                                                <rect key="frame" x="1" y="-2" width="256.5" height="5"/>
+                                                                                <rect key="frame" x="1" y="-2" width="257" height="5"/>
                                                                                 <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                                                                                 <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                                 <font key="titleFont" metaFont="system"/>
@@ -838,7 +838,7 @@
                                                                                 </textFieldCell>
                                                                             </textField>
                                                                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Jg-9M-u7f" userLabel="Shift Field">
-                                                                                <rect key="frame" x="54" y="49" width="201.5" height="22"/>
+                                                                                <rect key="frame" x="54" y="49" width="202" height="22"/>
                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="hLB-ZT-wMx">
                                                                                     <numberFormatter key="formatter" formatterBehavior="10_0" positiveFormat="#,##0.##" negativeFormat="-#,##0.##" thousandSeparator=" " id="qen-vj-0Hw">
                                                                                         <decimal key="minimum" value="NaN"/>
@@ -882,11 +882,32 @@
                                                                                     <binding destination="VMv-DP-OoT" name="value" keyPath="objectValue.weight" id="hnd-Kq-3YW"/>
                                                                                 </connections>
                                                                             </slider>
+                                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RJs-7J-UDk">
+                                                                                <rect key="frame" x="193" y="3" width="38" height="17"/>
+                                                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="2XV-F7-hgC">
+                                                                                    <font key="font" metaFont="system"/>
+                                                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                </textFieldCell>
+                                                                                <connections>
+                                                                                    <binding destination="VMv-DP-OoT" name="textColor" keyPath="objectValue.colorIndex" id="J84-V5-CxW">
+                                                                                        <dictionary key="options">
+                                                                                            <string key="NSValueTransformerName">ColorIndexToColorTransformer</string>
+                                                                                        </dictionary>
+                                                                                    </binding>
+                                                                                    <binding destination="VMv-DP-OoT" name="value" keyPath="objectValue.colorIndex" id="iiA-uk-pef">
+                                                                                        <dictionary key="options">
+                                                                                            <string key="NSValueTransformerName">ColorIndexToStringTransformer</string>
+                                                                                        </dictionary>
+                                                                                    </binding>
+                                                                                </connections>
+                                                                            </textField>
                                                                         </subviews>
                                                                         <constraints>
                                                                             <constraint firstItem="syW-S1-c4T" firstAttribute="top" secondItem="2oU-Eo-tch" secondAttribute="bottom" constant="8" id="3Ci-3k-gu1"/>
                                                                             <constraint firstItem="K2q-7c-Obf" firstAttribute="leading" secondItem="Vg9-AN-zWW" secondAttribute="trailing" constant="6" id="3w7-5u-OCa"/>
                                                                             <constraint firstItem="Ybd-8U-d2L" firstAttribute="leading" secondItem="VMv-DP-OoT" secondAttribute="leading" constant="1" id="7L5-PZ-vt0"/>
+                                                                            <constraint firstItem="K2q-7c-Obf" firstAttribute="trailing" secondItem="RJs-7J-UDk" secondAttribute="trailing" id="Ch1-w2-jBY"/>
                                                                             <constraint firstItem="Vg9-AN-zWW" firstAttribute="top" secondItem="syW-S1-c4T" secondAttribute="bottom" constant="8" id="D8U-rp-GHV"/>
                                                                             <constraint firstItem="2oU-Eo-tch" firstAttribute="top" secondItem="VMv-DP-OoT" secondAttribute="top" constant="3" id="EjC-wX-KCg"/>
                                                                             <constraint firstItem="Ybd-8U-d2L" firstAttribute="top" secondItem="KaB-jf-LBP" secondAttribute="bottom" constant="3" id="FGP-7N-BHe"/>
@@ -901,6 +922,7 @@
                                                                             <constraint firstAttribute="trailing" secondItem="2oU-Eo-tch" secondAttribute="trailing" constant="3" id="Pgr-VM-LRf"/>
                                                                             <constraint firstItem="Vg9-AN-zWW" firstAttribute="leading" secondItem="VMv-DP-OoT" secondAttribute="leading" constant="5" id="Tc9-Mu-ZiQ"/>
                                                                             <constraint firstAttribute="trailing" secondItem="ZxL-dl-0zh" secondAttribute="trailing" constant="3" id="VKL-8a-pFe"/>
+                                                                            <constraint firstItem="KaB-jf-LBP" firstAttribute="baseline" secondItem="RJs-7J-UDk" secondAttribute="baseline" id="Z4D-2t-yq8"/>
                                                                             <constraint firstItem="6Jg-9M-u7f" firstAttribute="leading" secondItem="K2q-7c-Obf" secondAttribute="leading" id="bDd-dQ-sP8"/>
                                                                             <constraint firstItem="ZxL-dl-0zh" firstAttribute="centerY" secondItem="K2q-7c-Obf" secondAttribute="centerY" id="bLq-9u-XPy"/>
                                                                             <constraint firstItem="syW-S1-c4T" firstAttribute="leading" secondItem="VMv-DP-OoT" secondAttribute="leading" constant="5" id="bMK-Df-p8N"/>
@@ -1049,6 +1071,11 @@
                     </dictionary>
                 </binding>
                 <binding destination="Voe-Tx-rLC" name="managedObjectContext" keyPath="self.managedObjectContext" id="H3V-td-TUF"/>
+            </connections>
+        </arrayController>
+        <arrayController objectClassName="Int" automaticallyPreparesContent="YES" id="t3Z-fE-vx3" userLabel="ColorIndexes Controller">
+            <connections>
+                <binding destination="Voe-Tx-rLC" name="contentArray" keyPath="colorIndexes" id="mWC-va-2ej"/>
             </connections>
         </arrayController>
         <customObject id="baw-ze-ep0" customClass="ConvolutionUpdateController" customModule="LorenzConv" customModuleProvider="target">

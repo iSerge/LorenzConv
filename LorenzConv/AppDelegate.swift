@@ -17,7 +17,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var spectresController: NSArrayController!
     
     dynamic var convParams: ConvolutionParams!
-
+    
+    let colorIndexes = GraphixManager.colorIndexes
+    let colorNames = GraphixManager.colorNames
+    
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application
     }
@@ -51,16 +54,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             convParams = newParams
         } else {
             convParams = cp?[0]
-        }
-        
-        let spectres = self.managedObjectContext?.executeFetchRequest(NSFetchRequest(entityName: "Spectre"),
-            error: &err) as [Spectre]?
-        if let ss = spectres {
-            for s: Spectre in ss {
-                let x = s.xValues
-                let y = s.yValues
-                s.updateInternalState((x, y))
-            }
         }
     }
     

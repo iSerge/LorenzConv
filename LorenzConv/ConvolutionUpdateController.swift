@@ -17,6 +17,8 @@ class ConvolutionUpdateController: NSObject{
 
     dynamic var gHole: Float = 1.0 { didSet { convolutionParamsUpdated() } }
     dynamic var spectres: [Spectre] = [] { didSet { spectresUpdated() } }
+    
+    var currColor: Int = 0
 
     override func awakeFromNib() {
         self.bind("gHole", toObject: convParamsController, withKeyPath: "selection.ghole", options: nil)
@@ -44,10 +46,12 @@ class ConvolutionUpdateController: NSObject{
     
     func spectreUpdated(spectre: Spectre?){
         if let s = spectre {
-            if nil != s.graph && nil != s.sgraph {
-                ConvolutionUpdateController.shiftAndWeight(s.graph!, sgraph: s.sgraph!, shift: s.shift.floatValue, weight: s.weight.floatValue)
+            ConvolutionUpdateController.shiftAndWeight(s)
+            if nil != s.sgraph && nil != s.cgraph {
+                ConvolutionUpdateController.calcConvolution(s.sgraph!, cgraph: s.cgraph!, gamma: gHole)
             }
-            spectresUpdated()
+
+            convolutionView.needsDisplay = true
         }
     }
     
@@ -57,6 +61,15 @@ class ConvolutionUpdateController: NSObject{
                 let observer = ChangeObserver(controller: self)
                 s.changeObserver = observer
                 observer.startObserving(s)
+                
+                s.colorIndex = currColor++
+                
+                let x = s.xValues
+                let y = s.yValues
+                s.updateInternalState((x,y))
+                
+                ConvolutionUpdateController.shiftAndWeight(s)
+                ConvolutionUpdateController.calcConvolution(s.sgraph!, cgraph: s.cgraph!, gamma: gHole)
             }
         }
         
@@ -72,11 +85,12 @@ class ConvolutionUpdateController: NSObject{
         
         for s: Spectre in spectres {
             if nil != s.sgraph && nil != s.cgraph {
-                ConvolutionUpdateController.calcConvolution(s.sgraph!, cgraph: s.cgraph!, gamma: self.gHole)
+                ConvolutionUpdateController.calcConvolution(s.sgraph!, cgraph: s.cgraph!, gamma: gHole)
             }
         }
         
         distributionView.needsDisplay = true
+        convolutionView.needsDisplay = true
     }
     
     class func calcDistribution(graph: GraphDescriptor, gamma: Float, x0: Float){
@@ -87,21 +101,36 @@ class ConvolutionUpdateController: NSObject{
         }
     }
     
-    class func shiftAndWeight(graph: GraphDescriptor, sgraph: GraphDescriptor, shift: Float, weight: Float){
-        dispatch_sync(GraphixManager.sharedInstance.queue){
-            let r = [graph.ndrange]
-            OpenCLInterop.shift_f(r, withInput: graph.xBuf, andOutput: sgraph.xBuf,
-                count: graph.n, shift: shift)
-            OpenCLInterop.weight_f(r, withInput: graph.yBuf, andOutput: sgraph.yBuf,
-                count: graph.n, weight: weight)
+    class func shiftAndWeight(s: Spectre){
+        if nil != s.graph && nil != s.sgraph {
+            dispatch_sync(GraphixManager.sharedInstance.queue){
+                let r = [s.graph!.ndrange]
+                OpenCLInterop.shift_f(r, withInput: s.graph!.xBuf, andOutput: s.sgraph!.xBuf,
+                    count: s.graph!.n, shift: s.shift)
+                OpenCLInterop.weight_f(r, withInput: s.graph!.yBuf, andOutput: s.sgraph!.yBuf,
+                    count: s.graph!.n, weight: s.weight)
+            }
+        }
+
+        if nil != s.sgraph && nil != s.cgraph {
+            glBindBuffer(GLenum(GL_COPY_READ_BUFFER), s.sgraph!.xVbo);
+            glBindBuffer(GLenum(GL_COPY_WRITE_BUFFER), s.cgraph!.xVbo);
+            
+            var size: GLint = 0
+            glGetBufferParameteriv(GLenum(GL_COPY_READ_BUFFER), GLenum(GL_BUFFER_SIZE), &size);
+            
+            glCopyBufferSubData(GLenum(GL_COPY_READ_BUFFER), GLenum(GL_COPY_WRITE_BUFFER), 0, 0, GLsizeiptr(size))
+            
+            glBindBuffer(GLenum(GL_COPY_WRITE_BUFFER), 0);
+            glBindBuffer(GLenum(GL_COPY_READ_BUFFER), 0);
         }
     }
 
-    class func calcConvolution(graph: GraphDescriptor, cgraph: GraphDescriptor, gamma: Float){
+    class func calcConvolution(sgraph: GraphDescriptor, cgraph: GraphDescriptor, gamma: Float){
         dispatch_sync(GraphixManager.sharedInstance.queue){
-            let r = [graph.ndrange]
-            OpenCLInterop.calcConvolution_f(r, withInputX: graph.xBuf, inputY: graph.yBuf,
-                andOutput: cgraph.yBuf, count: graph.n, gamma: gamma)
+            let r = [sgraph.ndrange]
+            OpenCLInterop.calcConvolution_f(r, withInputX: sgraph.xBuf, inputY: sgraph.yBuf,
+                andOutput: cgraph.yBuf, count: sgraph.n, gamma: gamma)
         }
     }
     

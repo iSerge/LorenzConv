@@ -84,6 +84,57 @@ kernel void calcConvolution_f(global read_only float* inX, global read_only floa
     local float ybuf[BLOCK_SIZE];
     
     float val = 0.0f;
+    
+    if(i<n){
+        val += inY[0]*lorenzCDF_f(inX[0], x0, gamma);
+    }
+    
+        const int li = get_local_id(0);
+        if(li < n){
+            xbuf[li] = inX[li];
+            ybuf[li] = inY[li];
+        } else {
+            xbuf[li] = inX[n-1];
+            ybuf[li] = inY[n-1];
+        }
+        
+        barrier(CLK_LOCAL_MEM_FENCE);
+    
+        for(int ii = 0; ii < n; ++ii){
+            if(0 != ii){
+                const float dx = (xbuf[ii] - xbuf[ii-1]) * 0.5f;
+                const float dy = (ybuf[ii] - ybuf[ii-1]) * 0.5f;
+                val += dx * (ybuf[ii] * lorenz_f(xbuf[ii], x0, gamma)
+                             + (ybuf[ii]-dy) * lorenz_f(xbuf[ii]-dx, x0, gamma)) * 0.5f;
+            }
+            if(ii != n-1){
+                const float dx = (xbuf[ii+1] - xbuf[ii]) * 0.5f;
+                const float dy = (ybuf[ii+1] - ybuf[ii]) * 0.5f;
+                val += dx * (ybuf[ii] * lorenz_f(xbuf[ii], x0, gamma)
+                             + (ybuf[ii]+dy) * lorenz_f(xbuf[ii]+dx, x0, gamma)) * 0.5f;
+            }
+        }
+    
+    if (i < n){
+        val += inY[n-1]*lorenz_1_CDF_f(inX[n-1], x0, gamma);
+        outY[i] = val;
+    }
+}
+
+
+/*
+kernel void calcConvolution_f(global read_only float* inX, global read_only float* inY,
+                              global read_only float* outY, const int n, const float gamma)
+{
+    const size_t i = get_global_id(0);
+    const size_t bs = get_local_size(0);
+    
+    const float x0 = inX[i];
+    
+    local float xbuf[BLOCK_SIZE];
+    local float ybuf[BLOCK_SIZE];
+    
+    float val = 0.0f;
 
     if(i<n){
         val += inY[0]*lorenzCDF_f(inX[0], x0, gamma);
@@ -115,3 +166,4 @@ kernel void calcConvolution_f(global read_only float* inX, global read_only floa
         outY[i] = val;
     }
 }
+*/

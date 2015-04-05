@@ -42,8 +42,8 @@ class GLGraph: NSOpenGLView {
         
         let limits = graphs?.reduce(
             ((Float.infinity, -Float.infinity), (Float.infinity, -Float.infinity)),
-            {((min($0.0.0, $1.xLimits.0+$1.shift.floatValue),  max($0.0.1, $1.xLimits.1+$1.shift.floatValue)),
-              (min($0.1.0, $1.yLimits.0*$1.weight.floatValue), max($0.1.1, $1.yLimits.1*$1.weight.floatValue)))})
+            {((min($0.0.0, $1.xLimits.0+$1.shift),  max($0.0.1, $1.xLimits.1+$1.shift)),
+              (min($0.1.0, $1.yLimits.0*$1.weight), max($0.1.1, $1.yLimits.1*$1.weight)))})
         
         glUseProgram(GraphixManager.sharedInstance.program)
         GraphixManager.checkOpenGLerror("DistributionGraph.drawRect.glUseProgram")
@@ -56,12 +56,13 @@ class GLGraph: NSOpenGLView {
         
         for spectre: Spectre in graphs! {
             if spectre.reference.boolValue {
-                spectre.sgraph?.color = GraphixManager.sharedInstance.Black.components
+                spectre.sgraph?.color = GraphixManager.colorPalette[spectre.colorIndex].components
+//                spectre.sgraph?.color = GraphixManager.sharedInstance.Black.components
                 spectre.sgraph?.draw()
             } else {
-                spectre.sgraph?.color = GraphixManager.sharedInstance.LightRed.components
+                spectre.sgraph?.color = GraphixManager.lColorPalette[spectre.colorIndex].components
                 spectre.sgraph?.draw()
-                spectre.cgraph?.color = GraphixManager.sharedInstance.Red.components
+                spectre.cgraph?.color = GraphixManager.colorPalette[spectre.colorIndex].components
                 spectre.cgraph?.draw()
             }
         }
